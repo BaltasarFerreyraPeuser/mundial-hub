@@ -1,0 +1,12 @@
+{
+  "rewrites": [
+    {
+      "source": "/",
+      "destination": "/frontend/generador/index.html"
+    },
+    {
+      "source": "/generador",
+      "destination": "/frontend/generador/index.html"
+    }
+  ]
+}
