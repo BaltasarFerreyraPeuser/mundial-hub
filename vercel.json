@@ -2,11 +2,11 @@
   "rewrites": [
     {
       "source": "/",
-      "destination": "/frontend/generador/index.html"
+      "destination": "/frontend/Generador/index.html"
     },
     {
-      "source": "/generador",
-      "destination": "/frontend/generador/index.html"
+      "source": "/Generador",
+      "destination": "/frontend/Generador/index.html"
     }
   ]
 }
