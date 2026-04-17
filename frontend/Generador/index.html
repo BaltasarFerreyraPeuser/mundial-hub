@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Figurita Mundial 2026 — Generador Panini con IA</title>
+    <meta name="description" content="Diseñá tu propia figurita del Mundial 2026 con IA. Quitá el fondo de tu foto automáticamente y personalizá tu cromo de Argentina, México o cualquier país.">
+    <meta name="keywords" content="figurita mundial 2026, generador panini, mundial 2026 cromo, quitar fondo ia">
+    <meta property="og:title" content="¡Mirá mi figurita del Mundial 2026!">
+    <meta property="og:description" content="Creá la tuya gratis en segundos con este generador con IA.">
+    <meta property="og:url" content="https://tu-dominio.com">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;900&family=Barlow:wght@400;600;800&display=swap" rel="stylesheet">
+</head>
+<body class="generador-page amplify-hero-bg">
+    <a class="skip-link" href="#contenido-principal">Ir al contenido</a>
+
+    <div class="page" id="contenido-principal">
+        <div class="rainbow-bar" aria-hidden="true"></div>
+
+        <header>
+            <h1>Creá tu Figurita del Mundial 2026</h1>
+            <p class="header-sub">Generador Panini con Inteligencia Artificial · Gratis · Alta Resolución</p>
+        </header>
+        <section class="how-to">
+            <h2>¿Cómo crear tu cromo?</h2>
+            <ol>
+                <li><strong>Subí tu foto</strong> — IA quita el fondo al instante con <em>rembg</em></li>
+                <li><strong>Personalizá</strong> — Elegí país, colores y escribí tus datos</li>
+                <li><strong>Descargá</strong> — PNG en alta resolución listo para imprimir o compartir</li>
+            </ol>
+        </section>
+
+        <div class="layout">
+
+            <aside class="controls">
+
+                <div class="world-cup-selector">
+                    <button class="wc-tab active" title="Mundial 2026 — Activo">
+                        <span class="wc-year">2026</span>
+                        <span class="wc-status">ACTIVO</span>
+                    </button>
+                    <button class="wc-tab disabled" title="Próximamente: Qatar 2022">
+                        <span class="wc-year">2022</span>
+                        <span class="wc-status">COMING SOON</span>
+                        <div class="lock-icon">BLOQUEADO</div>
+                    </button>
+                </div>
+
+                <div class="card card--purple" data-card-num="01">
+                    <h3>Foto del jugador</h3>
+                    <label class="upload-btn upload-ai" for="photoInput">
+                        <span id="uploadLabel">Subir y quitar fondo</span>
+                    </label>
+                    <input type="file" id="photoInput" accept="image/*">
+                    <label class="upload-btn upload-direct" for="photoInputDirect">
+                        <span>Subir foto directa</span>
+                    </label>
+                    <input type="file" id="photoInputDirect" accept="image/*">
+                    <div id="uploadStatus" class="status-msg" style="display:none"></div>
+                    <div class="sliders">
+                        <div class="srow">
+                            <label>Escala</label>
+                            <input type="range" id="sScale" min="50" max="250" value="110" step="1">
+                            <span id="vScale">110%</span>
+                        </div>
+                        <div class="srow">
+                            <label>Pos. Y</label>
+                            <input type="range" id="sY" min="-400" max="200" value="-80" step="1">
+                            <span id="vY">-80</span>
+                        </div>
+                        <div class="srow">
+                            <label>Pos. X</label>
+                            <input type="range" id="sX" min="-200" max="200" value="0" step="1">
+                            <span id="vX">0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card card--blue" data-card-num="02">
+                    <h3>Colores</h3>
+                    <div class="crow">
+                        <label>Fondo</label>
+                        <input type="color" id="cBg" value="#43c4c9">
+                        <span>Color de fondo</span>
+                    </div>
+                    <div class="crow">
+                        <label>Número 2</label>
+                        <input type="color" id="c2" value="#74a9db">
+                        <span>Color del 2</span>
+                    </div>
+                    <div class="crow">
+                        <label>Número 6</label>
+                        <input type="color" id="c6" value="#ffffff">
+                        <span>Color del 6</span>
+                    </div>
+                    <div class="crow">
+                        <label>Intermedio</label>
+                        <input type="color" id="cCosito" value="#9ab7dd">
+                        <span>Color del nedio</span>
+                    </div>
+                </div>
+
+                <div class="card card--red" data-card-num="03">
+                    <h3>Datos del jugador</h3>
+                    <div class="frow">
+                        <label>Nombre</label>
+                        <input type="text" id="tName" value="TU NOMBRE" placeholder="NOMBRE APELLIDO">
+                    </div>
+                    <div class="frow">
+                        <label>Fecha</label>
+                        <input type="text" id="tDate" value="1-1-2000" placeholder="dd-mm-aaaa">
+                    </div>
+                    <div class="frow">
+                        <label>Altura</label>
+                        <input type="text" id="tHeight" value="1,75m" placeholder="1,75m">
+                    </div>
+                    <div class="frow">
+                        <label>Peso</label>
+                        <input type="text" id="tWeight" value="70 kg" placeholder="70 kg">
+                    </div>
+                    <div class="frow">
+                        <label>Club</label>
+                        <input type="text" id="tClub" value="MI CLUB" placeholder="NOMBRE DEL CLUB">
+                    </div>
+                </div>
+
+                <div class="card card--green" data-card-num="04">
+                    <h3>País</h3>
+                    <div class="country-search-wrap">
+                        <input type="text" id="countrySearch" placeholder="Buscar país..." autocomplete="off">
+                        <div class="country-dropdown" id="countryDropdown"></div>
+                    </div>
+                    <div class="selected-country" id="selectedCountry">
+                        <img src="../assets/flags/miniflags/ARG.png" alt="Argentina" class="sc-flag-img">
+                        <div class="sc-info">
+                            <span class="sc-name">Argentina</span>
+                            <span class="sc-code">ARG · Grupo K</span>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="dl-btn" id="dlBtn">Descargar PNG</button>
+
+            </aside>
+
+            <div class="preview">
+                <div class="preview-sticky">
+                    <div class="canvas-wrap">
+                        <canvas id="cv" width="1650" height="2310"></canvas>
+                    </div>
+                    <p class="hint">Vista previa en tiempo real</p>
+                    <button class="dl-btn dl-btn-preview" id="dlBtnMobile">Descargar PNG</button>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <footer class="main-footer">
+        <div class="footer-content">
+            <div class="footer-section support">
+                <p>¿Te gustó tu figurita?</p>
+                <p class="support-sub">Podés ayudarme con unos pesitos</p>
+                <div class="support-buttons">
+                    <a href="https://cafecito.app/proyectofigurita" target="_blank" class="btn-cafecito">Cafecito</a>
+                    <a href="https://www.paypal.com/donate/?hosted_button_id=KSB472RVF55AW" target="_blank" class="btn-paypal">PayPal</a>
+                </div>
+            </div>
+            <div class="footer-section links">
+                <nav>
+                    <a href="legal/privacidad.html">Privacidad</a>
+                    <a href="legal/terminos.html">Términos</a>
+                    <a href="mailto:yosoybaltasar@gmail.com">Contacto</a>
+                    <a href="https://www.linkedin.com/in/baltasar-ferreyra-peuser-8840a41b4/" target="_blank">LinkedIn</a>
+                </nav>
+            </div>
+            <div class="footer-section credits">
+                <p>Desarrollado por <strong>Baltasar Ferreyra Peuser</strong></p>
+                <p class="utn-tag">UTN FRC · Córdoba, Argentina</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="editor.js"></script>
+    <script>
+        document.getElementById('dlBtnMobile').addEventListener('click', () => {
+            document.getElementById('dlBtn').click();
+        });
+
+    </script>
+</body>
+</html>

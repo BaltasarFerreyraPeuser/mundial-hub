@@ -1,0 +1,208 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mundial 2026 — Tu Hub Oficial Fan-Made</title>
+    <meta name="description" content="El hub fan-made del Mundial 2026. Generador de figuritas Panini con IA, simulador de cruces, fixture en tiempo real y blog con curiosidades del torneo.">
+    <meta name="keywords" content="mundial 2026, figurita panini, simulador mundial, fixture 2026, blog futbol">
+    <meta property="og:title" content="Mundial 2026 — Hub Fan-Made">
+    <meta property="og:description" content="Generá tu figurita, simulá cruces y seguí el fixture del Mundial 2026.">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="stylesheet" href="styleMenu.css">
+    <link rel="stylesheet" href="hub-nav.css">
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;900&family=Barlow:wght@400;600;800&display=swap" rel="stylesheet">
+</head>
+<body class="hub-site">
+    <script>
+        try {
+            if (window.matchMedia('(min-width: 1024px)').matches && localStorage.getItem('mundialHubNavRailCollapsed') === '1') {
+                document.body.classList.add('hub-rail-collapsed');
+            }
+        } catch (e) {}
+    </script>
+
+    <a class="skip-link" href="#contenido-principal">Ir al contenido</a>
+
+    <button type="button" class="hub-nav-toggle" id="hubNavToggle" aria-expanded="false" aria-controls="hub-sidebar" title="Abrir menú del sitio">
+        <span aria-hidden="true">☰</span>
+        <span class="visually-hidden">Menú: ir a otras secciones</span>
+    </button>
+    <div class="hub-nav-backdrop" id="hubNavBackdrop" hidden></div>
+
+    <nav class="hub-sidebar" id="hub-sidebar" aria-label="Secciones del hub Mundial 2026">
+        <a class="hub-sidebar-brand" href="index.html" aria-current="page" aria-label="Inicio — Mundial 2026 Hub">
+            <span class="hub-brand-full">
+                <strong>Mundial 2026</strong>
+                <span>Hub fan-made</span>
+            </span>
+            <span class="hub-brand-mini" aria-hidden="true">26</span>
+        </a>
+        <p class="hub-nav-label">Navegación</p>
+        <ul class="hub-nav-list">
+            <li>
+                <a href="generador/index.html">
+                    <span class="hub-nav-ico hub-ico-generator" aria-hidden="true"></span>
+                    <span class="hub-nav-text">Generador</span>
+                </a>
+            </li>
+            <li>
+                <a href="simulador/index.html">
+                    <span class="hub-nav-ico hub-ico-simulador" aria-hidden="true"></span>
+                    <span class="hub-nav-text">Simulador</span>
+                </a>
+            </li>
+            <li>
+                <a href="fixture/index.html">
+                    <span class="hub-nav-ico hub-ico-fixture" aria-hidden="true"></span>
+                    <span class="hub-nav-text">Fixture</span>
+                </a>
+            </li>
+            <li>
+                <a href="blog/index.html">
+                    <span class="hub-nav-ico hub-ico-blog" aria-hidden="true"></span>
+                    <span class="hub-nav-text">Blog</span>
+                </a>
+            </li>
+        </ul>
+        <button type="button" class="hub-rail-toggle" id="hubRailToggle" aria-label="Ocultar barra lateral (se guarda en este dispositivo)">
+            <span class="hub-rail-pair hub-rail-pair-open" aria-hidden="true">
+                <span class="hub-rail-ico">«</span>
+                <span>Guardar</span>
+            </span>
+            <span class="hub-rail-pair hub-rail-pair-shut" aria-hidden="true">
+                <span class="hub-rail-ico">»</span>
+            </span>
+        </button>
+    </nav>
+
+    <div id="contenido-principal">
+    <div class="rainbow-bar"></div>
+
+    <section class="hero">
+        <div class="hero-text">
+            <p class="hero-eyebrow">Fan-Made · Mundial 2026 · USA · CAN · MEX</p>
+            <h1>
+                <span class="highlight-blue">FIFA</span><br>
+                <span class="highlight-red">World</span><br>
+                <span class="highlight-lime">Cup 26</span>
+            </h1>
+            <p class="hero-desc">Tu hub fan-made del torneo más grande de la historia. Generá tu figurita Panini con IA, simulá los cruces, seguí el fixture en tiempo real y leé los mejores artículos del Mundial 2026.</p>
+        </div>
+        <div class="hero-deco" aria-hidden="true">26</div>
+    </section>
+
+    <div class="sections">
+        <p class="sections-label">Explorá las secciones</p>
+
+        <div class="grid">
+
+            <a href="generador/index.html" class="sec-card card-generador">
+                <div class="card-bg">
+                    <span class="card-bg-num" aria-hidden="true">01</span>
+                </div>
+                <div class="card-content">
+                    <span class="card-tag">Herramienta con IA</span>
+                    <h2 class="card-title">Generador<br>de Figuritas</h2>
+                    <p class="card-desc">Subí tu foto, elegí tu país y personalizá colores y datos. La IA quita el fondo automáticamente y te entrega tu cromo del Mundial 2026 en alta resolución listo para imprimir o compartir.</p>
+                    <span class="card-cta">Crear mi figurita</span>
+                </div>
+            </a>
+
+            <a href="simulador/index.html" class="sec-card card-simulador">
+                <div class="card-bg">
+                    <span class="card-bg-num" aria-hidden="true">02</span>
+                </div>
+                <span class="badge-coming">Próximamente</span>
+                <div class="card-content">
+                    <span class="card-tag">Simulador de cruces</span>
+                    <h2 class="card-title">Simulador<br>de Cruces</h2>
+                    <p class="card-desc">¿Quién levanta la copa? Armá tu bracket completo, elegí ganadores en cada ronda y simulá el camino a la final. Compartí tu predicción con tus amigos.</p>
+                    <span class="card-cta">Simular torneo</span>
+                </div>
+            </a>
+
+            <a href="fixture/index.html" class="sec-card card-fixture is-disabled" aria-disabled="true" tabindex="-1">
+                <div class="card-bg">
+                    <span class="card-bg-num" aria-hidden="true">03</span>
+                </div>
+                <span class="badge-coming">Coming soon</span>
+                <div class="card-content">
+                    <span class="card-tag">Resultados en tiempo real</span>
+                    <h2 class="card-title">Fixture<br>Completo</h2>
+                    <p class="card-desc">Todos los 104 partidos del Mundial. Fechas, resultados, posiciones de grupos y la llave de eliminación directa actualizados en tiempo real.</p>
+                    <span class="card-cta">Ver fixture</span>
+                </div>
+            </a>
+
+            <a href="blog/index.html" class="sec-card card-blog is-disabled" aria-disabled="true" tabindex="-1">
+                <div class="card-bg">
+                    <span class="card-bg-num" aria-hidden="true">04</span>
+                </div>
+                <span class="badge-coming">Coming soon</span>
+                <div class="card-content">
+                    <span class="card-tag">Artículos y datos</span>
+                    <h2 class="card-title">Todo sobre<br>el Mundial</h2>
+                    <p class="card-desc">Los 48 clasificados, historia de las figuritas Panini, curiosidades del torneo, análisis de grupos y mucho más. Contenido para el fanático del fútbol.</p>
+                    <span class="card-cta">Leer artículos</span>
+                </div>
+            </a>
+
+        </div>
+    </div>
+
+    <div class="stats-bar">
+        <div class="stat-item">
+            <div class="stat-num">48</div>
+            <div class="stat-label">Selecciones</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-num">104</div>
+            <div class="stat-label">Partidos</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-num">12</div>
+            <div class="stat-label">Grupos</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-num">16</div>
+            <div class="stat-label">Sedes</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-num">39</div>
+            <div class="stat-label">Días de torneo</div>
+        </div>
+    </div>
+    <footer class="main-footer">
+        <div class="footer-content">
+            <div class="footer-section support">
+                <p>Te esta gustando la pagina?</p>
+                <p class="support-sub">Podés ayudarme con unos pesitos</p>
+                <div class="support-buttons">
+                    <a href="https://cafecito.app/proyectofigurita" target="_blank" class="btn-cafecito">Cafecito</a>
+                    <a href="https://www.paypal.com/donate/?hosted_button_id=KSB472RVF55AW" target="_blank" class="btn-paypal">PayPal</a>
+                </div>
+            </div>
+            <div class="footer-section links">
+                <nav>
+                    <a href="generador/index.html">Generador</a>
+                    <a href="simulador/index.html">Simulador</a>
+                    <a href="fixture/index.html">Fixture</a>
+                    <a href="blog/index.html">Blog</a>
+                    <a href="legal/privacidad.html">Privacidad</a>
+                    <a href="legal/terminos.html">Términos</a>
+                    <a href="mailto:yosoybaltasar@gmail.com">Contacto</a>
+                    <a href="https://www.linkedin.com/in/baltasar-ferreyra-peuser-8840a41b4/" target="_blank">LinkedIn</a>
+                </nav>
+            </div>
+            <div class="footer-section credits">
+                <p>Desarrollado por <strong>Baltasar Ferreyra Peuser</strong></p>
+                <p class="utn-tag">UTN FRC · Córdoba, Argentina</p>
+            </div>
+        </div>
+    </footer>
+    </div>
+
+    <script src="hub-nav.js"></script>
+</body>
+</html>
