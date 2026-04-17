@@ -8,9 +8,9 @@ let needsDraw = true;
 const canvas = document.getElementById('cv');
 const ctx = canvas.getContext('2d');
 
-const customFont = new FontFace('FuentePersonalizada', 'url(../assets/fonts/fuente.otf)');
-const customFont2 = new FontFace('FuentePersonalizadaA', 'url(../assets/fonts/fuente2.ttf)');
-const customFont3 = new FontFace('FuentePersonalizadaAA', 'url(../assets/fonts/fuente3.ttf)');
+const customFont = new FontFace('FuentePersonalizada', 'url(/frontend/assets/fonts/fuente.otf)');
+const customFont2 = new FontFace('FuentePersonalizadaA', 'url(/frontend/assets/fonts/fuente2.ttf)');
+const customFont3 = new FontFace('FuentePersonalizadaAA', 'url(/frontend/assets/fonts/fuente3.ttf)');
 Promise.all([customFont.load(), customFont2.load(), customFont3.load()])
     .then(fonts => { fonts.forEach(f => document.fonts.add(f)); draw(); })
     .catch(() => draw());
@@ -117,16 +117,16 @@ const state = {
 };
 
 const LAYER_FILES = [
-    { id: 'num2', src: '../assets/2.png' },
-    { id: 'num6', src: '../assets/6.png' },
-    { id: 'marco', src: '../assets/marco.png' },
-    { id: 'marco6', src: '../assets/marco6.png' },
-    { id: 'cosito', src: '../assets/cosito.png' },
-    { id: 'rectA', src: '../assets/svg/rectanguloarriba.svg' },
-    { id: 'rectB', src: '../assets/svg/rectanguloabajo.svg' },
-    { id: 'fifa', src: '../assets/svg/logofifa.svg' },
-    { id: 'fifa2', src: '../assets/svg/logofifa2.svg' },
-    { id: 'panini', src: '../assets/svg/panini.svg' },
+    { id: 'num2', src: '/frontend/assets/2.png' },
+    { id: 'num6', src: '/frontend/assets/6.png' },
+    { id: 'marco', src: '/frontend/assets/marco.png' },
+    { id: 'marco6', src: '/frontend/assets/marco6.png' },
+    { id: 'cosito', src: '/frontend/assets/cosito.png' },
+    { id: 'rectA', src: '/frontend/assets/svg/rectanguloarriba.svg' },
+    { id: 'rectB', src: '/frontend/assets/svg/rectanguloabajo.svg' },
+    { id: 'fifa', src: '/frontend/assets/svg/logofifa.svg' },
+    { id: 'fifa2', src: '/frontend/assets/svg/logofifa2.svg' },
+    { id: 'panini', src: '/frontend/assets/svg/panini.svg' },
 ];
 
 const imgs = {};
@@ -149,7 +149,7 @@ function loadFlag(code) {
     const img = new Image();
     img.onload = () => { state.flagImg = img; needsDraw = true; };
     img.onerror = () => { state.flagImg = null; needsDraw = true; };
-    img.src = `../assets/flags/${code}.png`;
+    img.src = `/frontend/assets/flags/${code}.png`;
 }
 
 function tintImage(sourceImg, hex) {
@@ -363,7 +363,7 @@ function selectCountry(country) {
     state.code = country.code;
     loadFlag(country.code);
     selectedDiv.innerHTML = `
-    <img src="../assets/flags/miniflags/${country.code}.png" alt="${country.name}" class="sc-flag-img"
+    <img src="/frontend/assets/flags/miniflags/${country.code}.png" alt="${country.name}" class="sc-flag-img"
       onerror="this.style.display='none'">
     <div class="sc-info">
       <span class="sc-name">${country.name}</span>
@@ -392,7 +392,7 @@ function renderDropdown(query) {
     <div class="dd-group-label">Grupo ${group}</div>
     <div class="dd-group-container">${teams.map(c => `
       <div class="dd-item" data-code="${c.code}">
-        <img src="../assets/flags/miniflags/${c.code}.png" alt="${c.name}" class="dd-flag-img"
+        <img src="/frontend/assets/flags/miniflags/${c.code}.png" alt="${c.name}" class="dd-flag-img"
           onerror="this.style.display='none'">
         <div class="dd-text-wrap">
           <span class="dd-name">${c.name}</span>
