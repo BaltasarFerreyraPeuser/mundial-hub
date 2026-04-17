@@ -1,4 +1,0 @@
-rembg==2.0.53
-onnxruntime>=1.17.0
-pillow==10.0.0
-numpy<2.0.0
