@@ -277,21 +277,32 @@ photoInput.addEventListener('change', async e => {
     const formData = new FormData();
     formData.append('photo', file);
     try {
-        const res = await fetch('/api/remove-bg', { method: 'POST', body: formData });
-        const { data, raw } = await parseRembgResponse(res);
-        if (!res.ok) throw new Error(`HTTP ${res.status} - ${data?.error || raw || ''}`);
-        if (!data?.url) throw new Error('Respuesta inválida: falta "url"');
+        const res = await fetch('/api/remove-bg', {
+            method: 'POST',
+            body: file
+        });
+
+        if (!res.ok) throw new Error(`Error en el servidor: ${res.status}`);
+        const blob = await res.blob();
         const img = new Image();
-        img.onload = () => { state.photo = img; updateOptimizedPhoto(); needsDraw = true; };
-        img.src = data.url;
-        uploadLabel.textContent = 'Fondo removido';
-        uploadBtn.classList.remove('loading');
-        uploadBtn.classList.add('done');
-        showStatus(data.warning ? 'Advertencia: ' + data.warning : 'Fondo removido con rembg', data.warning ? 'warn' : 'ok');
+
+        img.onload = () => {
+            state.photo = img;
+            updateOptimizedPhoto();
+            needsDraw = true;
+            uploadLabel.textContent = 'Fondo removido';
+            uploadBtn.classList.remove('loading');
+            uploadBtn.classList.add('done');
+            showStatus('¡Fondo quitado con éxito!', 'ok');
+        };
+
+        img.src = URL.createObjectURL(blob);
+
     } catch (err) {
-        uploadLabel.textContent = 'Subir y quitar fondo';
+        console.error(err);
+        uploadLabel.textContent = 'Error al procesar';
         uploadBtn.classList.remove('loading');
-        showStatus('Error: ' + err.message, 'error');
+        showStatus('Error: No se pudo quitar el fondo', 'error');
     }
 });
 
