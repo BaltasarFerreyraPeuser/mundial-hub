@@ -1,6 +1,10 @@
+import os
+import io
+os.environ["U2NET_HOME"] = "/tmp"
+
 from http.server import BaseHTTPRequestHandler
 from rembg import remove, new_session
-import io
+from PIL import Image
 
 session = new_session("u2net_human_seg")
 
