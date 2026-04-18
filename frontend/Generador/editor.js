@@ -173,6 +173,8 @@ function updateAllTints() {
 
 function updateOptimizedPhoto() {
     if (!state.photo) return;
+    // Guardamos la imagen original sin escalar ni recortar.
+    // El canvas de dibujo la escala en tiempo real con los sliders.
     optimizedPhoto = state.photo;
 }
 
@@ -190,7 +192,7 @@ function draw() {
     if (tintCache.cosito) ctx.drawImage(tintCache.cosito, 0, 0, W, H);
 
     if (optimizedPhoto) {
-        const sc = state.photoScale / 50;
+        const sc = state.photoScale / 100;
         const pw = optimizedPhoto.width * sc;
         const ph = optimizedPhoto.height * sc;
         ctx.save();
@@ -355,12 +357,63 @@ document.addEventListener('click', e => {
     if (!e.target.closest('.country-search-wrap')) dropdown.style.display = 'none';
 });
 
-document.getElementById('dlBtn').addEventListener('click', () => {
+// ── Modal de descarga y compartir ────────────────────────────────
+let lastDataUrl = null;
+
+function openShareModal(dataUrl) {
+    lastDataUrl = dataUrl;
+    const modal = document.getElementById('shareModal');
+    const modalImg = document.getElementById('shareModalImg');
+    modalImg.src = dataUrl;
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeShareModal() {
+    const modal = document.getElementById('shareModal');
+    modal.classList.remove('active');
+    document.body.style.overflow = '';
+}
+
+document.getElementById('shareModal').addEventListener('click', e => {
+    if (e.target === document.getElementById('shareModal')) closeShareModal();
+});
+document.getElementById('modalClose').addEventListener('click', closeShareModal);
+
+document.getElementById('modalDownload').addEventListener('click', () => {
     const a = document.createElement('a');
     a.download = `figurita-${state.name.replace(/\s+/g, '-').toLowerCase()}-2026.png`;
-    a.href = canvas.toDataURL('image/png');
+    a.href = lastDataUrl;
     a.click();
 });
+
+document.getElementById('shareTwitter').addEventListener('click', () => {
+    const txt = encodeURIComponent('¡Mirá mi figurita del Mundial 2026! 🌍⚽ Creá la tuya gratis en mundialhub.vercel.app #Mundial2026 #Figurita');
+    window.open(`https://twitter.com/intent/tweet?text=${txt}`, '_blank');
+});
+
+document.getElementById('shareWhatsapp').addEventListener('click', () => {
+    const txt = encodeURIComponent('¡Mirá mi figurita del Mundial 2026! 🌍⚽ Creá la tuya gratis acá: https://mundialhub.vercel.app');
+    window.open(`https://wa.me/?text=${txt}`, '_blank');
+});
+
+document.getElementById('shareInstagram').addEventListener('click', () => {
+    const a = document.createElement('a');
+    a.download = `figurita-${state.name.replace(/\s+/g, '-').toLowerCase()}-2026.png`;
+    a.href = lastDataUrl;
+    a.click();
+    document.getElementById('igTip').style.display = 'block';
+});
+
+document.getElementById('dlBtn').addEventListener('click', () => {
+    const dataUrl = canvas.toDataURL('image/png');
+    const a = document.createElement('a');
+    a.download = `figurita-${state.name.replace(/\s+/g, '-').toLowerCase()}-2026.png`;
+    a.href = dataUrl;
+    a.click();
+    openShareModal(dataUrl);
+});
+// ─────────────────────────────────────────────────────────────────
 
 // ── Carousel de tabs — muestra 2 a la vez ────────────────────────
 const TABS = [

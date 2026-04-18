@@ -22,10 +22,18 @@
     --shadow-lg: 10px 10px 0px #000000;
 }
 
+.faq-section {
+    display: none;
+}
+
+
+    src: url('../assets/fonts/fuente.otf') format('opentype');
+    font-display: swap;
+}
 
 @font-face {
     font-family: 'PaniniSecondary';
-    src: url('/frontend/assets/fonts/fuente2.ttf') format('truetype');
+    src: url('../assets/fonts/fuente2.ttf') format('truetype');
     font-display: swap;
 }
 
@@ -1187,6 +1195,177 @@ header {
         font-size: 13px;
     }
 }
-.faq-section {
+
+/* ═══════════════════════════════════════════════════════════════
+   MODAL COMPARTIR FIGURITA
+════════════════════════════════════════════════════════════════ */
+.share-modal {
     display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.72);
+    z-index: 9999;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    backdrop-filter: blur(4px);
+}
+
+.share-modal.active {
+    display: flex;
+}
+
+.share-modal__box {
+    background: var(--white);
+    border: var(--border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    padding: 28px 24px 24px;
+    max-width: 400px;
+    width: 100%;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    animation: modalPop 0.22s cubic-bezier(.34,1.56,.64,1) both;
+}
+
+@keyframes modalPop {
+    from { transform: scale(0.88); opacity: 0; }
+    to   { transform: scale(1);    opacity: 1; }
+}
+
+.share-modal__close {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 32px;
+    height: 32px;
+    border: var(--border);
+    border-radius: 50%;
+    background: var(--white);
+    font-size: 14px;
+    font-weight: 900;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s;
+}
+
+.share-modal__close:hover {
+    background: var(--black);
+    color: var(--white);
+}
+
+.share-modal__title {
+    font-family: 'PaniniSecondary', 'Barlow Condensed', sans-serif;
+    font-size: 1.5rem;
+    text-transform: uppercase;
+    text-align: center;
+    line-height: 1.1;
+}
+
+.share-modal__img-wrap {
+    width: 140px;
+    border-radius: 12px;
+    border: 3px solid var(--black);
+    box-shadow: 6px 6px 0 var(--blueA);
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.share-modal__img {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.share-modal__sub {
+    font-size: 12px;
+    font-weight: 600;
+    color: #666;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.share-modal__buttons {
+    display: flex;
+    gap: 8px;
+    width: 100%;
+}
+
+.share-btn {
+    flex: 1;
+    padding: 11px 8px;
+    border: var(--border);
+    border-radius: 14px;
+    font-size: 12px;
+    font-weight: 800;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.12s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    letter-spacing: 0.02em;
+    box-shadow: 3px 3px 0 var(--black);
+}
+
+.share-btn:active {
+    transform: translate(2px, 2px);
+    box-shadow: 1px 1px 0 var(--black);
+}
+
+.share-btn__icon {
+    font-size: 18px;
+}
+
+.share-btn--tw  { background: #000; color: #fff; }
+.share-btn--wa  { background: #25d366; color: #fff; }
+.share-btn--ig  { background: linear-gradient(135deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); color: #fff; }
+
+.share-btn--dl {
+    width: 100%;
+    flex: none;
+    flex-direction: row;
+    justify-content: center;
+    gap: 8px;
+    background: var(--greenA);
+    color: var(--black);
+    font-size: 13px;
+    padding: 12px;
+}
+
+.share-modal__ig-tip {
+    display: none;
+    font-size: 11.5px;
+    font-weight: 600;
+    background: linear-gradient(135deg, #f09433 0%, #cc2366 100%);
+    color: white;
+    border-radius: 10px;
+    padding: 10px 14px;
+    text-align: center;
+    line-height: 1.5;
+    width: 100%;
+}
+
+@media (max-width: 480px) {
+    .share-modal__box {
+        padding: 22px 16px 18px;
+        gap: 12px;
+    }
+
+    .share-modal__buttons {
+        flex-direction: column;
+    }
+
+    .share-btn {
+        flex-direction: row;
+        justify-content: center;
+        padding: 12px;
+    }
 }
