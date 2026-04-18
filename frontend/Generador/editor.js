@@ -103,7 +103,6 @@ const state = {
     photoScale: 110,
     photoY: -80,
     photoX: 0,
-    // rangos ampliados: escala 10-400, Y -1000/+600, X -600/+600
     cBg: '#43c4c9',
     c2: '#74a9db',
     c6: '#ffffff',
@@ -368,24 +367,23 @@ document.getElementById('dlBtn').addEventListener('click', () => {
     a.click();
 });
 
-// ── Tab carousel con flechas ──────────────────────────────────────
+// ── Carousel de tabs 2026 / Extra Sticker / 2022 ─────────────────
 const TABS = [
-    { id: 'tab-2026',  label: '2026',         sub: 'ACTIVO',      active: true,  disabled: false },
-    { id: 'tab-extra', label: 'EXTRA STICKER', sub: 'COMING SOON', active: false, disabled: true  },
-    { id: 'tab-2022',  label: '2022',          sub: 'COMING SOON', active: false, disabled: true  },
+    { label: '2026',         sub: 'ACTIVO',      disabled: false },
+    { label: 'EXTRA STICKER',sub: 'COMING SOON', disabled: true  },
+    { label: '2022',         sub: 'COMING SOON', disabled: true  },
 ];
 let currentTabIdx = 0;
 
 function renderTabs() {
     const container = document.getElementById('wcTabsContainer');
     container.innerHTML = TABS.map((t, i) => `
-        <button class="wc-tab ${i === currentTabIdx ? 'active' : ''} ${t.disabled ? 'disabled' : ''}"
-                data-idx="${i}" title="${t.disabled ? 'Próximamente' : t.label}" ${t.disabled ? 'aria-disabled="true"' : ''}>
+        <button class="wc-tab${i === currentTabIdx ? ' active' : ''}${t.disabled ? ' disabled' : ''}"
+                title="${t.disabled ? 'Próximamente' : t.label}"${t.disabled ? ' aria-disabled="true"' : ''}>
             <span class="wc-year">${t.label}</span>
-            <span class="wc-status">${i === currentTabIdx && !t.disabled ? t.sub : t.sub}</span>
+            <span class="wc-status">${t.sub}</span>
             ${t.disabled ? '<div class="lock-icon">BLOQUEADO</div>' : ''}
-        </button>
-    `).join('');
+        </button>`).join('');
     document.getElementById('wcPrev').disabled = currentTabIdx === 0;
     document.getElementById('wcNext').disabled = currentTabIdx === TABS.length - 1;
 }
@@ -398,6 +396,8 @@ document.getElementById('wcNext').addEventListener('click', () => {
 });
 
 renderTabs();
+// ─────────────────────────────────────────────────────────────────
+
 loadLayers();
 loadFlag(state.code);
 selectCountry(ALL_COUNTRIES.find(c => c.code === 'ARG'));
