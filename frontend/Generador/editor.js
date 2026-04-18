@@ -103,6 +103,7 @@ const state = {
     photoScale: 110,
     photoY: -80,
     photoX: 0,
+    // rangos ampliados: escala 10-400, Y -1000/+600, X -600/+600
     cBg: '#43c4c9',
     c2: '#74a9db',
     c6: '#ffffff',
@@ -250,62 +251,6 @@ function renderLoop() {
 }
 requestAnimationFrame(renderLoop);
 
-const photoInput = document.getElementById('photoInput');
-const uploadLabel = document.getElementById('uploadLabel');
-const uploadBtn = document.querySelector('.upload-btn');
-const statusEl = document.getElementById('uploadStatus');
-
-function showStatus(msg, type) {
-    statusEl.textContent = msg;
-    statusEl.className = 'status-msg ' + type;
-    statusEl.style.display = 'block';
-}
-
-async function parseRembgResponse(res) {
-    const raw = await res.text();
-    let data = {};
-    try { data = raw ? JSON.parse(raw) : {}; } catch (_) { }
-    return { data, raw };
-}
-
-photoInput.addEventListener('change', async e => {
-    const file = e.target.files[0];
-    if (!file) return;
-    uploadLabel.textContent = 'Procesando...';
-    uploadBtn.classList.add('loading');
-    statusEl.style.display = 'none';
-    const formData = new FormData();
-    formData.append('photo', file);
-    try {
-        const res = await fetch('/api/remove-bg', {
-            method: 'POST',
-            body: file
-        });
-
-        if (!res.ok) throw new Error(`Error en el servidor: ${res.status}`);
-        const blob = await res.blob();
-        const img = new Image();
-
-        img.onload = () => {
-            state.photo = img;
-            updateOptimizedPhoto();
-            needsDraw = true;
-            uploadLabel.textContent = 'Fondo removido';
-            uploadBtn.classList.remove('loading');
-            uploadBtn.classList.add('done');
-            showStatus('¡Fondo quitado con éxito!', 'ok');
-        };
-
-        img.src = URL.createObjectURL(blob);
-
-    } catch (err) {
-        console.error(err);
-        uploadLabel.textContent = 'Error al procesar';
-        uploadBtn.classList.remove('loading');
-        showStatus('Error: No se pudo quitar el fondo', 'error');
-    }
-});
-
 document.getElementById('photoInputDirect').addEventListener('change', e => {
     const file = e.target.files[0];
     if (!file) return;
@@ -423,6 +368,36 @@ document.getElementById('dlBtn').addEventListener('click', () => {
     a.click();
 });
 
+// ── Tab carousel con flechas ──────────────────────────────────────
+const TABS = [
+    { id: 'tab-2026',  label: '2026',         sub: 'ACTIVO',      active: true,  disabled: false },
+    { id: 'tab-extra', label: 'EXTRA STICKER', sub: 'COMING SOON', active: false, disabled: true  },
+    { id: 'tab-2022',  label: '2022',          sub: 'COMING SOON', active: false, disabled: true  },
+];
+let currentTabIdx = 0;
+
+function renderTabs() {
+    const container = document.getElementById('wcTabsContainer');
+    container.innerHTML = TABS.map((t, i) => `
+        <button class="wc-tab ${i === currentTabIdx ? 'active' : ''} ${t.disabled ? 'disabled' : ''}"
+                data-idx="${i}" title="${t.disabled ? 'Próximamente' : t.label}" ${t.disabled ? 'aria-disabled="true"' : ''}>
+            <span class="wc-year">${t.label}</span>
+            <span class="wc-status">${i === currentTabIdx && !t.disabled ? t.sub : t.sub}</span>
+            ${t.disabled ? '<div class="lock-icon">BLOQUEADO</div>' : ''}
+        </button>
+    `).join('');
+    document.getElementById('wcPrev').disabled = currentTabIdx === 0;
+    document.getElementById('wcNext').disabled = currentTabIdx === TABS.length - 1;
+}
+
+document.getElementById('wcPrev').addEventListener('click', () => {
+    if (currentTabIdx > 0) { currentTabIdx--; renderTabs(); }
+});
+document.getElementById('wcNext').addEventListener('click', () => {
+    if (currentTabIdx < TABS.length - 1) { currentTabIdx++; renderTabs(); }
+});
+
+renderTabs();
 loadLayers();
 loadFlag(state.code);
 selectCountry(ALL_COUNTRIES.find(c => c.code === 'ARG'));

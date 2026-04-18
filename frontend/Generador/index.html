@@ -114,7 +114,7 @@
         <section class="how-to" aria-label="Pasos para crear tu figurita">
             <h2>¿Cómo crear tu cromo del Mundial 2026?</h2>
             <ol>
-                <li><strong>Subí tu foto</strong> — La Inteligencia Artificial quita el fondo al instante con <em>rembg</em></li>
+                <li><strong>Subí tu foto</strong> — Usá <a href="https://www.remove.bg/es" target="_blank" rel="noopener noreferrer">remove.bg</a> gratis para quitar el fondo antes de subir</li>
                 <li><strong>Personalizá tu figurita</strong> — Elegí tu país, colores y escribí tu nombre y datos</li>
                 <li><strong>Descargá gratis</strong> — PNG en alta resolución listo para imprimir o compartir en redes</li>
             </ol>
@@ -125,42 +125,38 @@
             <aside class="controls" aria-label="Panel de personalización">
 
                 <div class="world-cup-selector">
-                    <button class="wc-tab active" title="Mundial 2026 — Activo">
-                        <span class="wc-year">2026</span>
-                        <span class="wc-status">ACTIVO</span>
-                    </button>
-                    <button class="wc-tab disabled" title="Próximamente: Qatar 2022" aria-disabled="true">
-                        <span class="wc-year">2022</span>
-                        <span class="wc-status">COMING SOON</span>
-                        <div class="lock-icon">BLOQUEADO</div>
-                    </button>
+                    <button class="wc-arrow" id="wcPrev" aria-label="Anterior">&#8592;</button>
+                    <div class="wc-tabs-container" id="wcTabsContainer">
+                        <!-- renderizado por JS -->
+                    </div>
+                    <button class="wc-arrow" id="wcNext" aria-label="Siguiente">&#8594;</button>
                 </div>
 
                 <div class="card card--purple" data-card-num="01">
                     <h3>Foto del jugador</h3>
-                    <label class="upload-btn upload-ai" for="photoInput">
-                        <span id="uploadLabel">Subir y quitar fondo con IA</span>
-                    </label>
-                    <input type="file" id="photoInput" accept="image/*" aria-label="Subir foto para quitar fondo con IA">
+                    <p class="removebg-tip">
+                        💡 Te recomendamos quitar el fondo gratis en
+                        <a href="https://www.remove.bg/es" target="_blank" rel="noopener noreferrer">remove.bg</a>
+                        antes de subir tu foto.
+                    </p>
                     <label class="upload-btn upload-direct" for="photoInputDirect">
-                        <span>Subir foto directa</span>
+                        <span>📁 Subir foto</span>
                     </label>
-                    <input type="file" id="photoInputDirect" accept="image/*" aria-label="Subir foto directa sin quitar fondo">
-                    <div id="uploadStatus" class="status-msg" style="display:none" role="status" aria-live="polite"></div>
+                    <input type="file" id="photoInputDirect" accept="image/*" aria-label="Subir foto">
                     <div class="sliders">
                         <div class="srow">
                             <label for="sScale">Escala</label>
-                            <input type="range" id="sScale" min="50" max="250" value="110" step="1" aria-label="Escala de la foto">
+                            <input type="range" id="sScale" min="10" max="400" value="110" step="1" aria-label="Escala de la foto">
                             <span id="vScale">110%</span>
                         </div>
                         <div class="srow">
                             <label for="sY">Pos. Y</label>
-                            <input type="range" id="sY" min="-400" max="200" value="-80" step="1" aria-label="Posición vertical de la foto">
+                            <input type="range" id="sY" min="-1000" max="600" value="-80" step="1" aria-label="Posición vertical de la foto">
                             <span id="vY">-80</span>
                         </div>
                         <div class="srow">
                             <label for="sX">Pos. X</label>
-                            <input type="range" id="sX" min="-200" max="200" value="0" step="1" aria-label="Posición horizontal de la foto">
+                            <input type="range" id="sX" min="-600" max="600" value="0" step="1" aria-label="Posición horizontal de la foto">
                             <span id="vX">0</span>
                         </div>
                     </div>

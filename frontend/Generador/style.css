@@ -195,10 +195,44 @@ header {
 
 .world-cup-selector {
     display: flex;
-    gap: 8px;
+    align-items: flex-end;
+    gap: 6px;
     margin-bottom: -8px;
     z-index: 5;
     position: relative;
+}
+
+.wc-arrow {
+    flex-shrink: 0;
+    width: 32px;
+    height: 32px;
+    border: var(--border);
+    border-radius: 10px;
+    background: var(--white);
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 900;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s;
+    margin-bottom: 4px;
+}
+
+    .wc-arrow:hover:not(:disabled) {
+        background: var(--blueA);
+        color: var(--white);
+    }
+
+    .wc-arrow:disabled {
+        opacity: 0.3;
+        cursor: not-allowed;
+    }
+
+.wc-tabs-container {
+    flex: 1;
+    display: flex;
+    gap: 0;
 }
 
 .wc-tab {
@@ -214,6 +248,7 @@ header {
     transition: all 0.2s;
     background: var(--white);
     position: relative;
+    min-width: 0;
 }
 
     .wc-tab.active {
@@ -348,22 +383,31 @@ header {
     letter-spacing: 0.02em;
 }
 
-.upload-ai {
+.removebg-tip {
+    font-size: 11px;
+    font-weight: 600;
+    color: #444;
+    background: var(--greenA);
+    border: 2px solid var(--black);
+    border-radius: 10px;
+    padding: 8px 12px;
+    margin-bottom: 12px;
+    line-height: 1.5;
+}
+
+    .removebg-tip a {
+        color: var(--blueB);
+        font-weight: 800;
+        text-decoration: underline;
+    }
+
+.upload-direct {
     background: var(--purpleA);
     color: var(--white);
 }
 
-    .upload-ai:hover {
-        background: #5500d0;
-    }
-
-.upload-direct {
-    background: var(--gray);
-    color: var(--black);
-}
-
     .upload-direct:hover {
-        background: #ddd;
+        background: #5500d0;
     }
 
 .upload-btn.loading {
