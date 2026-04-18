@@ -22,18 +22,10 @@
     --shadow-lg: 10px 10px 0px #000000;
 }
 
-.faq-section {
-    display: none;
-}
-
-
-    src: url('../assets/fonts/fuente.otf') format('opentype');
-    font-display: swap;
-}
 
 @font-face {
     font-family: 'PaniniSecondary';
-    src: url('../assets/fonts/fuente2.ttf') format('truetype');
+    src: url('/frontend/assets/fonts/fuente2.ttf') format('truetype');
     font-display: swap;
 }
 

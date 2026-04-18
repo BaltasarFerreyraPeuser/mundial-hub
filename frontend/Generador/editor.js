@@ -173,8 +173,6 @@ function updateAllTints() {
 
 function updateOptimizedPhoto() {
     if (!state.photo) return;
-    // Guardamos la imagen original sin escalar ni recortar.
-    // El canvas de dibujo la escala en tiempo real con los sliders.
     optimizedPhoto = state.photo;
 }
 
@@ -192,7 +190,7 @@ function draw() {
     if (tintCache.cosito) ctx.drawImage(tintCache.cosito, 0, 0, W, H);
 
     if (optimizedPhoto) {
-        const sc = state.photoScale / 100;
+        const sc = state.photoScale;
         const pw = optimizedPhoto.width * sc;
         const ph = optimizedPhoto.height * sc;
         ctx.save();
