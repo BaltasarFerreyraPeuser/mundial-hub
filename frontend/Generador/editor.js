@@ -190,7 +190,7 @@ function draw() {
     if (tintCache.cosito) ctx.drawImage(tintCache.cosito, 0, 0, W, H);
 
     if (optimizedPhoto) {
-        const sc = state.photoScale;
+        const sc = state.photoScale / 50;
         const pw = optimizedPhoto.width * sc;
         const ph = optimizedPhoto.height * sc;
         ctx.save();
