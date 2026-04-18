@@ -22,8 +22,11 @@
     --shadow-lg: 10px 10px 0px #000000;
 }
 
-@font-face {
-    font-family: 'PaniniMain';
+.faq-section {
+    display: none;
+}
+
+
     src: url('../assets/fonts/fuente.otf') format('opentype');
     font-display: swap;
 }
@@ -284,6 +287,9 @@ header {
     font-size: 1.3rem;
     font-weight: 900;
     line-height: 1;
+    word-break: break-word;
+    text-align: center;
+    font-size: clamp(0.7rem, 2.5vw, 1.3rem);
 }
 
 .wc-status {
@@ -1188,4 +1194,7 @@ header {
     .dl-btn {
         font-size: 13px;
     }
+}
+.faq-section {
+    display: none;
 }

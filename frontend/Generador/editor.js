@@ -173,12 +173,9 @@ function updateAllTints() {
 
 function updateOptimizedPhoto() {
     if (!state.photo) return;
-    const oc = document.createElement('canvas');
-    oc.width = W; oc.height = H;
-    const ox = oc.getContext('2d');
-    const ratio = Math.max(W / state.photo.width, H / state.photo.height);
-    ox.drawImage(state.photo, 0, 0, state.photo.width * ratio, state.photo.height * ratio);
-    optimizedPhoto = oc;
+    // Guardamos la imagen original sin escalar ni recortar.
+    // El canvas de dibujo la escala en tiempo real con los sliders.
+    optimizedPhoto = state.photo;
 }
 
 function draw() {
@@ -196,13 +193,13 @@ function draw() {
 
     if (optimizedPhoto) {
         const sc = state.photoScale / 100;
-        const pw = W * sc;
-        const ph = (optimizedPhoto.height / optimizedPhoto.width) * pw;
+        const pw = optimizedPhoto.width * sc;
+        const ph = optimizedPhoto.height * sc;
         ctx.save();
         ctx.beginPath();
         ctx.roundRect(0, 0, W, H, 14);
         ctx.clip();
-        ctx.drawImage(optimizedPhoto, (W - pw) / 2 + state.photoX, state.photoY + H * 0.05, pw, ph);
+        ctx.drawImage(optimizedPhoto, (W - pw) / 2 + state.photoX, state.photoY, pw, ph);
         ctx.restore();
     }
 
@@ -367,32 +364,36 @@ document.getElementById('dlBtn').addEventListener('click', () => {
     a.click();
 });
 
-// ── Carousel de tabs 2026 / Extra Sticker / 2022 ─────────────────
+// ── Carousel de tabs — muestra 2 a la vez ────────────────────────
 const TABS = [
-    { label: '2026',         sub: 'ACTIVO',      disabled: false },
-    { label: 'EXTRA STICKER',sub: 'COMING SOON', disabled: true  },
-    { label: '2022',         sub: 'COMING SOON', disabled: true  },
+    { label: '2026',          sub: 'ACTIVO',      disabled: false },
+    { label: 'EXTRA STICKER', sub: 'COMING SOON', disabled: true  },
+    { label: '2022',          sub: 'COMING SOON', disabled: true  },
 ];
 let currentTabIdx = 0;
+const VISIBLE = 2; // cuántos tabs se muestran a la vez
 
 function renderTabs() {
     const container = document.getElementById('wcTabsContainer');
-    container.innerHTML = TABS.map((t, i) => `
-        <button class="wc-tab${i === currentTabIdx ? ' active' : ''}${t.disabled ? ' disabled' : ''}"
+    const visible = TABS.slice(currentTabIdx, currentTabIdx + VISIBLE);
+    container.innerHTML = visible.map((t, i) => {
+        const isFirst = i === 0;
+        return `<button class="wc-tab${isFirst ? ' active' : ''}${t.disabled ? ' disabled' : ''}"
                 title="${t.disabled ? 'Próximamente' : t.label}"${t.disabled ? ' aria-disabled="true"' : ''}>
             <span class="wc-year">${t.label}</span>
             <span class="wc-status">${t.sub}</span>
             ${t.disabled ? '<div class="lock-icon">BLOQUEADO</div>' : ''}
-        </button>`).join('');
+        </button>`;
+    }).join('');
     document.getElementById('wcPrev').disabled = currentTabIdx === 0;
-    document.getElementById('wcNext').disabled = currentTabIdx === TABS.length - 1;
+    document.getElementById('wcNext').disabled = currentTabIdx >= TABS.length - VISIBLE;
 }
 
 document.getElementById('wcPrev').addEventListener('click', () => {
     if (currentTabIdx > 0) { currentTabIdx--; renderTabs(); }
 });
 document.getElementById('wcNext').addEventListener('click', () => {
-    if (currentTabIdx < TABS.length - 1) { currentTabIdx++; renderTabs(); }
+    if (currentTabIdx < TABS.length - VISIBLE) { currentTabIdx++; renderTabs(); }
 });
 
 renderTabs();
