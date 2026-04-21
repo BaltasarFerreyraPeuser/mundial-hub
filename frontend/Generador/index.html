@@ -97,7 +97,7 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="/frontend/Generador/style.css">
+    <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;900&family=Barlow:wght@400;600;800&display=swap" rel="stylesheet">
 </head>
 <body class="generador-page amplify-hero-bg">
@@ -156,29 +156,8 @@
                     </div>
                 </div>
 
-                <div class="card card--blue" data-card-num="02">
-                    <h3>Colores de la figurita</h3>
-                    <div class="crow">
-                        <label for="cBg">Fondo</label>
-                        <input type="color" id="cBg" value="#43c4c9" aria-label="Color de fondo de la figurita">
-                        <span>Color de fondo</span>
-                    </div>
-                    <div class="crow">
-                        <label for="c2">Número 2</label>
-                        <input type="color" id="c2" value="#74a9db" aria-label="Color del número 2">
-                        <span>Color del 2</span>
-                    </div>
-                    <div class="crow">
-                        <label for="c6">Número 6</label>
-                        <input type="color" id="c6" value="#ffffff" aria-label="Color del número 6">
-                        <span>Color del 6</span>
-                    </div>
-                    <div class="crow">
-                        <label for="cCosito">Intermedio</label>
-                        <input type="color" id="cCosito" value="#9ab7dd" aria-label="Color intermedio">
-                        <span>Color intermedio</span>
-                    </div>
-                </div>
+                <!-- Controles específicos de cada edición — renderizados por JS -->
+                <div id="editionControlsSlot"></div>
 
                 <div class="card card--red" data-card-num="03">
                     <h3>Datos del jugador</h3>
@@ -227,7 +206,14 @@
             <main class="preview" aria-label="Vista previa de la figurita">
                 <div class="preview-sticky">
                     <div class="canvas-wrap">
-                        <canvas id="cv" width="1650" height="2310" role="img" aria-label="Vista previa de tu figurita del Mundial 2026"></canvas>
+                        <!-- Canvas 2026 -->
+                        <canvas id="cv-2026"  width="1650" height="2310"
+                                role="img" aria-label="Vista previa figurita Mundial 2026"
+                                class="edition-canvas active-canvas"></canvas>
+                        <!-- Canvas Qatar 2022 (aspecto 2994x3960, misma proporción) -->
+                        <canvas id="cv-qatar" width="2994" height="3960"
+                                role="img" aria-label="Vista previa figurita Qatar 2022"
+                                class="edition-canvas" style="display:none"></canvas>
                     </div>
                     <p class="hint">Vista previa en tiempo real</p>
                     <button class="dl-btn dl-btn-preview" id="dlBtnMobile" aria-label="Descargar figurita en PNG">Descargar PNG</button>
@@ -307,7 +293,10 @@
         </div>
     </div>
 
-    <script src="/frontend/Generador/editor.js" defer></script>
+    <!-- Ediciones — cargar ANTES que editor.js -->
+    <script src="edition-2026.js" defer></script>
+    <script src="edition-qatar2022.js" defer></script>
+    <script src="editor.js" defer></script>
     <script>
         document.getElementById('dlBtnMobile').addEventListener('click', () => {
             document.getElementById('dlBtn').click();

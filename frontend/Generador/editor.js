@@ -1,327 +1,215 @@
 const W = 1650;
 const H = 2310;
 
-let optimizedPhoto = null;
-const tintCache = { num2: null, num6: null, cosito: null, marco: null, marco6: null };
-let needsDraw = true;
-
-const canvas = document.getElementById('cv');
-const ctx = canvas.getContext('2d');
-
-const customFont = new FontFace('FuentePersonalizada', 'url(/frontend/assets/fonts/fuente.otf)');
-const customFont2 = new FontFace('FuentePersonalizadaA', 'url(/frontend/assets/fonts/fuente2.ttf)');
-const customFont3 = new FontFace('FuentePersonalizadaAA', 'url(/frontend/assets/fonts/fuente3.ttf)');
-Promise.all([customFont.load(), customFont2.load(), customFont3.load()])
-    .then(fonts => { fonts.forEach(f => document.fonts.add(f)); draw(); })
-    .catch(() => draw());
-
-const FONT_NOMBRE = '"FuentePersonalizadaA",  "Barlow Condensed", sans-serif';
-const FONT_RESTO = '"FuentePersonalizadaAA", "Barlow Condensed", sans-serif';
-const FONT_PAIS = '"FuentePersonalizada",   "Barlow Condensed", sans-serif';
-
-const GROUPS = {
-    A: [
-        { code: 'MEX', name: 'México', flag: '🇲🇽' },
-        { code: 'RSA', name: 'Sudáfrica', flag: '🇿🇦' },
-        { code: 'KOR', name: 'Corea del Sur', flag: '🇰🇷' },
-        { code: 'CZE', name: 'Rep. Checa', flag: '🇨🇿' },
-    ],
-    B: [
-        { code: 'CAN', name: 'Canadá', flag: '🇨🇦' },
-        { code: 'BIH', name: 'Bosnia', flag: '🇧🇦' },
-        { code: 'QAT', name: 'Qatar', flag: '🇶🇦' },
-        { code: 'SUI', name: 'Suiza', flag: '🇨🇭' },
-    ],
-    C: [
-        { code: 'BRA', name: 'Brasil', flag: '🇧🇷' },
-        { code: 'MAR', name: 'Marruecos', flag: '🇲🇦' },
-        { code: 'HAI', name: 'Haití', flag: '🇭🇹' },
-        { code: 'SCO', name: 'Escocia', flag: '🏴󠁧󠁢󠁳󠁣󠁴󠁿' },
-    ],
-    D: [
-        { code: 'USA', name: 'Estados Unidos', flag: '🇺🇸' },
-        { code: 'PAR', name: 'Paraguay', flag: '🇵🇾' },
-        { code: 'AUS', name: 'Australia', flag: '🇦🇺' },
-        { code: 'TUR', name: 'Turquía', flag: '🇹🇷' },
-    ],
-    E: [
-        { code: 'GER', name: 'Alemania', flag: '🇩🇪' },
-        { code: 'CUW', name: 'Curazao', flag: '🇨🇼' },
-        { code: 'CIV', name: 'Costa de Marfil', flag: '🇨🇮' },
-        { code: 'ECU', name: 'Ecuador', flag: '🇪🇨' },
-    ],
-    F: [
-        { code: 'NED', name: 'Países Bajos', flag: '🇳🇱' },
-        { code: 'JPN', name: 'Japón', flag: '🇯🇵' },
-        { code: 'SWE', name: 'Suecia', flag: '🇸🇪' },
-        { code: 'TUN', name: 'Túnez', flag: '🇹🇳' },
-    ],
-    G: [
-        { code: 'BEL', name: 'Bélgica', flag: '🇧🇪' },
-        { code: 'EGY', name: 'Egipto', flag: '🇪🇬' },
-        { code: 'IRI', name: 'Irán', flag: '🇮🇷' },
-        { code: 'NZL', name: 'Nueva Zelanda', flag: '🇳🇿' },
-    ],
-    H: [
-        { code: 'ESP', name: 'España', flag: '🇪🇸' },
-        { code: 'CPV', name: 'Cabo Verde', flag: '🇨🇻' },
-        { code: 'KSA', name: 'Arabia Saudita', flag: '🇸🇦' },
-        { code: 'URU', name: 'Uruguay', flag: '🇺🇾' },
-    ],
-    I: [
-        { code: 'FRA', name: 'Francia', flag: '🇫🇷' },
-        { code: 'SEN', name: 'Senegal', flag: '🇸🇳' },
-        { code: 'IRQ', name: 'Irak', flag: '🇮🇶' },
-        { code: 'NOR', name: 'Noruega', flag: '🇳🇴' },
-    ],
-    J: [
-        { code: 'ARG', name: 'Argentina', flag: '🇦🇷' },
-        { code: 'ALG', name: 'Argelia', flag: '🇩🇿' },
-        { code: 'AUT', name: 'Austria', flag: '🇦🇹' },
-        { code: 'JOR', name: 'Jordania', flag: '🇯🇴' },
-    ],
-    K: [
-        { code: 'POR', name: 'Portugal', flag: '🇵🇹' },
-        { code: 'COD', name: 'RD Congo', flag: '🇨🇩' },
-        { code: 'UZB', name: 'Uzbekistán', flag: '🇺🇿' },
-        { code: 'COL', name: 'Colombia', flag: '🇨🇴' },
-    ],
-    L: [
-        { code: 'ENG', name: 'Inglaterra', flag: '🏴󠁧󠁢󠁥󠁮󠁧󠁿' },
-        { code: 'CRO', name: 'Croacia', flag: '🇭🇷' },
-        { code: 'GHA', name: 'Ghana', flag: '🇬🇭' },
-        { code: 'PAN', name: 'Panamá', flag: '🇵🇦' },
-    ],
+const canvasMap = {
+    'edition-2026':      document.getElementById('cv-2026'),
+    'edition-qatar2022': document.getElementById('cv-qatar'),
 };
 
-const ALL_COUNTRIES = Object.entries(GROUPS).flatMap(([group, teams]) =>
-    teams.map(t => ({ ...t, group }))
-);
+let canvas = canvasMap['edition-2026'];
+let ctx    = canvas.getContext('2d');
 
-const state = {
-    photo: null,
-    photoScale: 110,
-    photoY: -80,
-    photoX: 0,
-    cBg: '#43c4c9',
-    c2: '#74a9db',
-    c6: '#ffffff',
-    cCosito: '#9ab7dd',
-    name: 'TU NOMBRE',
-    date: '1-1-2000',
-    height: '1,75m',
-    weight: '70 kg',
-    club: 'MI CLUB',
-    code: 'ARG',
-    flagImg: null,
-};
+function switchCanvas(edition) {
+    Object.values(canvasMap).forEach(c => { c.style.display = 'none'; });
+    const target = canvasMap[edition.id] || canvasMap['edition-2026'];
+    target.style.display = 'block';
+    canvas = target;
+    ctx    = canvas.getContext('2d');
+}
 
-const LAYER_FILES = [
-    { id: 'num2', src: '/frontend/assets/2.png' },
-    { id: 'num6', src: '/frontend/assets/6.png' },
-    { id: 'marco', src: '/frontend/assets/marco.png' },
-    { id: 'marco6', src: '/frontend/assets/marco6.png' },
-    { id: 'cosito', src: '/frontend/assets/cosito.png' },
-    { id: 'rectA', src: '/frontend/assets/svg/rectanguloarriba.svg' },
-    { id: 'rectB', src: '/frontend/assets/svg/rectanguloabajo.svg' },
-    { id: 'fifa', src: '/frontend/assets/svg/logofifa.svg' },
-    { id: 'fifa2', src: '/frontend/assets/svg/logofifa2.svg' },
-    { id: 'panini', src: '/frontend/assets/svg/panini.svg' },
-];
+const customFont  = new FontFace('FuentePersonalizada',     'url(/frontend/assets/fonts/fuente.otf)');
+const customFont2 = new FontFace('FuentePersonalizadaA',    'url(/frontend/assets/fonts/fuente2.ttf)');
+const customFont3 = new FontFace('FuentePersonalizadaAA',   'url(/frontend/assets/fonts/fuente3.ttf)');
+const customFont4 = new FontFace('FuentePersonalizadaQatar','url(/frontend/assets/fonts/qatarfuente.ttf)');
 
-const imgs = {};
+Promise.all([customFont.load(), customFont2.load(), customFont3.load(), customFont4.load()])
+    .then(fonts => { fonts.forEach(f => document.fonts.add(f)); needsDraw = true; })
+    .catch(() => { needsDraw = true; });
 
-function loadLayers() {
+const EDITIONS = [Edition2026, EditionQatar2022];
+
+let activeEdition = EDITIONS[0];
+let state         = { ...activeEdition.defaultState, _touched: {} };
+let imgs          = {};
+let tints         = {};
+let photo         = null;
+let flagImg       = null;
+let needsDraw     = true;
+
+function getAllCountries(edition) {
+    return Object.entries(edition.groups).flatMap(([group, teams]) =>
+        teams.map(t => ({ ...t, group }))
+    );
+}
+
+function loadLayers(edition) {
+    imgs = {}; tints = {};
+    const files = edition.layerFiles || [];
+    if (!files.length) { needsDraw = true; return; }
     let loaded = 0;
-    LAYER_FILES.forEach(layer => {
+    files.forEach(layer => {
         const img = new Image();
         img.onload = () => {
-            imgs[layer.id] = img;
-            loaded++;
-            if (loaded === LAYER_FILES.length) { updateAllTints(); needsDraw = true; }
+            imgs[layer.id] = img; loaded++;
+            if (loaded === files.length) { tints = edition.buildTints(imgs, state); needsDraw = true; }
         };
-        img.onerror = () => { loaded++; };
+        img.onerror = () => { loaded++; if (loaded === files.length) needsDraw = true; };
         img.src = layer.src;
     });
 }
 
 function loadFlag(code) {
     const img = new Image();
-    img.onload = () => { state.flagImg = img; needsDraw = true; };
-    img.onerror = () => { state.flagImg = null; needsDraw = true; };
-    img.src = `/frontend/assets/flags/${code}.png`;
-}
-
-function tintImage(sourceImg, hex) {
-    const oc = document.createElement('canvas');
-    oc.width = W; oc.height = H;
-    const ox = oc.getContext('2d');
-    ox.fillStyle = hex;
-    ox.fillRect(0, 0, W, H);
-    ox.globalCompositeOperation = 'destination-in';
-    ox.drawImage(sourceImg, 0, 0, W, H);
-    return oc;
-}
-
-function updateAllTints() {
-    if (imgs.num2) tintCache.num2 = tintImage(imgs.num2, state.c2);
-    if (imgs.num6) tintCache.num6 = tintImage(imgs.num6, state.c6);
-    if (imgs.cosito) tintCache.cosito = tintImage(imgs.cosito, state.cCosito);
-    if (imgs.marco) tintCache.marco = tintImage(imgs.marco, state.cBg);
-    if (imgs.marco6) tintCache.marco6 = tintImage(imgs.marco6, state.c6);
-}
-
-function updateOptimizedPhoto() {
-    if (!state.photo) return;
-    // Guardamos la imagen original sin escalar ni recortar.
-    // El canvas de dibujo la escala en tiempo real con los sliders.
-    optimizedPhoto = state.photo;
-}
-
-function draw() {
-    ctx.clearRect(0, 0, W, H);
-    ctx.save();
-    ctx.beginPath();
-    ctx.roundRect(0, 0, W, H, 14);
-
-    ctx.fillStyle = state.cBg;
-    ctx.fillRect(0, 0, W, H);
-
-    if (tintCache.num2) ctx.drawImage(tintCache.num2, 0, 0, W, H);
-    if (tintCache.num6) ctx.drawImage(tintCache.num6, 0, 0, W, H);
-    if (tintCache.cosito) ctx.drawImage(tintCache.cosito, 0, 0, W, H);
-
-    if (optimizedPhoto) {
-        const sc = state.photoScale / 100;
-        const pw = optimizedPhoto.width * sc;
-        const ph = optimizedPhoto.height * sc;
-        ctx.save();
-        ctx.beginPath();
-        ctx.roundRect(0, 0, W, H, 14);
-        ctx.clip();
-        ctx.drawImage(optimizedPhoto, (W - pw) / 2 + state.photoX, state.photoY, pw, ph);
-        ctx.restore();
-    }
-
-    if (tintCache.marco) ctx.drawImage(tintCache.marco, 0, 0, W, H);
-    if (tintCache.marco6) ctx.drawImage(tintCache.marco6, 0, 0, W, H);
-
-    ctx.save();
-    if (state.flagImg) ctx.drawImage(state.flagImg, 0, 0, W, H);
-    state.code.toUpperCase().slice(0, 3).split('').forEach((l, i) => {
-        ctx.font = `900 220px ${FONT_PAIS}`;
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'alphabetic';
-        ctx.strokeStyle = 'rgba(255,255,255,1)';
-        ctx.lineWidth = 3.08;
-        ctx.strokeText(l, W - 207, 1729 + i * 184);
-        ctx.fillStyle = 'rgba(255,255,255,0.42)';
-        ctx.fillText(l, W - 207, 1729 + i * 184);
-    });
-    ctx.restore();
-
-    if (imgs.rectA) ctx.drawImage(imgs.rectA, 81, 1900, 1183, 207);
-    if (imgs.rectB) ctx.drawImage(imgs.rectB, 81, 2130, 1022, 98);
-    if (imgs.fifa2) ctx.drawImage(imgs.fifa2, 1353, 493, 128, 44);
-    if (imgs.fifa) ctx.drawImage(imgs.fifa, 1269, 133, 288, 448);
-    if (imgs.panini) ctx.drawImage(imgs.panini, 1124, 2130, 414, 98);
-
-    ctx.save();
-    ctx.textAlign = 'center';
-    const cx = 88 + 1166 / 2;
-    ctx.font = `700 88px ${FONT_RESTO}`;
-    ctx.fillStyle = '#fff';
-    ctx.fillText(state.name.toUpperCase(), cx, H - 316.8, 1166);
-    ctx.font = `400 66px ${FONT_RESTO}`;
-    ctx.fillText(`${state.date}  |  ${state.height}  |  ${state.weight}`, cx, H - 233.4, 1166);
-    ctx.font = `100 66px ${FONT_RESTO}`;
-    ctx.fillText(state.club.toUpperCase(), 88 + 1012 / 2, H - 110, 1012);
-    ctx.restore();
-
-    ctx.restore();
+    img.onload  = () => { flagImg = img; needsDraw = true; };
+    img.onerror = () => { flagImg = null; needsDraw = true; };
+    img.src = activeEdition.flagsPath + code + '.png';
 }
 
 function renderLoop() {
-    if (needsDraw) { draw(); needsDraw = false; }
+    if (needsDraw) { activeEdition.draw(ctx, state, imgs, tints, photo, flagImg); needsDraw = false; }
     requestAnimationFrame(renderLoop);
 }
 requestAnimationFrame(renderLoop);
 
+function applyTheme(theme) {
+    Object.entries(theme).forEach(([k, v]) => document.documentElement.style.setProperty(k, v));
+}
+
+function renderEditionControls(edition) {
+    const slot = document.getElementById('editionControlsSlot');
+    if (!slot) return;
+    slot.innerHTML = edition.renderControls(state);
+    edition.bindControls(state, onUpdate);
+}
+
+function onUpdate(type) {
+    if (type === 'tints') tints = activeEdition.buildTints(imgs, state);
+    needsDraw = true;
+}
+
+function showEditionLoader() {
+    let overlay = document.getElementById('editionLoader');
+    if (!overlay) {
+        overlay = document.createElement('div');
+        overlay.id        = 'editionLoader';
+        overlay.className = 'edition-loader';
+        overlay.innerHTML = [
+            '<div class="edition-loader__inner">',
+            '<img src="/frontend/assets/svg/loader-anim.svg" alt="" class="edition-loader__anim" onerror="this.style.display=\'none\'">',
+            '<div class="edition-loader__spinner" aria-hidden="true"></div>',
+            '<p class="edition-loader__text">Cargando edición...</p>',
+            '</div>'
+        ].join('');
+        document.body.appendChild(overlay);
+    }
+    overlay.classList.add('active');
+}
+
+function hideEditionLoader() {
+    const overlay = document.getElementById('editionLoader');
+    if (overlay) overlay.classList.remove('active');
+}
+
+function switchEdition(edition) {
+    if (edition === activeEdition) return;
+    showEditionLoader();
+    setTimeout(() => {
+        activeEdition = edition;
+        const prevCode = state.code;
+        const prevTouched = state._touched || {};
+        const newState = { ...edition.defaultState, code: prevCode, _touched: {} };
+        const sharedFields = ['name', 'date', 'height', 'weight'];
+        sharedFields.forEach(k => {
+            if (prevTouched[k]) { newState[k] = prevTouched[k]; newState._touched[k] = prevTouched[k]; }
+        });
+        state = newState;
+        switchCanvas(edition);
+        document.body.setAttribute('data-edition', edition.id);
+        applyTheme(edition.theme);
+        loadLayers(edition);
+        loadFlag(state.code);
+        renderEditionControls(edition);
+        renderDropdown('');
+        syncTabsToActiveEdition();
+        needsDraw = true;
+        hideEditionLoader();
+    }, 300);
+}
+
+function syncTabsToActiveEdition() { renderTabs(); }
+
 document.getElementById('photoInputDirect').addEventListener('change', e => {
     const file = e.target.files[0];
     if (!file) return;
-    const img = new Image();
-    img.onload = () => {
-        state.photo = img;
-        updateOptimizedPhoto();
-        needsDraw = true;
-        URL.revokeObjectURL(img.src);
+    const reader = new FileReader();
+    reader.onload = ev => {
+        const img = new Image();
+        img.onload = () => { photo = img; needsDraw = true; };
+        img.src = ev.target.result;
     };
-    img.src = URL.createObjectURL(file);
+    reader.readAsDataURL(file);
 });
 
 function slider(id, key, vid, sfx) {
-    document.getElementById(id).addEventListener('input', e => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.addEventListener('input', e => {
         state[key] = parseFloat(e.target.value);
         document.getElementById(vid).textContent = e.target.value + (sfx || '');
         needsDraw = true;
     });
 }
-
-function colorPicker(id, key) {
-    document.getElementById(id).addEventListener('input', e => {
-        state[key] = e.target.value;
-        updateAllTints();
-        needsDraw = true;
-    });
-}
+slider('sScale','photoScale','vScale','%');
+slider('sY',    'photoY',   'vY',   '');
+slider('sX',    'photoX',   'vX',   '');
 
 function textField(id, key, upper) {
+    const el = document.getElementById(id);
+    if (!el) return;
     let t;
-    document.getElementById(id).addEventListener('input', e => {
-        state[key] = upper ? e.target.value.toUpperCase() : e.target.value;
-        clearTimeout(t);
-        t = setTimeout(() => { needsDraw = true; }, 50);
+    el.addEventListener('input', e => {
+        const val = upper ? e.target.value.toUpperCase() : e.target.value;
+        state[key] = val;
+        if (!state._touched) state._touched = {};
+        state._touched[key] = val;
+        clearTimeout(t); t = setTimeout(() => { needsDraw = true; }, 50);
     });
 }
-
-slider('sScale', 'photoScale', 'vScale', '%');
-slider('sY', 'photoY', 'vY', '');
-slider('sX', 'photoX', 'vX', '');
-colorPicker('cBg', 'cBg'); colorPicker('c2', 'c2');
-colorPicker('c6', 'c6'); colorPicker('cCosito', 'cCosito');
-textField('tName', 'name', true);
-textField('tDate', 'date', false);
+textField('tName',   'name',   true);
+textField('tDate',   'date',   false);
 textField('tHeight', 'height', false);
 textField('tWeight', 'weight', false);
-textField('tClub', 'club', true);
+textField('tClub',   'club',   true);
 
 const searchInput = document.getElementById('countrySearch');
-const dropdown = document.getElementById('countryDropdown');
+const dropdown    = document.getElementById('countryDropdown');
 const selectedDiv = document.getElementById('selectedCountry');
 
 function selectCountry(country) {
     state.code = country.code;
     loadFlag(country.code);
-    selectedDiv.innerHTML = `
-    <img src="/frontend/assets/flags/miniflags/${country.code}.png" alt="${country.name}" class="sc-flag-img"
-      onerror="this.style.display='none'">
-    <div class="sc-info">
-      <span class="sc-name">${country.name}</span>
-      <span class="sc-code">${country.code} · Grupo ${country.group}</span>
-    </div>`;
-    searchInput.value = '';
+    const mfp = activeEdition.miniflagsPath || (activeEdition.flagsPath + 'miniflags/');
+    selectedDiv.innerHTML = [
+        '<img src="' + mfp + country.code + '.png"',
+        '     alt="' + country.name + '" class="sc-flag-img" onerror="this.style.display=\'none\'">',
+        '<div class="sc-info">',
+        '<span class="sc-name">' + country.name + '</span>',
+        '<span class="sc-code">' + country.code + ' · Grupo ' + country.group + '</span>',
+        '</div>'
+    ].join('');
+    searchInput.value      = '';
     dropdown.style.display = 'none';
 }
 
 function renderDropdown(query) {
+    const allCountries = getAllCountries(activeEdition);
     const q = query.toLowerCase().trim();
     const results = q
-        ? ALL_COUNTRIES.filter(c => c.name.toLowerCase().includes(q) || c.code.toLowerCase().includes(q))
-        : ALL_COUNTRIES;
+        ? allCountries.filter(c => c.name.toLowerCase().includes(q) || c.code.toLowerCase().includes(q))
+        : allCountries;
 
     if (!results.length) {
-        dropdown.innerHTML = '<div class="dd-empty">Sin resultados</div>';
+        dropdown.innerHTML     = '<div class="dd-empty">Sin resultados</div>';
         dropdown.style.display = 'block';
         return;
     }
@@ -329,23 +217,24 @@ function renderDropdown(query) {
     const byGroup = {};
     results.forEach(c => { if (!byGroup[c.group]) byGroup[c.group] = []; byGroup[c.group].push(c); });
 
-    dropdown.innerHTML = Object.entries(byGroup).map(([group, teams]) => `
-    <div class="dd-group-label">Grupo ${group}</div>
-    <div class="dd-group-container">${teams.map(c => `
-      <div class="dd-item" data-code="${c.code}">
-        <img src="/frontend/assets/flags/miniflags/${c.code}.png" alt="${c.name}" class="dd-flag-img"
-          onerror="this.style.display='none'">
-        <div class="dd-text-wrap">
-          <span class="dd-name">${c.name}</span>
-          <span class="dd-code">${c.code}</span>
-        </div>
-      </div>`).join('')}
-    </div>`).join('');
+    const fp = activeEdition.miniflagsPath || (activeEdition.flagsPath + 'miniflags/');
+    dropdown.innerHTML = Object.entries(byGroup).map(([group, teams]) =>
+        '<div class="dd-group-label">Grupo ' + group + '</div>' +
+        '<div class="dd-group-container">' +
+        teams.map(c =>
+            '<div class="dd-item" data-code="' + c.code + '">' +
+            '<img src="' + fp + c.code + '.png" alt="' + c.name + '" class="dd-flag-img" onerror="this.style.display=\'none\'">' +
+            '<div class="dd-text-wrap"><span class="dd-name">' + c.name + '</span><span class="dd-code">' + c.code + '</span></div>' +
+            '</div>'
+        ).join('') +
+        '</div>'
+    ).join('');
 
     dropdown.style.display = 'block';
+
     dropdown.querySelectorAll('.dd-item').forEach(item => {
         item.addEventListener('click', () => {
-            const country = ALL_COUNTRIES.find(c => c.code === item.dataset.code);
+            const country = getAllCountries(activeEdition).find(c => c.code === item.dataset.code);
             if (country) selectCountry(country);
         });
     });
@@ -357,21 +246,33 @@ document.addEventListener('click', e => {
     if (!e.target.closest('.country-search-wrap')) dropdown.style.display = 'none';
 });
 
-// ── Modal de descarga y compartir ────────────────────────────────
 let lastDataUrl = null;
+
+function getActiveDataUrl() {
+    const cw = activeEdition.canvasW || W;
+    const ch = activeEdition.canvasH || H;
+    const ec = document.createElement('canvas');
+    ec.width = cw; ec.height = ch;
+    const ectx = ec.getContext('2d');
+    if (!ectx) { console.error('No se pudo obtener contexto 2d'); return null; }
+    try {
+        activeEdition.draw(ectx, state, imgs, tints, photo, flagImg);
+        return ec.toDataURL('image/png');
+    } catch(e) {
+        console.warn('toDataURL falló:', e);
+        return null;
+    }
+}
 
 function openShareModal(dataUrl) {
     lastDataUrl = dataUrl;
-    const modal = document.getElementById('shareModal');
-    const modalImg = document.getElementById('shareModalImg');
-    modalImg.src = dataUrl;
-    modal.classList.add('active');
+    document.getElementById('shareModalImg').src = dataUrl;
+    document.getElementById('shareModal').classList.add('active');
     document.body.style.overflow = 'hidden';
 }
 
 function closeShareModal() {
-    const modal = document.getElementById('shareModal');
-    modal.classList.remove('active');
+    document.getElementById('shareModal').classList.remove('active');
     document.body.style.overflow = '';
 }
 
@@ -381,63 +282,72 @@ document.getElementById('shareModal').addEventListener('click', e => {
 document.getElementById('modalClose').addEventListener('click', closeShareModal);
 
 document.getElementById('modalDownload').addEventListener('click', () => {
+    if (!lastDataUrl) return;
     const a = document.createElement('a');
-    a.download = `figurita-${state.name.replace(/\s+/g, '-').toLowerCase()}-2026.png`;
-    a.href = lastDataUrl;
-    a.click();
+    a.download = 'figurita-' + state.name.replace(/\s+/g,'-').toLowerCase() + '-' + activeEdition.downloadSuffix + '.png';
+    a.href = lastDataUrl; a.click();
 });
 
 document.getElementById('shareTwitter').addEventListener('click', () => {
-    const txt = encodeURIComponent('¡Mirá mi figurita del Mundial 2026! 🌍⚽ Creá la tuya gratis en mundialhub.vercel.app #Mundial2026 #Figurita');
-    window.open(`https://twitter.com/intent/tweet?text=${txt}`, '_blank');
+    const txt = encodeURIComponent('Mirá mi figurita del ' + activeEdition.name + '! 🌍⚽ Creá la tuya gratis en mundialhub.vercel.app #Mundial2026 #Figurita');
+    window.open('https://twitter.com/intent/tweet?text=' + txt, '_blank');
 });
 
 document.getElementById('shareWhatsapp').addEventListener('click', () => {
-    const txt = encodeURIComponent('¡Mirá mi figurita del Mundial 2026! 🌍⚽ Creá la tuya gratis acá: https://mundialhub.vercel.app');
-    window.open(`https://wa.me/?text=${txt}`, '_blank');
+    const txt = encodeURIComponent('Mirá mi figurita del ' + activeEdition.name + '! 🌍⚽ https://mundialhub.vercel.app');
+    window.open('https://wa.me/?text=' + txt, '_blank');
 });
 
 document.getElementById('shareInstagram').addEventListener('click', () => {
+    if (!lastDataUrl) return;
     const a = document.createElement('a');
-    a.download = `figurita-${state.name.replace(/\s+/g, '-').toLowerCase()}-2026.png`;
-    a.href = lastDataUrl;
-    a.click();
+    a.download = 'figurita-' + state.name.replace(/\s+/g,'-').toLowerCase() + '-' + activeEdition.downloadSuffix + '.png';
+    a.href = lastDataUrl; a.click();
     document.getElementById('igTip').style.display = 'block';
 });
 
 document.getElementById('dlBtn').addEventListener('click', () => {
-    const dataUrl = canvas.toDataURL('image/png');
+    const dataUrl = getActiveDataUrl();
+    if (!dataUrl) { alert('Error al generar la imagen. Intentá de nuevo.'); return; }
     const a = document.createElement('a');
-    a.download = `figurita-${state.name.replace(/\s+/g, '-').toLowerCase()}-2026.png`;
-    a.href = dataUrl;
-    a.click();
+    a.download = 'figurita-' + state.name.replace(/\s+/g,'-').toLowerCase() + '-' + activeEdition.downloadSuffix + '.png';
+    a.href = dataUrl; a.click();
     openShareModal(dataUrl);
 });
-// ─────────────────────────────────────────────────────────────────
 
-// ── Carousel de tabs — muestra 2 a la vez ────────────────────────
 const TABS = [
-    { label: '2026',          sub: 'ACTIVO',      disabled: false },
-    { label: 'EXTRA STICKER', sub: 'COMING SOON', disabled: true  },
-    { label: '2022',          sub: 'COMING SOON', disabled: true  },
+    { label:'2026',         edition:Edition2026,      disabled:false, icon:'/frontend/assets/svg/logofifa3.svg' },
+    { label:'2022',         edition:EditionQatar2022, disabled:false, icon:'/frontend/assets/svg/logoqatar.svg' },
+    { label:'EXTRA STICKER',sub:'COMING SOON',        edition:null,   disabled:true                      },
 ];
+
 let currentTabIdx = 0;
-const VISIBLE = 2; // cuántos tabs se muestran a la vez
+const VISIBLE = 2;
 
 function renderTabs() {
     const container = document.getElementById('wcTabsContainer');
-    const visible = TABS.slice(currentTabIdx, currentTabIdx + VISIBLE);
+    const visible   = TABS.slice(currentTabIdx, currentTabIdx + VISIBLE);
     container.innerHTML = visible.map((t, i) => {
-        const isFirst = i === 0;
-        return `<button class="wc-tab${isFirst ? ' active' : ''}${t.disabled ? ' disabled' : ''}"
-                title="${t.disabled ? 'Próximamente' : t.label}"${t.disabled ? ' aria-disabled="true"' : ''}>
-            <span class="wc-year">${t.label}</span>
-            <span class="wc-status">${t.sub}</span>
-            ${t.disabled ? '<div class="lock-icon">BLOQUEADO</div>' : ''}
-        </button>`;
+        const isActive = t.edition === activeEdition;
+        return '<button class="wc-tab' + (isActive ? ' active' : '') + (t.disabled ? ' disabled' : '') + '" ' +
+               'data-tab-idx="' + (currentTabIdx + i) + '" ' +
+               'title="' + (t.disabled ? 'Próximamente' : t.label) + '" ' +
+               (t.disabled ? 'aria-disabled="true"' : '') + '>' +
+               '<img src="' + (t.icon || '') + '" alt="' + t.label + '" class="wc-tab-icon" onerror="this.style.display=\'none\'">' +
+               '<span class="wc-year">' + t.label + '</span>' +
+               (t.disabled ? '<div class="lock-icon">BLOQUEADO</div>' : '') +
+               '</button>';
     }).join('');
+
     document.getElementById('wcPrev').disabled = currentTabIdx === 0;
     document.getElementById('wcNext').disabled = currentTabIdx >= TABS.length - VISIBLE;
+
+    container.querySelectorAll('.wc-tab:not(.disabled)').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const tab = TABS[parseInt(btn.dataset.tabIdx)];
+            if (tab && tab.edition) switchEdition(tab.edition);
+        });
+    });
 }
 
 document.getElementById('wcPrev').addEventListener('click', () => {
@@ -447,9 +357,14 @@ document.getElementById('wcNext').addEventListener('click', () => {
     if (currentTabIdx < TABS.length - VISIBLE) { currentTabIdx++; renderTabs(); }
 });
 
+document.body.setAttribute('data-edition', activeEdition.id);
+applyTheme(activeEdition.theme);
+switchCanvas(activeEdition);
+renderEditionControls(activeEdition);
 renderTabs();
-// ─────────────────────────────────────────────────────────────────
-
-loadLayers();
+loadLayers(activeEdition);
 loadFlag(state.code);
-selectCountry(ALL_COUNTRIES.find(c => c.code === 'ARG'));
+
+const initCountry = getAllCountries(activeEdition).find(c => c.code === 'ARG')
+    || getAllCountries(activeEdition)[0];
+if (initCountry) selectCountry(initCountry);

@@ -1,0 +1,282 @@
+const Edition2026 = {
+
+    id: 'edition-2026',
+    name: 'Mundial 2026',
+    downloadSuffix: '2026',
+
+    flagsPath: '/frontend/assets/flags/',
+
+    theme: {
+        '--theme-primary':    '#17277f',
+        '--theme-accent':     '#43c4c9',
+        '--theme-accent2':    '#e5ff00',
+        '--theme-card-top':   '#17277f',
+        '--theme-tab-active': '#17277f',
+        '--theme-rainbow':    'linear-gradient(to right, #2651ff 0% 16.6%, #ea0001 16.6% 33.2%, #e5ff00 33.2% 49.8%, #6d00fc 49.8% 66.4%, #019afa 66.4% 83%, #00c93b 83% 100%)',
+        '--theme-how-to-bg':  'linear-gradient(135deg, rgba(255,255,255,0.28), rgba(255,255,255,0)), linear-gradient(135deg, #e5ff00, #019afa)',
+        '--theme-bg-body':    '#ffffff',
+        '--theme-header-txt': '#000000',
+    },
+
+    groups: {
+        A: [
+            { code: 'MEX', name: 'México' },
+            { code: 'RSA', name: 'Sudáfrica' },
+            { code: 'KOR', name: 'Corea del Sur' },
+            { code: 'CZE', name: 'Chequia' },
+        ],
+        B: [
+            { code: 'CAN', name: 'Canadá' },
+            { code: 'BIH', name: 'Bosnia y Herzegovina' },
+            { code: 'QAT', name: 'Qatar' },
+            { code: 'SUI', name: 'Suiza' },
+        ],
+        C: [
+            { code: 'BRA', name: 'Brasil' },
+            { code: 'MAR', name: 'Marruecos' },
+            { code: 'HAI', name: 'Haití' },
+            { code: 'SCO', name: 'Escocia' },
+        ],
+        D: [
+            { code: 'USA', name: 'Estados Unidos' },
+            { code: 'PAR', name: 'Paraguay' },
+            { code: 'AUS', name: 'Australia' },
+            { code: 'TUR', name: 'Turquía' },
+        ],
+        E: [
+            { code: 'GER', name: 'Alemania' },
+            { code: 'CUW', name: 'Curazao' },
+            { code: 'CIV', name: 'Costa de Marfil' },
+            { code: 'ECU', name: 'Ecuador' },
+        ],
+        F: [
+            { code: 'NED', name: 'Países Bajos' },
+            { code: 'JPN', name: 'Japón' },
+            { code: 'SWE', name: 'Suecia' },
+            { code: 'TUN', name: 'Túnez' },
+        ],
+        G: [
+            { code: 'BEL', name: 'Bélgica' },
+            { code: 'EGY', name: 'Egipto' },
+            { code: 'IRI', name: 'Irán' },
+            { code: 'NZL', name: 'Nueva Zelanda' },
+        ],
+        H: [
+            { code: 'ESP', name: 'España' },
+            { code: 'CPV', name: 'Cabo Verde' },
+            { code: 'KSA', name: 'Arabia Saudita' },
+            { code: 'URU', name: 'Uruguay' },
+        ],
+        I: [
+            { code: 'FRA', name: 'Francia' },
+            { code: 'SEN', name: 'Senegal' },
+            { code: 'IRQ', name: 'Irak' },
+            { code: 'NOR', name: 'Noruega' },
+        ],
+        J: [
+            { code: 'ARG', name: 'Argentina' },
+            { code: 'ALG', name: 'Argelia' },
+            { code: 'AUT', name: 'Austria' },
+            { code: 'JOR', name: 'Jordania' },
+        ],
+        K: [
+            { code: 'POR', name: 'Portugal' },
+            { code: 'COD', name: 'DR Congo' },
+            { code: 'UZB', name: 'Uzbekistán' },
+            { code: 'COL', name: 'Colombia' },
+        ],
+        L: [
+            { code: 'ENG', name: 'Inglaterra' },
+            { code: 'CRO', name: 'Croacia' },
+            { code: 'GHA', name: 'Ghana' },
+            { code: 'PAN', name: 'Panamá' },
+        ],
+    },
+
+    positions: {
+        gk:  { label: 'Arquero',    rectColor: '#76418d' },
+        def: { label: 'Defensa',    rectColor: '#c7004c' },
+        mid: { label: 'Mediocampo', rectColor: '#de4f40' },
+        fwd: { label: 'Delantero',  rectColor: '#1e8689' },
+    },
+
+    defaultState: {
+        photoScale: 110,
+        photoY:     -80,
+        photoX:     0,
+        cBg:        '#43c4c9',
+        c2:         '#74a9db',
+        c6:         '#ffffff',
+        cCosito:    '#9ab7dd',
+        position:   'mid',
+        name:       'TU NOMBRE',
+        date:       '1-1-2000',
+        height:     '1,75m',
+        weight:     '70 kg',
+        club:       'MI CLUB',
+        code:       'ARG',
+        bgVariant:  null,
+    },
+
+    layerFiles: [
+        { id: 'num2',   src: '/frontend/assets/2.png'                    },
+        { id: 'num6',   src: '/frontend/assets/6.png'                    },
+        { id: 'marco',  src: '/frontend/assets/marco.png'                },
+        { id: 'marco6', src: '/frontend/assets/marco6.png'               },
+        { id: 'cosito', src: '/frontend/assets/cosito.png'               },
+        { id: 'rectA',  src: '/frontend/assets/svg/rectanguloarriba.svg' },
+        { id: 'rectB',  src: '/frontend/assets/svg/rectanguloabajo.svg'  },
+        { id: 'fifa',   src: '/frontend/assets/svg/logofifa.svg'         },
+        { id: 'fifa2',  src: '/frontend/assets/svg/logofifa2.svg'        },
+        { id: 'panini', src: '/frontend/assets/svg/panini.svg'           },
+    ],
+
+    buildTints(imgs, state) {
+        const tint = (src, hex) => {
+            if (!src) return null;
+            const oc = document.createElement('canvas');
+            oc.width = 1650; oc.height = 2310;
+            const ox = oc.getContext('2d');
+            ox.fillStyle = hex;
+            ox.fillRect(0, 0, 1650, 2310);
+            ox.globalCompositeOperation = 'destination-in';
+            ox.drawImage(src, 0, 0, 1650, 2310);
+            return oc;
+        };
+        const posColor = (this.positions[state.position] || this.positions.mid).rectColor;
+        return {
+            num2:   tint(imgs.num2,   state.c2),
+            num6:   tint(imgs.num6,   state.c6),
+            cosito: tint(imgs.cosito, state.cCosito),
+            marco:  tint(imgs.marco,  state.cBg),
+            marco6: tint(imgs.marco6, state.c6),
+            rectA:  tint(imgs.rectA,  posColor),
+            rectB:  tint(imgs.rectB,  posColor),
+        };
+    },
+
+    draw(ctx, state, imgs, tints, photo, flagImg) {
+        const W = 1650, H = 2310;
+        const FONT_RESTO = '"FuentePersonalizadaAA", "Barlow Condensed", sans-serif';
+        const FONT_PAIS  = '"FuentePersonalizada",   "Barlow Condensed", sans-serif';
+
+        ctx.clearRect(0, 0, W, H);
+        ctx.save();
+
+        ctx.fillStyle = state.cBg;
+        ctx.fillRect(0, 0, W, H);
+
+        if (tints.num2)   ctx.drawImage(tints.num2,   0, 0, W, H);
+        if (tints.num6)   ctx.drawImage(tints.num6,   0, 0, W, H);
+        if (tints.cosito) ctx.drawImage(tints.cosito, 0, 0, W, H);
+
+        if (photo) {
+            const sc = state.photoScale / 100;
+            const pw = photo.width  * sc;
+            const ph = photo.height * sc;
+            ctx.save();
+            ctx.beginPath();
+            ctx.roundRect(0, 0, W, H, 14);
+            ctx.clip();
+            ctx.drawImage(photo, (W - pw) / 2 + state.photoX, state.photoY, pw, ph);
+            ctx.restore();
+        }
+
+        if (tints.marco)  ctx.drawImage(tints.marco,  0, 0, W, H);
+        if (tints.marco6) ctx.drawImage(tints.marco6, 0, 0, W, H);
+
+        if (flagImg) ctx.drawImage(flagImg, 0, 0, W, H);
+        ctx.save();
+        state.code.toUpperCase().slice(0, 3).split('').forEach((l, i) => {
+            ctx.font         = `900 220px ${FONT_PAIS}`;
+            ctx.textAlign    = 'center';
+            ctx.textBaseline = 'alphabetic';
+            ctx.strokeStyle  = 'rgba(255,255,255,1)';
+            ctx.lineWidth    = 3.08;
+            ctx.strokeText(l, W - 207, 1729 + i * 184);
+            ctx.fillStyle    = 'rgba(255,255,255,0.42)';
+            ctx.fillText(l, W - 207, 1729 + i * 184);
+        });
+        ctx.restore();
+
+        if (tints.rectA) ctx.drawImage(tints.rectA, 81, 1900, 1183, 207);
+        else if (imgs.rectA) ctx.drawImage(imgs.rectA, 81, 1900, 1183, 207);
+
+        if (tints.rectB) ctx.drawImage(tints.rectB, 81, 2130, 1022, 98);
+        else if (imgs.rectB) ctx.drawImage(imgs.rectB, 81, 2130, 1022, 98);
+
+        if (imgs.fifa2)  ctx.drawImage(imgs.fifa2,  1353,  493,  128,  44);
+        if (imgs.fifa)   ctx.drawImage(imgs.fifa,   1269,  133,  288, 448);
+        if (imgs.panini) ctx.drawImage(imgs.panini, 1124, 2130,  414,  98);
+
+        ctx.save();
+        ctx.textAlign = 'center';
+        const cx = 88 + 1166 / 2;
+        ctx.font = `700 88px ${FONT_RESTO}`;
+        ctx.fillStyle = '#fff';
+        ctx.fillText(state.name.toUpperCase(), cx, H - 316.8, 1166);
+        ctx.font = `400 66px ${FONT_RESTO}`;
+        ctx.fillText(`${state.date}  |  ${state.height}  |  ${state.weight}`, cx, H - 233.4, 1166);
+        ctx.font = `100 66px ${FONT_RESTO}`;
+        ctx.fillText(state.club.toUpperCase(), 88 + 1012 / 2, H - 110, 1012);
+        ctx.restore();
+
+        ctx.restore();
+    },
+
+    renderControls(state) {
+        const posOpts = Object.entries(this.positions).map(([key, v]) => `
+            <button class="q-pos-btn${state.position === key ? ' active' : ''}"
+                    data-pos="${key}"
+                    style="--pos-color:${v.rectColor}">
+                ${v.label}
+            </button>`).join('');
+
+        return `
+        <div class="card card--blue edition-controls" data-card-num="02">
+            <h3>Colores</h3>
+            <div class="crow">
+                <label for="cBg">Fondo</label>
+                <input type="color" id="cBg" value="${state.cBg}">
+                <span>Color de fondo</span>
+            </div>
+            <div class="crow">
+                <label for="c2">Número 2</label>
+                <input type="color" id="c2" value="${state.c2}">
+                <span>Color del 2</span>
+            </div>
+            <div class="crow">
+                <label for="c6">Número 6</label>
+                <input type="color" id="c6" value="${state.c6}">
+                <span>Color del 6</span>
+            </div>
+            <div class="crow">
+                <label for="cCosito">Intermedio</label>
+                <input type="color" id="cCosito" value="${state.cCosito}">
+                <span>Color intermedio</span>
+            </div>
+        </div>
+        <div class="card card--red edition-controls" data-card-num="03">
+            <h3>Posición</h3>
+            <div class="q-btn-row q-pos-row">${posOpts}</div>
+        </div>`;
+    },
+
+    bindControls(state, onUpdate) {
+        const cp = (id, key) => {
+            const el = document.getElementById(id);
+            if (!el) return;
+            el.addEventListener('input', e => { state[key] = e.target.value; onUpdate('tints'); });
+        };
+        cp('cBg', 'cBg'); cp('c2', 'c2'); cp('c6', 'c6'); cp('cCosito', 'cCosito');
+
+        document.querySelectorAll('.q-pos-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                state.position = btn.dataset.pos;
+                document.querySelectorAll('.q-pos-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                onUpdate('tints');
+            });
+        });
+    },
+};
