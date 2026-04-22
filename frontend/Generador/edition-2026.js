@@ -171,7 +171,7 @@ const Edition2026 = {
         if (tints.cosito) ctx.drawImage(tints.cosito, 0, 0, W, H);
 
         if (photo) {
-            const sc = state.photoScale / 100;
+            const sc = state.photoScale / 40;
             const pw = photo.width  * sc;
             const ph = photo.height * sc;
             ctx.save();

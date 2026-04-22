@@ -82,7 +82,7 @@ const EditionQatar2022 = {
 
     defaultState: {
         photoScale: 110,
-        photoY:     -80,
+        photoY:     500,
         photoX:     0,
         bgVariant:  'orange',
         position:   'mid',
@@ -137,7 +137,7 @@ const EditionQatar2022 = {
         }
 
         if (photo) {
-            const sc = state.photoScale / 25;
+            const sc = state.photoScale / 20;
             const pw = photo.width  * sc;
             const ph = photo.height * sc;
             const px = (W - pw) / 2 + state.photoX;
@@ -147,32 +147,35 @@ const EditionQatar2022 = {
             ctx.beginPath();
             ctx.roundRect(0, 0, W, H, 20);
             ctx.clip();
+            ctx.save();
 
-            const outlineSize = 17;
-            const offsets = [
-                [-outlineSize, 0], [outlineSize, 0],
-                [0, -outlineSize], [0, outlineSize],
-                [-outlineSize, -outlineSize], [outlineSize, -outlineSize],
-                [-outlineSize,  outlineSize], [outlineSize,  outlineSize],
-            ];
-
-            ctx.shadowColor = 'rgba(0,0,0,0.55)';
-            ctx.shadowBlur = 0;
-            ctx.shadowOffsetX = 75;
-            ctx.shadowOffsetY = 42;
-            ctx.shadowColor = 'transparent';
+            ctx.shadowColor = 'rgba(0, 0, 0, 55)';
+            ctx.shadowBlur = 30;                  
+            ctx.shadowOffsetX = 63;               
+            ctx.shadowOffsetY = 40;
             ctx.drawImage(photo, px, py, pw, ph);
+            ctx.restore();
+
+            const outlineSize = 15;
+            const offsets = [
+                [-1, 0], [1, 0], [0, -1], [0, 1], [-1, -1], [1, -1], [-1, 1], [1, 1]
+            ];
 
             const tmpC = document.createElement('canvas');
             tmpC.width = W; tmpC.height = H;
             const tmpX = tmpC.getContext('2d');
-            offsets.forEach(([ox, oy]) => tmpX.drawImage(photo, px + ox, py + oy, pw, ph));
+
+            offsets.forEach(([ox, oy]) => {
+                tmpX.drawImage(photo, px + (ox * outlineSize), py + (oy * outlineSize), pw, ph);
+            });
+
             tmpX.globalCompositeOperation = 'source-in';
             tmpX.fillStyle = '#ffffff';
             tmpX.fillRect(0, 0, W, H);
-            ctx.drawImage(tmpC, 0, 0);
-            ctx.drawImage(photo, px, py, pw, ph);
 
+            ctx.drawImage(tmpC, 0, 0);
+
+            ctx.drawImage(photo, px, py, pw, ph);
 
             ctx.restore();
         }
