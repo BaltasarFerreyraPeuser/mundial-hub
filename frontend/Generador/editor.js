@@ -317,8 +317,8 @@ document.getElementById('dlBtn').addEventListener('click', () => {
 
 const TABS = [
     { label:'2026',         edition:Edition2026,      disabled:false, icon:'/frontend/assets/svg/logofifa3.svg' },
-    { label:'2022',         edition:EditionQatar2022, disabled:true, icon:'/frontend/assets/svg/logoqatar.svg' },
-    { label:'EXTRA STICKER',sub:'COMING SOON',        edition:null,   disabled:true                      },
+    { label:'2022',         edition:EditionQatar2022, disabled:false, icon:'/frontend/assets/svg/logoqatar.svg' },
+    { label:'EXTRA STICKER', sub:'COMING SOON', edition:null, disabled:true, icon: '/frontend/assets/extra.png' },
 ];
 
 let currentTabIdx = 0;
