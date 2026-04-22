@@ -151,13 +151,21 @@ const EditionQatar2022 = {
             ctx.roundRect(0, 0, W, H, 20);
             ctx.clip();
 
-            const outlineSize = 22;
+            const outlineSize = 17;
             const offsets = [
                 [-outlineSize, 0], [outlineSize, 0],
                 [0, -outlineSize], [0, outlineSize],
                 [-outlineSize, -outlineSize], [outlineSize, -outlineSize],
                 [-outlineSize,  outlineSize], [outlineSize,  outlineSize],
             ];
+
+            ctx.shadowColor = 'rgba(0,0,0,0.55)';
+            ctx.shadowBlur = 0;
+            ctx.shadowOffsetX = 62;
+            ctx.shadowOffsetY = 42;
+            ctx.drawImage(photo, px, py, pw, ph);
+            ctx.shadowColor = 'transparent';
+
             const tmpC = document.createElement('canvas');
             tmpC.width = W; tmpC.height = H;
             const tmpX = tmpC.getContext('2d');
@@ -167,12 +175,6 @@ const EditionQatar2022 = {
             tmpX.fillRect(0, 0, W, H);
             ctx.drawImage(tmpC, 0, 0);
 
-            ctx.shadowColor   = 'rgba(0,0,0,0.55)';
-            ctx.shadowBlur    = 0;
-            ctx.shadowOffsetX = 48;
-            ctx.shadowOffsetY = 30;
-            ctx.drawImage(photo, px, py, pw, ph);
-            ctx.shadowColor = 'transparent';
 
             ctx.restore();
         }
