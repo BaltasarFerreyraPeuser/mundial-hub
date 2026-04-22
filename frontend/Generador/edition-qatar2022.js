@@ -161,9 +161,8 @@ const EditionQatar2022 = {
 
             ctx.shadowColor = 'rgba(0,0,0,0.55)';
             ctx.shadowBlur = 0;
-            ctx.shadowOffsetX = 62;
+            ctx.shadowOffsetX = 75;
             ctx.shadowOffsetY = 42;
-            ctx.drawImage(photo, px, py, pw, ph);
             ctx.shadowColor = 'transparent';
 
             const tmpC = document.createElement('canvas');
@@ -174,6 +173,7 @@ const EditionQatar2022 = {
             tmpX.fillStyle = '#ffffff';
             tmpX.fillRect(0, 0, W, H);
             ctx.drawImage(tmpC, 0, 0);
+            ctx.drawImage(photo, px, py, pw, ph);
 
 
             ctx.restore();
