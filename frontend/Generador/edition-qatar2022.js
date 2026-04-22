@@ -82,7 +82,7 @@ const EditionQatar2022 = {
 
     defaultState: {
         photoScale: 110,
-        photoY:     500,
+        photoY:     1200,
         photoX:     0,
         bgVariant:  'orange',
         position:   'mid',
@@ -150,13 +150,13 @@ const EditionQatar2022 = {
             ctx.save();
 
             ctx.shadowColor = 'rgba(0, 0, 0, 55)';
-            ctx.shadowBlur = 30;                  
-            ctx.shadowOffsetX = 63;               
-            ctx.shadowOffsetY = 40;
+            ctx.shadowBlur = 10;                  
+            ctx.shadowOffsetX = 112;               
+            ctx.shadowOffsetY = 70;
             ctx.drawImage(photo, px, py, pw, ph);
             ctx.restore();
 
-            const outlineSize = 15;
+            const outlineSize = 22;
             const offsets = [
                 [-1, 0], [1, 0], [0, -1], [0, 1], [-1, -1], [1, -1], [-1, 1], [1, 1]
             ];
