@@ -318,7 +318,10 @@ document.getElementById('dlBtn').addEventListener('click', () => {
 const TABS = [
     { label:'2026',         edition:Edition2026,      disabled:false, icon:'/frontend/assets/svg/logofifa3.svg' },
     { label:'2022',         edition:EditionQatar2022, disabled:false, icon:'/frontend/assets/svg/logoqatar.svg' },
-    { label:'EXTRA STICKER', sub:'COMING SOON', edition:null, disabled:true, icon: '/frontend/assets/extra.png' },
+    { label: 'EXTRA STICKER 2026', sub: 'COMING SOON', edition: null, disabled: true, icon: '/frontend/assets/extra.png' },
+    { label: 'EXTRA STICKER 2022', sub: 'COMING SOON', edition: null, disabled: true, icon: '/frontend/assets/extra22.png' },
+    { label: '2018', sub: 'COMING SOON', edition: null, disabled: true, icon: '/frontend/assets/svg/logorusia.svg' },
+    { label: '2014', sub: 'COMING SOON', edition: null, disabled: true, icon: '/frontend/assets/svg/logobrasil.svg' }
 ];
 
 let currentTabIdx = 0;
