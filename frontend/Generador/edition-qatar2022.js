@@ -140,7 +140,7 @@ const EditionQatar2022 = {
         if (imgs['q-capa2']) ctx.drawImage(imgs['q-capa2'], 0, 0, W, H);
 
         if (photo) {
-            const sc = state.photoScale / 100;
+            const sc = state.photoScale;
             const pw = photo.width  * sc;
             const ph = photo.height * sc;
             const px = (W - pw) / 2 + state.photoX;
@@ -164,6 +164,7 @@ const EditionQatar2022 = {
             ctx.shadowOffsetX = 75;
             ctx.shadowOffsetY = 42;
             ctx.shadowColor = 'transparent';
+            ctx.drawImage(photo, px, py, pw, ph);
 
             const tmpC = document.createElement('canvas');
             tmpC.width = W; tmpC.height = H;
