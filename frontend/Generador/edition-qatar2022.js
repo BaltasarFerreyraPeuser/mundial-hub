@@ -101,7 +101,7 @@ const EditionQatar2022 = {
 
     bgVariants: {
         orange: { label: 'Naranja', hex: '#E35205', src: '/frontend/assets/qatar22/fondonaranja.png' },
-        blue:   { label: 'Azul',    hex: '#003087', src: '/frontend/assets/qatar22/fondoazul.png'    },
+        blue:   { label: 'Azul',    hex: '#62afb8',    src: '/frontend/assets/qatar22/fondoazul.png'    },
     },
 
     layerFiles: [
