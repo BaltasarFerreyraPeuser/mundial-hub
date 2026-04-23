@@ -27,7 +27,7 @@ Promise.all([customFont.load(), customFont2.load(), customFont3.load(), customFo
     .then(fonts => { fonts.forEach(f => document.fonts.add(f)); needsDraw = true; })
     .catch(() => { needsDraw = true; });
 
-const EDITIONS = [Edition2026, EditionQatar2022];
+const EDITIONS = [Edition2026, EditionQatar2022, EditionExtraCard];
 
 let activeEdition = EDITIONS[0];
 let state         = { ...activeEdition.defaultState, _touched: {} };
