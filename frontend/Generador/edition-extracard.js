@@ -107,10 +107,10 @@ const EditionExtraCard = {
     },
 
     rareza: {
-        com: { label: 'Común', rectColor: '#7c4177', src: '/frontend/assets/extracard/fondovioleta.png' },
-        bro: { label: 'Bronce', rectColor: '#aaaaaa', src: '/frontend/assets/extracard/fondobronce.png' },
-        pla: { label: 'Plata', rectColor: '#de4f40', src: '/frontend/assets/extracard/fondoplata.png' },
-        oro: { label: 'Oro', rectColor: '#c5a214', src: '/frontend/assets/extracard/fondoro.png' },
+        com: { label: 'Común', layerId: 'bg-comun', fallback: '#7c4177', rectColor: '#7c4177' },
+        bro: { label: 'Bronce', layerId: 'bg-bronce', fallback: '#aaaaaa', rectColor: '#aaaaaa' },
+        pla: { label: 'Plata', layerId: 'bg-plata', fallback: '#de4f40', rectColor: '#de4f40' },
+        oro: { label: 'Oro', layerId: 'bg-oro', fallback: '#c5a214', rectColor: '#c5a214' },
     },
 
     layerFiles: [
@@ -134,12 +134,13 @@ const EditionExtraCard = {
         ctx.clearRect(0, 0, W, H);
         ctx.save();
 
-        const currentBg = bgMapping[state.rareza] || bgMapping['com'];
+        const currentRareza = this.rareza[state.rareza] || this.rareza['com'];
+        const bgLayerId = currentRareza.layerId;
 
-        if (imgs[currentBg.key]) {
-            ctx.drawImage(imgs[currentBg.key], 0, 0, W, H);
+        if (imgs[bgLayerId]) {
+            ctx.drawImage(imgs[bgLayerId], 0, 0, W, H);
         } else {
-            ctx.fillStyle = currentBg.fallback;
+            ctx.fillStyle = currentRareza.fallback;
             ctx.fillRect(0, 0, W, H);
         }
 
@@ -154,11 +155,11 @@ const EditionExtraCard = {
             ctx.beginPath();
             ctx.roundRect(0, 0, W, H, 20);
             ctx.clip();
-            ctx.save();
 
             const outlineSize = 22;
             const offsets = [
-                [-1, 0], [1, 0], [0, -1], [0, 1], [-1, -1], [1, -1], [-1, 1], [1, 1]
+                [-1, 0], [1, 0], [0, -1], [0, 1],
+                [-1, -1], [1, -1], [-1, 1], [1, 1],
             ];
 
             const tmpC = document.createElement('canvas');
@@ -166,7 +167,7 @@ const EditionExtraCard = {
             const tmpX = tmpC.getContext('2d');
 
             offsets.forEach(([ox, oy]) => {
-                tmpX.drawImage(photo, px + (ox * outlineSize), py + (oy * outlineSize), pw, ph);
+                tmpX.drawImage(photo, px + ox * outlineSize, py + oy * outlineSize, pw, ph);
             });
 
             tmpX.globalCompositeOperation = 'source-in';
@@ -174,7 +175,6 @@ const EditionExtraCard = {
             tmpX.fillRect(0, 0, W, H);
 
             ctx.drawImage(tmpC, 0, 0);
-
             ctx.drawImage(photo, px, py, pw, ph);
 
             ctx.restore();
@@ -189,37 +189,36 @@ const EditionExtraCard = {
 
         ctx.save();
         ctx.textAlign = 'center';
-        const cx = W / 2;
         const FONT = '"FuentePersonalizadaAA", "Barlow Condensed", sans-serif';
-
         ctx.font = `235px ${FONT}`;
         ctx.fillStyle = '#843340';
-        ctx.fillText(state.name.toUpperCase(), cx, 3548.09, 2834);
-
+        ctx.fillText(state.name.toUpperCase(), W / 2, 3548.09, 2834);
         ctx.restore();
+
         ctx.restore();
     },
 
     renderControls(state) {
-        const bgOpts = Object.entries(this.rareza).map(([key, v]) => `
-        <button class="q-bg-btn${state.rareza === key ? ' active' : ''}" 
-                data-bg="${key}"
-                style="background-color: ${v.rectColor}; color: white; border: 2px solid #fff; padding: 10px; margin: 5px; cursor: pointer;">
-            ${v.label}
-        </button>`).join('');
+        const bgOpts = Object.entries(this.rareza).map(([key, v]) =>
+            '<button class="q-bg-btn' + (state.rareza === key ? ' active' : '') + '" ' +
+            'data-rareza="' + key + '" ' +
+            'style="--pos-color:' + v.rectColor + '">' +
+            v.label +
+            '</button>'
+        ).join('');
 
-        return `
-    <div class="card card--extra-bg edition-controls" data-card-num="02">
-        <h3>Seleccionar Rareza</h3>
-        <div class="q-btn-row">${bgOpts}</div>
-    </div>`;
+        return (
+            '<div class="card card--purple edition-controls" data-card-num="02">' +
+            '<h3>Rareza</h3>' +
+            '<div class="q-btn-row q-pos-row">' + bgOpts + '</div>' +
+            '</div>'
+        );
     },
 
     bindControls(state, onUpdate) {
         document.querySelectorAll('.q-bg-btn').forEach(btn => {
             btn.addEventListener('click', () => {
-                state.rareza = btn.dataset.bg;
-                state.cBg = this.rareza[state.rareza].hex;
+                state.rareza = btn.dataset.rareza;
                 document.querySelectorAll('.q-bg-btn').forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
                 onUpdate('draw');
