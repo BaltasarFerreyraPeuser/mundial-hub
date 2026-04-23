@@ -4,6 +4,7 @@ const H = 2310;
 const canvasMap = {
     'edition-2026':      document.getElementById('cv-2026'),
     'edition-qatar2022': document.getElementById('cv-qatar'),
+    'edition-extracard': document.getElementById('cv-extra'),
 };
 
 let canvas = canvasMap['edition-2026'];
