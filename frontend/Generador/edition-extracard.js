@@ -144,6 +144,8 @@ const EditionExtraCard = {
             ctx.fillRect(0, 0, W, H);
         }
 
+        if (flagImg) ctx.drawImage(flagImg, 0, 0, W, H);
+
         if (photo) {
             const sc = state.photoScale / 20;
             const pw = photo.width * sc;
@@ -180,8 +182,6 @@ const EditionExtraCard = {
             ctx.restore();
         }
 
-        if (flagImg) ctx.drawImage(flagImg, 0, 0, W, H);
-
         if (imgs['extra']) ctx.drawImage(imgs['extra'], 0, 0, W, H);
         if (imgs['fifa']) ctx.drawImage(imgs['fifa'], 0, 0, W, H);
         if (imgs['rectangulo']) ctx.drawImage(imgs['rectangulo'], 0, 0, W, H);
@@ -192,7 +192,7 @@ const EditionExtraCard = {
         const cx = W / 2;
         const FONT = '"FuentePersonalizadaAA", "Barlow Condensed", sans-serif';
 
-        ctx.font = `83px ${FONT}`;
+        ctx.font = `215px ${FONT}`;
         ctx.fillStyle = '#ffffff';
         ctx.fillText(state.name.toUpperCase(), cx, 3664, 2538);
         ctx.restore();
