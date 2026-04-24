@@ -183,11 +183,11 @@ const EditionQatar2022 = {
 
         const posKey = `pos-${state.position || 'mid'}`;
         if (imgs[posKey]) ctx.drawImage(imgs[posKey], 0, 0, W, H);
-        if (state.bgVariants == "orange") {
+        /*if (state.bgVariants == "orange") {
             ctx.drawImage(imgs['q-capa6'], 0, 0, W, H);
         } else {
             ctx.drawImage(imgs['q-capa5'], 0, 0, W, H);
-        }
+        }*/
         if (imgs['q-capa1']) ctx.drawImage(imgs['q-capa1'], 0, 0, W, H);
         if (imgs['q-capa2']) ctx.drawImage(imgs['q-capa2'], 0, 0, W, H);
         if (imgs['q-capa3']) ctx.drawImage(imgs['q-capa3'], 0, 0, W, H);
