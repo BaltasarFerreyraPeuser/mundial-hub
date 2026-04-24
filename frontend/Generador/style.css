@@ -834,6 +834,12 @@ header {
     height: auto;
 }
 
+#cv-extra {
+    display:block;
+    width: 100%;
+    height: auto;
+}
+
 .hint {
     font-family: 'PaniniSecondary', sans-serif;
     font-size: 11px;

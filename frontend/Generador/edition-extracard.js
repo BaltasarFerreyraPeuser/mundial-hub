@@ -108,8 +108,8 @@ const EditionExtraCard = {
 
     rareza: {
         com: { label: 'Común', layerId: 'bg-comun', fallback: '#7c4177', rectColor: '#7c4177' },
-        bro: { label: 'Bronce', layerId: 'bg-bronce', fallback: '#aaaaaa', rectColor: '#aaaaaa' },
-        pla: { label: 'Plata', layerId: 'bg-plata', fallback: '#de4f40', rectColor: '#de4f40' },
+        bro: { label: 'Bronce', layerId: 'bg-bronce', fallback: '#b87b4c', rectColor: '#b87b4c' },
+        pla: { label: 'Plata', layerId: 'bg-plata', fallback: '#aaaaaa', rectColor: '#aaaaaa' },
         oro: { label: 'Oro', layerId: 'bg-oro', fallback: '#c5a214', rectColor: '#c5a214' },
     },
 
@@ -191,7 +191,7 @@ const EditionExtraCard = {
         ctx.textAlign = 'center';
         const FONT = '"FuentePersonalizadaAA", "Barlow Condensed", sans-serif';
         ctx.font = `235px ${FONT}`;
-        ctx.fillStyle = '#843340';
+        ctx.fillStyle = '#ffffff';
         ctx.fillText(state.name.toUpperCase(), W / 2, 3548.09, 2834);
         ctx.restore();
 
@@ -208,10 +208,10 @@ const EditionExtraCard = {
         ).join('');
 
         return (
-            '<div class="card card--purple edition-controls" data-card-num="02">' +
-            '<h3>Rareza</h3>' +
-            '<div class="q-btn-row q-pos-row">' + bgOpts + '</div>' +
-            '</div>'
+            `<div class="card card--extra edition-controls" data-card-num="02">
+            <h3>Rareza</h3>
+            <div class="q-btn-row q-pos-row">${bgOpts}</div>
+        </div>`
         );
     },
 

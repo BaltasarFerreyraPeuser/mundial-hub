@@ -115,7 +115,8 @@ const EditionQatar2022 = {
         { id: 'q-capa2',   src: '/frontend/assets/qatar22/logo.png'         },
         { id: 'q-capa3',   src: '/frontend/assets/qatar22/peso.png'         },
         { id: 'q-capa4',   src: '/frontend/assets/qatar22/altura.png'       },
-        { id: 'q-capa5',   src: '/frontend/assets/qatar22/capa5.png'        },
+        { id: 'q-capa5', src: '/frontend/assets/qatar22/abajotap.png' },
+        { id: 'q-capa6', src: '/frontend/assets/qatar22/abajotap2.png' },
     ],
 
     buildTints(_imgs, _state) {
@@ -182,11 +183,15 @@ const EditionQatar2022 = {
 
         const posKey = `pos-${state.position || 'mid'}`;
         if (imgs[posKey]) ctx.drawImage(imgs[posKey], 0, 0, W, H);
+        if (state.bgVariants == "orange") {
+            ctx.drawImage(imgs['q-capa6'], 0, 0, W, H);
+        } else {
+            ctx.drawImage(imgs['q-capa5'], 0, 0, W, H);
+        }
         if (imgs['q-capa1']) ctx.drawImage(imgs['q-capa1'], 0, 0, W, H);
         if (imgs['q-capa2']) ctx.drawImage(imgs['q-capa2'], 0, 0, W, H);
         if (imgs['q-capa3']) ctx.drawImage(imgs['q-capa3'], 0, 0, W, H);
         if (imgs['q-capa4']) ctx.drawImage(imgs['q-capa4'], 0, 0, W, H);
-        if (imgs['q-capa5']) ctx.drawImage(imgs['q-capa5'], 0, 0, W, H);
 
         if (flagImg) ctx.drawImage(flagImg, 0, 0, W, H);
 
