@@ -94,10 +94,10 @@ const Edition2026 = {
     },
 
     positions: {
-        gk:  { label: 'Arquero',    rectColor: '#76418d' },
-        def: { label: 'Defensa',    rectColor: '#c7004c' },
-        mid: { label: 'Mediocampo', rectColor: '#de4f40' },
-        fwd: { label: 'Delantero',  rectColor: '#1e8689' },
+        gk:  { label: 'Goalkeeper', rectColor: '#76418d' },
+        def: { label: 'Defender',   rectColor: '#c7004c' },
+        mid: { label: 'Midfielder', rectColor: '#de4f40' },
+        fwd: { label: 'Forward',    rectColor: '#1e8689' },
     },
 
     defaultState: {
@@ -109,11 +109,11 @@ const Edition2026 = {
         c6:         '#ffffff',
         cCosito:    '#9ab7dd',
         position:   'mid',
-        name:       'TU NOMBRE',
+        name:       'YOUR NAME',
         date:       '1-1-2000',
-        height:     '1,75m',
+        height:     '1.75m',
         weight:     '70 kg',
-        club:       'MI CLUB',
+        club:       'MY CLUB',
         code:       'ARG',
         bgVariant:  null,
     },
@@ -234,30 +234,30 @@ const Edition2026 = {
 
         return `
         <div class="card card--blue edition-controls" data-card-num="02">
-            <h3>Colores</h3>
+            <h3>Colors</h3>
             <div class="crow">
-                <label for="cBg">Fondo</label>
+                <label for="cBg">Background</label>
                 <input type="color" id="cBg" value="${state.cBg}">
-                <span>Color de fondo</span>
+                <span>Background color</span>
             </div>
             <div class="crow">
-                <label for="c2">Número 2</label>
+                <label for="c2">Number 2</label>
                 <input type="color" id="c2" value="${state.c2}">
-                <span>Color del 2</span>
+                <span>Color of the 2</span>
             </div>
             <div class="crow">
-                <label for="c6">Número 6</label>
+                <label for="c6">Number 6</label>
                 <input type="color" id="c6" value="${state.c6}">
-                <span>Color del 6</span>
+                <span>Color of the 6</span>
             </div>
             <div class="crow">
-                <label for="cCosito">Intermedio</label>
+                <label for="cCosito">Middle</label>
                 <input type="color" id="cCosito" value="${state.cCosito}">
-                <span>Color intermedio</span>
+                <span>Middle color</span>
             </div>
         </div>
         <div class="card card--red edition-controls" data-card-num="03">
-            <h3>Posición</h3>
+            <h3>Position</h3>
             <div class="q-btn-row q-pos-row">${posOpts}</div>
         </div>`;
     },

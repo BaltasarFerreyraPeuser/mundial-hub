@@ -24,13 +24,13 @@ const EditionExtraCard = {
 
     groups: {
         A: [
-            { code: 'MEX', name: 'México' },
-            { code: 'RSA', name: 'Sudáfrica' },
+            { code: 'MEX', name: 'Mexico' },
+            { code: 'RSA', name: 'South Africa' },
             { code: 'KOR', name: 'Corea del Sur' },
             { code: 'CZE', name: 'Chequia' },
         ],
         B: [
-            { code: 'CAN', name: 'Canadá' },
+            { code: 'CAN', name: 'Canada' },
             { code: 'BIH', name: 'Bosnia y Herzegovina' },
             { code: 'QAT', name: 'Qatar' },
             { code: 'SUI', name: 'Suiza' },
@@ -38,14 +38,14 @@ const EditionExtraCard = {
         C: [
             { code: 'BRA', name: 'Brasil' },
             { code: 'MAR', name: 'Marruecos' },
-            { code: 'HAI', name: 'Haití' },
+            { code: 'HAI', name: 'Haiti' },
             { code: 'SCO', name: 'Escocia' },
         ],
         D: [
             { code: 'USA', name: 'Estados Unidos' },
             { code: 'PAR', name: 'Paraguay' },
             { code: 'AUS', name: 'Australia' },
-            { code: 'TUR', name: 'Turquía' },
+            { code: 'TUR', name: 'Turkey' },
         ],
         E: [
             { code: 'GER', name: 'Alemania' },
@@ -54,19 +54,19 @@ const EditionExtraCard = {
             { code: 'ECU', name: 'Ecuador' },
         ],
         F: [
-            { code: 'NED', name: 'Países Bajos' },
-            { code: 'JPN', name: 'Japón' },
+            { code: 'NED', name: 'Netherlands' },
+            { code: 'JPN', name: 'Japan' },
             { code: 'SWE', name: 'Suecia' },
-            { code: 'TUN', name: 'Túnez' },
+            { code: 'TUN', name: 'Tunisia' },
         ],
         G: [
-            { code: 'BEL', name: 'Bélgica' },
+            { code: 'BEL', name: 'Belgium' },
             { code: 'EGY', name: 'Egipto' },
-            { code: 'IRI', name: 'Irán' },
+            { code: 'IRI', name: 'Iran' },
             { code: 'NZL', name: 'Nueva Zelanda' },
         ],
         H: [
-            { code: 'ESP', name: 'España' },
+            { code: 'ESP', name: 'Spain' },
             { code: 'CPV', name: 'Cabo Verde' },
             { code: 'KSA', name: 'Arabia Saudita' },
             { code: 'URU', name: 'Uruguay' },
@@ -86,14 +86,14 @@ const EditionExtraCard = {
         K: [
             { code: 'POR', name: 'Portugal' },
             { code: 'COD', name: 'DR Congo' },
-            { code: 'UZB', name: 'Uzbekistán' },
+            { code: 'UZB', name: 'Uzbekistan' },
             { code: 'COL', name: 'Colombia' },
         ],
         L: [
             { code: 'ENG', name: 'Inglaterra' },
             { code: 'CRO', name: 'Croacia' },
             { code: 'GHA', name: 'Ghana' },
-            { code: 'PAN', name: 'Panamá' },
+            { code: 'PAN', name: 'Panama' },
         ],
     },
 
@@ -102,15 +102,15 @@ const EditionExtraCard = {
         photoY: 1200,
         photoX: 0,
         rareza: 'com',
-        name: 'TU NOMBRE',
+        name: 'YOUR NAME',
         code: 'ARG',
     },
 
     rareza: {
         com: { label: 'Común', layerId: 'bg-comun', fallback: '#7c4177', rectColor: '#7c4177' },
-        bro: { label: 'Bronce', layerId: 'bg-bronce', fallback: '#b87b4c', rectColor: '#b87b4c' },
-        pla: { label: 'Plata', layerId: 'bg-plata', fallback: '#aaaaaa', rectColor: '#aaaaaa' },
-        oro: { label: 'Oro', layerId: 'bg-oro', fallback: '#c5a214', rectColor: '#c5a214' },
+        bro: { label: 'Bronze', layerId: 'bg-bronce', fallback: '#b87b4c', rectColor: '#b87b4c' },
+        pla: { label: 'Silver', layerId: 'bg-plata', fallback: '#aaaaaa', rectColor: '#aaaaaa' },
+        oro: { label: 'Gold', layerId: 'bg-oro', fallback: '#c5a214', rectColor: '#c5a214' },
     },
 
     layerFiles: [
@@ -199,29 +199,29 @@ const EditionExtraCard = {
 
         ctx.restore();
     },
-
     renderControls(state) {
-        const bgOpts = Object.entries(this.rareza).map(([key, v]) =>
-            '<button class="q-bg-btn' + (state.rareza === key ? ' active' : '') + '" ' +
-            'data-rareza="' + key + '" ' +
-            'style="--pos-color:' + v.rectColor + '">' +
-            v.label +
-            '</button>'
-        ).join('');
+        const bgOpts = Object.entries(this.rareza).map(([key, v]) => {
+            const isActive = state.rareza === key ? ' active' : '';
+            return `
+            <button class="q-ext-btn${isActive}" 
+                    data-rareza="${key}" 
+                    style="--pos-color: ${v.rectColor}">
+                ${v.label}
+            </button>`;
+        }).join('');
 
-        return (
-            `<div class="card card--extra edition-controls" data-card-num="02">
-            <h3>Rareza</h3>
+        return `
+        <div class="card card--blue edition-controls" data-card-num="02">
+            <h3>Rarity</h3>
             <div class="q-btn-row q-pos-row">${bgOpts}</div>
-        </div>`
-        );
+        </div>`;
     },
 
     bindControls(state, onUpdate) {
-        document.querySelectorAll('.q-bg-btn').forEach(btn => {
+        document.querySelectorAll('.q-ext-btn').forEach(btn => {
             btn.addEventListener('click', () => {
                 state.rareza = btn.dataset.rareza;
-                document.querySelectorAll('.q-bg-btn').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('.q-ext-btn').forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
                 onUpdate('draw');
             });

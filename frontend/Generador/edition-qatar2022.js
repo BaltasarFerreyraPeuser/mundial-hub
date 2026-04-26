@@ -74,10 +74,10 @@ const EditionQatar2022 = {
     },
 
     positions: {
-        gk:  { label: 'Arquero'   },
-        def: { label: 'Defensa'   },
-        mid: { label: 'Mediocampo'},
-        fwd: { label: 'Delantero' },
+        gk:  { label: 'Goalkeeper' },
+        def: { label: 'Defender'   },
+        mid: { label: 'Midfielder' },
+        fwd: { label: 'Forward'    },
     },
 
     defaultState: {
@@ -86,7 +86,7 @@ const EditionQatar2022 = {
         photoX:     0,
         bgVariant:  'orange',
         position:   'mid',
-        name:       'TU NOMBRE',
+        name:       'YOUR NAME',
         date:       '1-1-2000',
         height:     '1,75',
         weight:     '70',
@@ -100,8 +100,8 @@ const EditionQatar2022 = {
     },
 
     bgVariants: {
-        orange: { label: 'Naranja', hex: '#E35205', src: '/frontend/assets/qatar22/fondonaranja.png' },
-        blue:   { label: 'Azul', hex: '#62579f',    src: '/frontend/assets/qatar22/fondoazul.png'    },
+        orange: { label: 'Orange', hex: '#E35205', src: '/frontend/assets/qatar22/fondonaranja.png' },
+        blue:   { label: 'Blue', hex: '#62579f',   src: '/frontend/assets/qatar22/fondoazul.png'    },
     },
 
     layerFiles: [
@@ -246,20 +246,20 @@ const EditionQatar2022 = {
 
         return `
         <div class="card card--qatar-bg edition-controls" data-card-num="02">
-            <h3>Fondo</h3>
+            <h3>Background</h3>
             <div class="q-btn-row">${bgOpts}</div>
         </div>
         <div class="card card--qatar-pos edition-controls" data-card-num="03">
-            <h3>Posición</h3>
+            <h3>Position</h3>
             <div class="q-btn-row q-pos-row">${posOpts}</div>
         </div>
         <div class="card edition-controls" data-card-num="05">
             <h3>Debut</h3>
             <div class="frow">
-                <label for="tDebut">Año debut</label>
+                <label for="tDebut">Debut year</label>
                 <input type="number" id="tDebut" value="${state.debut || 2022}"
                        min="1900" max="2030" placeholder="2022"
-                       aria-label="Año de debut profesional">
+                       aria-label="Professional debut year">
             </div>
         </div>`;
     },

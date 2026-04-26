@@ -26,81 +26,48 @@
     <meta name="twitter:description" content="Creá tu propia figurita del Mundial 2026 con IA. Gratis y en alta resolución.">
     <meta name="twitter:image" content="https://mundialhub.vercel.app/frontend/assets/og-preview.png">
     <meta name="twitter:image:alt" content="Figurita del Mundial 2026 generada con IA">
-    <script type="application/ld+json">
-        {
-          "@context": "https://schema.org",
-          "@type": "WebApplication",
-          "name": "Figurita Mundial 2026 — Generador Panini con IA",
-          "url": "https://mundialhub.vercel.app/",
-          "description": "Generador gratuito de figuritas del Mundial 2026 estilo Panini con Inteligencia Artificial. Quitá el fondo de tu foto y personalizá tu cromo con tu país, nombre y datos.",
-          "applicationCategory": "UtilitiesApplication",
-          "browserRequirements": "Requires JavaScript",
-          "operatingSystem": "All",
-          "offers": {
-            "@type": "Offer",
-            "price": "0",
-            "priceCurrency": "ARS"
-          },
-          "inLanguage": "es-AR",
-          "image": "https://mundialhub.vercel.app/frontend/assets/og-preview.png",
-          "author": {
-            "@type": "Person",
-            "name": "Baltasar",
-            "url": "https://www.linkedin.com/in/baltasar-ferreyra-peuser-8840a41b4/"
-          },
-          "creator": {
-            "@type": "Organization",
-            "name": "MundialHUB",
-            "address": {
-              "@type": "PostalAddress",
-              "addressLocality": "Córdoba",
-              "addressCountry": "AR"
-            }
-          }
-        }
-    </script>
-    <script type="application/ld+json">
-        {
-          "@context": "https://schema.org",
-          "@type": "FAQPage",
-          "mainEntity": [
-            {
-              "@type": "Question",
-              "name": "¿Cómo creo mi figurita del Mundial 2026?",
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "Subís tu foto, la IA quita el fondo automáticamente, elegís tu país, personalizás los colores y tus datos, y descargás el PNG en alta resolución listo para imprimir."
-              }
-            },
-            {
-              "@type": "Question",
-              "name": "¿Es gratis el generador de figuritas?",
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "Sí, el generador de figuritas del Mundial 2026 es completamente gratuito."
-              }
-            },
-            {
-              "@type": "Question",
-              "name": "¿Qué países están disponibles?",
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "Están disponibles todos los países clasificados al Mundial 2026, incluyendo Argentina, Brasil, México, España, Francia y más."
-              }
-            }
-          ]
-        }
-    </script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Figurita Mundial 2026 — Generador Panini con IA","url":"https://mundialhub.vercel.app/","description":"Generador gratuito de figuritas del Mundial 2026 estilo Panini con Inteligencia Artificial.","applicationCategory":"UtilitiesApplication","browserRequirements":"Requires JavaScript","operatingSystem":"All","offers":{"@type":"Offer","price":"0","priceCurrency":"ARS"},"inLanguage":"es-AR","image":"https://mundialhub.vercel.app/frontend/assets/og-preview.png","author":{"@type":"Person","name":"Baltasar","url":"https://www.linkedin.com/in/baltasar-ferreyra-peuser-8840a41b4/"},"creator":{"@type":"Organization","name":"MundialHUB","address":{"@type":"PostalAddress","addressLocality":"Córdoba","addressCountry":"AR"}}}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"¿Cómo creo mi figurita del Mundial 2026?","acceptedAnswer":{"@type":"Answer","text":"Subís tu foto, la IA quita el fondo automáticamente, elegís tu país, personalizás los colores y tus datos, y descargás el PNG en alta resolución listo para imprimir."}},{"@type":"Question","name":"¿Es gratis el generador de figuritas?","acceptedAnswer":{"@type":"Answer","text":"Sí, el generador de figuritas del Mundial 2026 es completamente gratuito."}},{"@type":"Question","name":"¿Qué países están disponibles?","acceptedAnswer":{"@type":"Answer","text":"Están disponibles todos los países clasificados al Mundial 2026, incluyendo Argentina, Brasil, México, España, Francia y más."}}]}</script>
 
     <link rel="icon" type="image/png" href="/frontend/assets/favicon.png">
     <link rel="apple-touch-icon" href="/frontend/assets/favicon.png">
 
+    <!-- Preconnect para reducir latencia de fuentes -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;900&family=Barlow:wght@400;600;800&display=swap" rel="stylesheet">
+
+    <!-- CSS crítico inline: evita render-blocking y fija el LCP sin esperar el stylesheet -->
+    <style>
+        *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+        html{overflow-x:clip}
+        body{font-family:'Barlow',sans-serif;background:#fff;color:#000;min-height:100vh;display:flex;flex-direction:column;-webkit-text-size-adjust:100%;overflow-x:clip;width:100%}
+        .skip-link{position:absolute;left:12px;top:-100px;z-index:10000;padding:10px 16px;background:#000;color:#fff;font-weight:800;font-size:13px;text-decoration:none;border:3px solid #000;border-radius:10px;transition:top .2s}
+        .skip-link:focus{top:12px;outline:none}
+        .page{flex:1 0 auto;max-width:1200px;margin:0 auto;width:100%;padding:20px 20px 0;position:relative;z-index:1}
+        .rainbow-bar{height:8px;width:100%;margin-bottom:26px;background:linear-gradient(to right,#2651ff 0% 16.6%,#ea0001 16.6% 33.2%,#e5ff00 33.2% 49.8%,#6d00fc 49.8% 66.4%,#019afa 66.4% 83%,#00c93b 83% 100%)}
+        header{border-bottom:3px solid #000;padding-bottom:24px;margin-bottom:28px;position:relative;overflow:hidden}
+        header h1{font-size:clamp(1.8rem,6vw,4.5rem);line-height:.88;letter-spacing:-.03em;text-transform:uppercase;color:#000;margin-bottom:12px;padding-left:16px}
+        .layout{display:flex;gap:32px;align-items:stretch;min-width:0}
+        .controls{flex:0 0 320px;width:320px;min-width:0;display:flex;flex-direction:column;gap:16px}
+        .preview{flex:1;min-width:0}
+        .preview-sticky{position:sticky;top:16px;display:flex;flex-direction:column;align-items:center;overflow:visible;z-index:4;width:100%}
+        .canvas-wrap{border-radius:28px;border:4px solid #000;overflow:hidden;box-shadow:10px 10px 0 #17277f;width:100%;max-width:420px}
+        /* aspect-ratio explícito para evitar CLS mientras el canvas carga */
+        #cv-2026{display:block;width:100%;height:auto;aspect-ratio:1650/2310;background:#43c4c9}
+        #cv-qatar{display:block;width:100%;height:auto;aspect-ratio:2994/3960;background:#5a0a28}
+        #cv-extra{display:block;width:100%;height:auto;aspect-ratio:2994/3960;background:#7c4177}
+        @media(max-width:680px){.layout{flex-direction:column-reverse;gap:18px}.controls{flex:none;width:100%;max-width:100%}.canvas-wrap{max-width:100%;width:100%}}
+    </style>
+
+    <!-- CSS no-crítico cargado de forma no bloqueante (evita render-blocking) -->
+    <link rel="stylesheet" href="style.css" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="style.css"></noscript>
+
+    <!-- Google Fonts no-bloqueante -->
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;900&family=Barlow:wght@400;600;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;900&family=Barlow:wght@400;600;800&display=swap" rel="stylesheet"></noscript>
 </head>
-<body class="generador-page amplify-hero-bg">
+<body class="generador-page amplify-hero-bg preload">
     <a class="skip-link" href="#contenido-principal">Ir al contenido</a>
 
     <div class="page" id="contenido-principal">
@@ -140,18 +107,18 @@
                     <input type="file" id="photoInputDirect" accept="image/*" aria-label="Subir foto">
                     <div class="sliders">
                         <div class="srow">
-                            <label for="sScale">Escala</label>
-                            <input type="range" id="sScale" min="10" max="400" value="110" step="1" aria-label="Escala de la foto">
+                            <label for="sScale">Tamaño</label>
+                            <input type="range" id="sScale" min="10" max="300" value="110" aria-label="Escala de la foto">
                             <span id="vScale">110%</span>
                         </div>
                         <div class="srow">
-                            <label for="sY">Pos. Y</label>
-                            <input type="range" id="sY" min="-2000" max="3000" value="-80" step="1" aria-label="Posición vertical de la foto">
-                            <span id="vY">-80</span>
+                            <label for="sY">Vertical</label>
+                            <input type="range" id="sY" min="-2000" max="3000" value="1200" aria-label="Posición vertical de la foto">
+                            <span id="vY">1200</span>
                         </div>
                         <div class="srow">
-                            <label for="sX">Pos. X</label>
-                            <input type="range" id="sX" min="-600" max="600" value="0" step="1" aria-label="Posición horizontal de la foto">
+                            <label for="sX">Horizontal</label>
+                            <input type="range" id="sX" min="-1000" max="1000" value="0" aria-label="Posición horizontal de la foto">
                             <span id="vX">0</span>
                         </div>
                     </div>
@@ -159,11 +126,11 @@
 
                 <div id="editionControlsSlot"></div>
 
-                <div class="card card--red" data-card-num="03">
+                <div class="card card--blue" data-card-num="04" id="cardDatos">
                     <h3>Datos del jugador</h3>
                     <div class="frow">
                         <label for="tName">Nombre</label>
-                        <input type="text" id="tName" value="TU NOMBRE" placeholder="NOMBRE APELLIDO" aria-label="Nombre del jugador">
+                        <input type="text" id="tName" value="TU NOMBRE" placeholder="NOMBRE" aria-label="Nombre del jugador">
                     </div>
                     <div class="frow">
                         <label for="tDate">Fecha</label>
@@ -190,7 +157,7 @@
                         <div class="country-dropdown" id="countryDropdown" role="listbox" aria-label="Lista de países"></div>
                     </div>
                     <div class="selected-country" id="selectedCountry" aria-live="polite">
-                        <img src="/frontend/assets/flags/miniflags/ARG.png" alt="Bandera de Argentina" class="sc-flag-img" width="32" height="22">
+                        <img src="/frontend/assets/flags/miniflags/ARG.png" alt="Bandera de Argentina" class="sc-flag-img" width="36" height="36">
                         <div class="sc-info">
                             <span class="sc-name">Argentina</span>
                             <span class="sc-code">ARG · Grupo K</span>
@@ -275,7 +242,7 @@
             <button class="share-modal__close" id="modalClose" aria-label="Cerrar">✕</button>
             <h2 class="share-modal__title">¡Tu figurita está lista!</h2>
             <div class="share-modal__img-wrap">
-                <img id="shareModalImg" src="" alt="Tu figurita del Mundial 2026" class="share-modal__img">
+                <img id="shareModalImg" src="" alt="Tu figurita del Mundial 2026" class="share-modal__img" width="140" height="196">
             </div>
             <p class="share-modal__sub">Compartila en tus redes o volvé a descargarla</p>
             <div class="share-modal__buttons">
@@ -294,14 +261,18 @@
         </div>
     </div>
 
-    <script src="edition-2026.js" defer></script>
-    <script src="edition-qatar2022.js" defer></script>
-    <script src="edition-extracard.js" defer></script>
-    <script src="editor.js" defer></script>
+    <!-- Scripts al final del body — no necesitan defer aquí, el parser ya procesó el DOM -->
+    <!-- i18n: sistema de traducción ES/EN sin recarga -->
+    <script src="i18n.js"></script>
+    <script src="edition-2026.js"></script>
+    <script src="edition-qatar2022.js"></script>
+    <script src="edition-extracard.js"></script>
+    <script src="editor.js"></script>
     <script>
-        document.getElementById('dlBtnMobile').addEventListener('click', () => {
+        document.getElementById('dlBtnMobile').addEventListener('click', function() {
             document.getElementById('dlBtn').click();
         });
     </script>
+<script>requestAnimationFrame(function(){document.body.classList.remove("preload");});</script>
 </body>
 </html>
