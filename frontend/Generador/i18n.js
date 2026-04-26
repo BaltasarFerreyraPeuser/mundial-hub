@@ -394,31 +394,40 @@ function patchEditorI18n() {
         };
     }
 
-    // 2. Parche: renderDropdown — inyectar "Grupo/Group" y "Sin resultados/No results"
-    //    Lo hacemos con un MutationObserver sobre el dropdown
+    // 2. Parche: renderDropdown — traducir "Grupo/Group" y "Sin resultados/No results"
+    //    Guard _ddBusy para evitar que el observer se re-dispare al modificar el DOM.
     const dropdown = document.getElementById('countryDropdown');
     if (dropdown) {
+        let _ddBusy = false;
         new MutationObserver(() => {
+            if (_ddBusy) return;
+            _ddBusy = true;
             dropdown.querySelectorAll('.dd-group-label').forEach(el => {
-                // Formato: "Grupo A" → reemplazar prefijo
                 el.textContent = el.textContent.replace(/^Grupo\s|^Group\s/, t('group-label') + ' ');
             });
             const empty = dropdown.querySelector('.dd-empty');
             if (empty) empty.textContent = t('no-results');
+            _ddBusy = false;
         }).observe(dropdown, { childList: true, subtree: false });
     }
 
-    // 3. Parche: selectCountry — "· Grupo K" en el selected-country
-    const selectedDiv = document.getElementById('selectedCountry');
-    if (selectedDiv) {
-        new MutationObserver(() => {
+    // 3. Parche: selectCountry — "· Grupo K" en el selected-country.
+    //    NO usar MutationObserver con subtree:true aquí: modifica textContent
+    //    dentro del nodo observado → loop infinito → la página lagguea.
+    //    Sobreescribimos selectCountry directamente en su lugar.
+    const _origSelectCountry = window.selectCountry;
+    if (typeof _origSelectCountry === 'function') {
+        window.selectCountry = function(country) {
+            _origSelectCountry(country);
+            const selectedDiv = document.getElementById('selectedCountry');
+            if (!selectedDiv) return;
             const codeSpan = selectedDiv.querySelector('.sc-code');
             if (codeSpan) {
                 codeSpan.textContent = codeSpan.textContent
                     .replace(/· Grupo\s/, '· ' + t('group-code') + ' ')
                     .replace(/· Group\s/, '· ' + t('group-code') + ' ');
             }
-        }).observe(selectedDiv, { childList: true, subtree: true });
+        };
     }
 
     // 4. Parche: tabs — "BLOQUEADO/LOCKED" y "Próximamente/Coming soon"
