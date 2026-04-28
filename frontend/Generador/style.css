@@ -866,18 +866,21 @@ header {
     display: block;
     width: 100%;
     height: auto;
+    z-index: -999;
 }
 
 #cv-qatar {
     display: block;
     width: 100%;
     height: auto;
+    z-index: -999;
 }
 
 #cv-extra {
-    display:block;
+    display: block;
     width: 100%;
     height: auto;
+    z-index: -999;
 }
 
 .hint {

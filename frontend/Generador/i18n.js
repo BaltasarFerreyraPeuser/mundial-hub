@@ -430,25 +430,35 @@ function patchEditorI18n() {
         };
     }
 
-    // 4. Parche: tabs — "BLOQUEADO/LOCKED" y "Próximamente/Coming soon"
-    //    MutationObserver sobre el contenedor de tabs
+    // 4. Parche: tabs — "LOCKED" y "Coming soon"
+    //    subtree:true + modificar texto/atributos dentro = loop infinito.
+    //    Usamos subtree:false (renderTabs reemplaza todo el innerHTML) + guard.
     const tabsContainer = document.getElementById('wcTabsContainer');
     if (tabsContainer) {
+        let _tabsBusy = false;
         new MutationObserver(() => {
+            if (_tabsBusy) return;
+            _tabsBusy = true;
             tabsContainer.querySelectorAll('.lock-icon').forEach(el => {
                 el.textContent = t('tab-locked');
             });
             tabsContainer.querySelectorAll('.wc-tab[aria-disabled="true"]').forEach(btn => {
                 btn.title = t('tab-coming-soon');
             });
-        }).observe(tabsContainer, { childList: true, subtree: true });
+            _tabsBusy = false;
+        }).observe(tabsContainer, { childList: true, subtree: false });
     }
 
-    // 5. Parche: editionControlsSlot — re-traducir cuando se inyectan controles nuevos
+    // 5. Parche: editionControlsSlot — re-traducir cuando se inyectan controles nuevos.
+    //    Guard para no re-entrar si applyEditionTranslations modifica el DOM observado.
     const controlsSlot = document.getElementById('editionControlsSlot');
     if (controlsSlot) {
+        let _slotBusy = false;
         new MutationObserver(() => {
+            if (_slotBusy) return;
+            _slotBusy = true;
             applyEditionTranslations();
+            _slotBusy = false;
         }).observe(controlsSlot, { childList: true, subtree: false });
     }
 

@@ -91,6 +91,9 @@ const Edition2026 = {
             { code: 'GHA', name: 'Ghana' },
             { code: 'PAN', name: 'Panamá' },
         ],
+        Extra: [
+            { code: 'PLM', name: 'Paren la mano'},
+        ],
     },
 
     positions: {
