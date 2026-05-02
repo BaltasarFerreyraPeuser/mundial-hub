@@ -133,13 +133,11 @@ const EditionRusia2018 = {
         ctx.clearRect(0, 0, W, H);
         ctx.save();
 
-        // Fondo base
         ctx.fillStyle = state.cBg || '#1a1a2e';
         ctx.fillRect(0, 0, W, H);
 
         if (imgs['fondo']) ctx.drawImage(imgs['fondo'], 0, 0, W, H);
 
-        // Foto del jugador
         if (photo) {
             const sc = state.photoScale / 40;
             const pw = photo.width  * sc;
@@ -152,8 +150,8 @@ const EditionRusia2018 = {
             ctx.restore();
         }
 
-        if (imgs['marco'])  ctx.drawImage(imgs['marco'],  0, 0, W, H);
-        if (tints.marco1)   ctx.drawImage(tints.marco1,   0, 0, W, H);
+        if (tints.marco1) ctx.drawImage(tints.marco1, 0, 0, W, H);
+        if (imgs['marco']) ctx.drawImage(imgs['marco'], 0, 0, W, H);
         if (tints.posicion) ctx.drawImage(tints.posicion, 0, 0, W, H);
         if (imgs['logo'])   ctx.drawImage(imgs['logo'],   0, 0, W, H);
         if (imgs['textos']) ctx.drawImage(imgs['textos'], 0, 0, W, H);
