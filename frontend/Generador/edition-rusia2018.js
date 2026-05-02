@@ -77,7 +77,7 @@ const EditionRusia2018 = {
         gk:  { label: 'Goalkeeper', rectColor: '#003087' },
         def: { label: 'Defender',   rectColor: '#c8102e' },
         mid: { label: 'Midfielder', rectColor: '#7b1427' },
-        fwd: { label: 'Forward',    rectColor: '#8b0000' },
+        fwd: { label: 'Forward',    rectColor: '#03a258' },
     },
 
     defaultState: {
@@ -140,7 +140,7 @@ const EditionRusia2018 = {
 
         if (photo) {
             const sc = state.photoScale / 40;
-            const pw = photo.width  * sc;
+            const pw = photo.width * sc;
             const ph = photo.height * sc;
             ctx.save();
             ctx.beginPath();
@@ -153,61 +153,66 @@ const EditionRusia2018 = {
         if (tints.marco1) ctx.drawImage(tints.marco1, 0, 0, W, H);
         if (imgs['marco']) ctx.drawImage(imgs['marco'], 0, 0, W, H);
         if (tints.posicion) ctx.drawImage(tints.posicion, 0, 0, W, H);
-        if (imgs['logo'])   ctx.drawImage(imgs['logo'],   0, 0, W, H);
+        if (imgs['logo']) ctx.drawImage(imgs['logo'], 0, 0, W, H);
         if (imgs['textos']) ctx.drawImage(imgs['textos'], 0, 0, W, H);
-
         if (flagImg) ctx.drawImage(flagImg, 0, 0, W, H);
 
+        // --- PAIS CODE (FRA) ---
         ctx.save();
-        ctx.font         = `700 120px ${FONT_normal}`;
-        ctx.textAlign    = 'center';
+        ctx.font = `700 120px ${FONT_normal}`;
+        ctx.textAlign = 'center';
         ctx.textBaseline = 'alphabetic';
-        ctx.strokeStyle  = 'rgba(0,0,0,0.6)';
-        ctx.lineWidth    = 4;
-        ctx.fillStyle    = '#ffffff';
-        const paisCode   = state.code.toUpperCase().slice(0, 3);
-        ctx.strokeText(paisCode, 2021, 170);
-        ctx.fillText(paisCode,   2021, 170);
+        ctx.strokeStyle = 'rgba(0,0,0,0.6)';
+        ctx.lineWidth = 4;
+        ctx.fillStyle = '#ffffff';
+        const paisCode = state.code.toUpperCase().slice(0, 3);
+        ctx.strokeText(paisCode, 2182, 2450);  // ← corregido
+        ctx.fillText(paisCode, 2182, 2450);
         ctx.restore();
 
+        // --- DEBUT ---
         ctx.save();
-        ctx.font         = `150px ${FONT_normal}`;
-        ctx.textAlign    = 'center';
+        ctx.font = `150px ${FONT_normal}`;
+        ctx.textAlign = 'center';
         ctx.textBaseline = 'alphabetic';
-        ctx.fillStyle    = '#e5dfd9';
-        ctx.fillText(state.debut || '', 2369, 592);
+        ctx.fillStyle = '#e5dfd9';
+        ctx.fillText(state.debut || '', 2204, 2170);  // ← corregido
         ctx.restore();
 
+        // --- ALTURA ---
         ctx.save();
-        ctx.font         = `150px ${FONT_normal}`;
-        ctx.textAlign    = 'center';
+        ctx.font = `150px ${FONT_normal}`;
+        ctx.textAlign = 'center';
         ctx.textBaseline = 'alphabetic';
-        ctx.fillStyle    = '#e5dfd9';
-        ctx.fillText(state.height, 2521, 3072);
+        ctx.fillStyle = '#e5dfd9';
+        ctx.fillText(state.height, 691, 2450);  // ← corregido
         ctx.restore();
 
+        // --- PESO ---
         ctx.save();
-        ctx.font         = `150px ${FONT_normal}`;
-        ctx.textAlign    = 'center';
+        ctx.font = `150px ${FONT_normal}`;
+        ctx.textAlign = 'center';
         ctx.textBaseline = 'alphabetic';
-        ctx.fillStyle    = '#e5dfd9';
-        ctx.fillText(state.weight, 2542, 3312);
+        ctx.fillStyle = '#e5dfd9';
+        ctx.fillText(state.weight, 675, 2730);  // ← corregido
         ctx.restore();
 
+        // --- NOMBRE ---
         ctx.save();
-        ctx.font         = `700 180px ${FONT_nombre}`;
-        ctx.textAlign    = 'center';
+        ctx.font = `700 180px ${FONT_nombre}`;
+        ctx.textAlign = 'center';
         ctx.textBaseline = 'alphabetic';
-        ctx.fillStyle    = '#843340';
-        ctx.fillText(state.name.toUpperCase(), 1344, 3512, 1618);
+        ctx.fillStyle = '#843340';
+        ctx.fillText(state.name.toUpperCase(), 304, 1602, 467);  // ← corregido
         ctx.restore();
 
+        // --- CLUB ---
         ctx.save();
-        ctx.font         = `600 120px ${FONT_normal}`;
-        ctx.textAlign    = 'center';
+        ctx.font = `600 120px ${FONT_normal}`;
+        ctx.textAlign = 'center';
         ctx.textBaseline = 'alphabetic';
-        ctx.fillStyle    = '#e5dfd9';
-        ctx.fillText(state.club.toUpperCase(), 1649, 3699, W - 200);
+        ctx.fillStyle = '#e5dfd9';
+        ctx.fillText(state.club.toUpperCase(), 325, 1799, 509);  // ← corregido
         ctx.restore();
 
         ctx.restore();
