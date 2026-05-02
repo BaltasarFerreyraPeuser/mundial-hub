@@ -99,7 +99,7 @@ const EditionRusia2018 = {
 
     layerFiles: [
         { id: 'fondo',    src: '/frontend/assets/rusia18/fondo.png'      },
-        { id: 'marco',    src: '/frontend/assets/rusia18/marco.png'      },
+        { id: 'marco',    src: '/frontend/assets/rusia18/Marco.png'      },
         { id: 'marco1',   src: '/frontend/assets/rusia18/marco1.png'     },
         { id: 'logo',     src: '/frontend/assets/rusia18/logorusia.png'  },
         { id: 'posicion', src: '/frontend/assets/rusia18/posicion.png'   },
@@ -160,8 +160,6 @@ const EditionRusia2018 = {
 
         if (flagImg) ctx.drawImage(flagImg, 0, 0, W, H);
 
-        // ── País: 3 letras código, horizontal ────────────────────────────────
-        // PS (2940×3900): X=1985.07  Y=167.23  →  canvas (2994×3960): X≈2021  Y≈170
         ctx.save();
         ctx.font         = `700 120px ${FONT_normal}`;
         ctx.textAlign    = 'center';
@@ -174,8 +172,6 @@ const EditionRusia2018 = {
         ctx.fillText(paisCode,   2021, 170);
         ctx.restore();
 
-        // ── Debut ─────────────────────────────────────────────────────────────
-        // PS: X=2326.62  Y=582.95  →  canvas: X≈2369  Y≈592
         ctx.save();
         ctx.font         = `150px ${FONT_normal}`;
         ctx.textAlign    = 'center';
@@ -184,8 +180,6 @@ const EditionRusia2018 = {
         ctx.fillText(state.debut || '', 2369, 592);
         ctx.restore();
 
-        // ── Altura ────────────────────────────────────────────────────────────
-        // PS: X=2475.58  Y=3024.97  →  canvas: X≈2521  Y≈3072
         ctx.save();
         ctx.font         = `150px ${FONT_normal}`;
         ctx.textAlign    = 'center';
@@ -194,8 +188,6 @@ const EditionRusia2018 = {
         ctx.fillText(state.height, 2521, 3072);
         ctx.restore();
 
-        // ── Peso ──────────────────────────────────────────────────────────────
-        // PS: X=2495.84  Y=3261.97  →  canvas: X≈2542  Y≈3312
         ctx.save();
         ctx.font         = `150px ${FONT_normal}`;
         ctx.textAlign    = 'center';
@@ -204,9 +196,6 @@ const EditionRusia2018 = {
         ctx.fillText(state.weight, 2542, 3312);
         ctx.restore();
 
-        // ── Nombre ────────────────────────────────────────────────────────────
-        // PS: límite izq=525  límite der=2114  Y=3458.91
-        // → canvas: lx≈535  rx≈2153  center≈1344  maxW≈1618  Y≈3512
         ctx.save();
         ctx.font         = `700 180px ${FONT_nombre}`;
         ctx.textAlign    = 'center';
@@ -215,8 +204,6 @@ const EditionRusia2018 = {
         ctx.fillText(state.name.toUpperCase(), 1344, 3512, 1618);
         ctx.restore();
 
-        // ── Club ──────────────────────────────────────────────────────────────
-        // PS: X=1618.94  Y=3642.65  →  canvas: X≈1649  Y≈3699
         ctx.save();
         ctx.font         = `600 120px ${FONT_normal}`;
         ctx.textAlign    = 'center';
