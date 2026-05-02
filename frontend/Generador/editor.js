@@ -1,6 +1,5 @@
 'use strict';
 
-/* ─── Constantes de canvas ─────────────────────────────────── */
 const W = 1650;
 const H = 2310;
 
@@ -8,27 +7,26 @@ const canvasMap = {
     'edition-2026':      document.getElementById('cv-2026'),
     'edition-qatar2022': document.getElementById('cv-qatar'),
     'edition-extracard': document.getElementById('cv-extra'),
+    'edition-2018':      document.getElementById('cv-rusia'),
 };
 
 let canvas = canvasMap['edition-2026'];
-let ctx    = canvas.getContext('2d', { alpha: false }); // alpha:false = +15% velocidad en canvas opaco
+let ctx    = canvas.getContext('2d', { alpha: false });
 
 function switchCanvas(edition) {
     Object.values(canvasMap).forEach(c => { c.style.display = 'none'; });
     const target = canvasMap[edition.id] || canvasMap['edition-2026'];
     target.style.display = 'block';
     canvas = target;
-    // Reusar contexto si ya existe (evita crear uno nuevo en cada switch)
     ctx = canvas.getContext('2d') || canvas.getContext('2d', { alpha: false });
 }
 
-/* ─── Fuentes personalizadas ────────────────────────────────── */
-// Carga todas las fuentes en paralelo con Promise.all
 const fontDefs = [
     ['FuentePersonalizada',      '/frontend/assets/fonts/fuente.otf'],
     ['FuentePersonalizadaA',     '/frontend/assets/fonts/fuente2.ttf'],
     ['FuentePersonalizadaAA',    '/frontend/assets/fonts/fuente3.ttf'],
     ['FuentePersonalizadaQatar', '/frontend/assets/fonts/qatarfuente.ttf'],
+    ['FuenteRusia',              '/frontend/assets/fonts/rusiafont.ttf']
 ];
 
 Promise.all(
@@ -38,8 +36,7 @@ Promise.all(
     needsDraw = true;
 }).catch(() => { needsDraw = true; });
 
-/* ─── Estado global ─────────────────────────────────────────── */
-const EDITIONS = [Edition2026, EditionQatar2022, EditionExtraCard];
+const EDITIONS = [Edition2026, EditionQatar2022, EditionExtraCard, EditionRusia2018];
 
 let activeEdition = EDITIONS[0];
 let state         = { ...activeEdition.defaultState, _touched: {} };
@@ -49,8 +46,6 @@ let photo         = null;
 let flagImg       = null;
 let needsDraw     = true;
 
-/* ─── Utilidades de países ──────────────────────────────────── */
-// Caché por edición para no recomputar en cada keystroke del buscador
 const _countryCache = new Map();
 function getAllCountries(edition) {
     if (_countryCache.has(edition.id)) return _countryCache.get(edition.id);
@@ -61,8 +56,6 @@ function getAllCountries(edition) {
     return result;
 }
 
-/* ─── Carga de capas con Promise.all ───────────────────────── */
-// Antes se cargaban en serie; ahora todas en paralelo
 function loadLayers(edition) {
     imgs  = {};
     tints = {};
@@ -73,7 +66,7 @@ function loadLayers(edition) {
         files.map(layer => new Promise(resolve => {
             const img = new Image();
             img.onload  = () => { imgs[layer.id] = img; resolve(); };
-            img.onerror = () => resolve(); // tolera errores, no bloquea
+            img.onerror = () => resolve();
             img.src = layer.src;
         }))
     ).then(() => {
@@ -82,8 +75,6 @@ function loadLayers(edition) {
     });
 }
 
-/* ─── Carga de bandera ──────────────────────────────────────── */
-// Cancela la imagen anterior si llega una nueva antes de que cargue
 let _flagPending = null;
 function loadFlag(code) {
     if (_flagPending) { _flagPending.onload = _flagPending.onerror = null; }
@@ -94,8 +85,6 @@ function loadFlag(code) {
     img.src = activeEdition.flagsPath + code + '.png';
 }
 
-/* ─── Render loop eficiente ─────────────────────────────────── */
-// Solo dibuja cuando hay cambios (needsDraw), no en cada frame
 function renderLoop() {
     if (needsDraw) {
         activeEdition.draw(ctx, state, imgs, tints, photo, flagImg);
@@ -105,13 +94,11 @@ function renderLoop() {
 }
 requestAnimationFrame(renderLoop);
 
-/* ─── Tema ──────────────────────────────────────────────────── */
 function applyTheme(theme) {
     const root = document.documentElement;
     Object.entries(theme).forEach(([k, v]) => root.style.setProperty(k, v));
 }
 
-/* ─── Controles de edición ──────────────────────────────────── */
 function renderEditionControls(edition) {
     const slot = document.getElementById('editionControlsSlot');
     if (!slot) return;
@@ -124,7 +111,6 @@ function onUpdate(type) {
     needsDraw = true;
 }
 
-/* ─── Loader de edición ─────────────────────────────────────── */
 let _loaderEl = null;
 function showEditionLoader() {
     if (!_loaderEl) {
@@ -146,13 +132,10 @@ function hideEditionLoader() {
     if (_loaderEl) _loaderEl.classList.remove('active');
 }
 
-/* ─── Cambio de edición ─────────────────────────────────────── */
 function switchEdition(edition) {
     if (edition === activeEdition) return;
     showEditionLoader();
 
-    // Usamos 0ms: queremos liberar el hilo principal un tick para que el loader aparezca,
-    // pero no 500ms de delay artificial que empeora el TBT
     requestAnimationFrame(() => requestAnimationFrame(() => {
         activeEdition = edition;
         const prevCode    = state.code;
@@ -191,22 +174,19 @@ function switchEdition(edition) {
     }));
 }
 
-/* ─── Foto del jugador ──────────────────────────────────────── */
 document.getElementById('photoInputDirect').addEventListener('change', e => {
     const file = e.target.files[0];
     if (!file) return;
-    // createObjectURL es mucho más rápido que FileReader+base64
     const url = URL.createObjectURL(file);
     const img = new Image();
     img.onload = () => {
-        URL.revokeObjectURL(url); // libera memoria
+        URL.revokeObjectURL(url);
         photo = img;
         needsDraw = true;
     };
     img.src = url;
 });
 
-/* ─── Sliders ───────────────────────────────────────────────── */
 function slider(id, key, vid, sfx) {
     const el = document.getElementById(id);
     if (!el) return;
@@ -220,7 +200,6 @@ slider('sScale', 'photoScale', 'vScale', '%');
 slider('sY',     'photoY',     'vY',     '');
 slider('sX',     'photoX',     'vX',     '');
 
-/* ─── Campos de texto con debounce ──────────────────────────── */
 function textField(id, key, upper) {
     const el = document.getElementById(id);
     if (!el) return;
@@ -240,7 +219,6 @@ textField('tHeight', 'height', false);
 textField('tWeight', 'weight', false);
 textField('tClub',   'club',   true);
 
-/* ─── Buscador de países ────────────────────────────────────── */
 const searchInput = document.getElementById('countrySearch');
 const dropdown    = document.getElementById('countryDropdown');
 const selectedDiv = document.getElementById('selectedCountry');
@@ -260,7 +238,6 @@ function selectCountry(country) {
     dropdown.style.display = 'none';
 }
 
-// Reutiliza DocumentFragment para minimizar reflows
 function renderDropdown(query) {
     const allCountries = getAllCountries(activeEdition);
     const q = query.toLowerCase().trim();
@@ -279,7 +256,6 @@ function renderDropdown(query) {
 
     const fp = activeEdition.miniflagsPath || (activeEdition.flagsPath + 'miniflags/');
 
-    // Construir HTML en un solo string (evita múltiples reflows)
     const html = Object.entries(byGroup).map(([group, teams]) =>
         '<div class="dd-group-label">Group ' + group + '</div>' +
         '<div class="dd-group-container">' +
@@ -295,7 +271,6 @@ function renderDropdown(query) {
     dropdown.innerHTML     = html;
     dropdown.style.display = 'block';
 
-    // Delegación de eventos en lugar de N listeners individuales
     dropdown.onclick = e => {
         const item = e.target.closest('.dd-item');
         if (!item) return;
@@ -304,7 +279,6 @@ function renderDropdown(query) {
     };
 }
 
-// Debounce del buscador para no disparar en cada tecla
 let _searchTimer;
 searchInput.addEventListener('focus', () => renderDropdown(searchInput.value));
 searchInput.addEventListener('input', () => {
@@ -315,7 +289,6 @@ document.addEventListener('click', e => {
     if (!e.target.closest('.country-search-wrap')) dropdown.style.display = 'none';
 });
 
-/* ─── Descarga ──────────────────────────────────────────────── */
 let lastDataUrl = null;
 
 function getActiveDataUrl() {
@@ -335,7 +308,6 @@ function getActiveDataUrl() {
     }
 }
 
-/* ─── Modal de compartir ────────────────────────────────────── */
 function openShareModal(dataUrl) {
     lastDataUrl = dataUrl;
     document.getElementById('shareModalImg').src = dataUrl;
@@ -390,13 +362,12 @@ document.getElementById('dlBtn').addEventListener('click', () => {
     openShareModal(dataUrl);
 });
 
-/* ─── Tabs de ediciones ─────────────────────────────────────── */
 const TABS = [
     { label: '2026',              edition: Edition2026,      disabled: false, icon: '/frontend/assets/svg/logofifa3.svg' },
-    { label: '2022',              edition: EditionQatar2022, disabled: false, icon: '/frontend/assets/svg/logoqatar.svg' },
+    { label: '2022', edition: EditionQatar2022, disabled: false, icon: '/frontend/assets/svg/logoqatar.svg' },
+    { label: '2018', edition: EditionRusia2018, disabled: false, icon: '/frontend/assets/svg/logorusia.svg' },
     { label: 'EXTRA STICKER 2026', edition: EditionExtraCard, disabled: false, icon: '/frontend/assets/extra.png' },
     { label: 'EXTRA STICKER 2022', sub: 'COMING SOON', edition: null, disabled: true, icon: '/frontend/assets/extra22.png' },
-    { label: '2018', sub: 'COMING SOON', edition: null, disabled: true, icon: '/frontend/assets/svg/logorusia.svg' },
     { label: '2014', sub: 'COMING SOON', edition: null, disabled: true, icon: '/frontend/assets/svg/logobrasil.svg' },
 ];
 
@@ -421,7 +392,6 @@ function renderTabs() {
     document.getElementById('wcPrev').disabled = currentTabIdx === 0;
     document.getElementById('wcNext').disabled = currentTabIdx >= TABS.length - VISIBLE;
 
-    // Delegación de evento en el contenedor en lugar de un listener por tab
     container.onclick = e => {
         const btn = e.target.closest('.wc-tab:not(.disabled)');
         if (!btn) return;
@@ -437,7 +407,6 @@ document.getElementById('wcNext').addEventListener('click', () => {
     if (currentTabIdx < TABS.length - VISIBLE) { currentTabIdx++; renderTabs(); }
 });
 
-/* ─── Inicialización ────────────────────────────────────────── */
 document.body.setAttribute('data-edition', activeEdition.id);
 applyTheme(activeEdition.theme);
 switchCanvas(activeEdition);

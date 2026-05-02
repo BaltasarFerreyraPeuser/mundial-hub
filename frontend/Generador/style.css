@@ -1896,3 +1896,263 @@ body, header, .how-to, .card, .rainbow-bar, .dl-btn, .canvas-wrap {
 .preload * {
     transition: none !important;
 }
+
+/* ══════════════════════════════════════════════════════════════
+   RUSIA 2018 — Tema característico
+   Colores: Azul Rusia #003087 · Rojo #c8102e · Crema #f5f0ee
+   ══════════════════════════════════════════════════════════════ */
+
+@font-face {
+    font-family: 'FuenteRusia';
+    src: url('/frontend/assets/fonts/rusiafont.ttf') format('truetype');
+    font-display: swap;
+}
+
+[data-edition="edition-2018"] {
+    --border: 2px solid rgba(123,20,39,0.4);
+    --shadow: 0 8px 28px rgba(123,20,39,0.3);
+}
+
+[data-edition="edition-2018"] body {
+    background-color: #f5f0ee;
+    background-image:
+        repeating-linear-gradient(
+            45deg,
+            rgba(0,48,135,0.04) 0px, rgba(0,48,135,0.04) 1px,
+            transparent 1px, transparent 12px
+        ),
+        repeating-linear-gradient(
+            -45deg,
+            rgba(200,16,46,0.03) 0px, rgba(200,16,46,0.03) 1px,
+            transparent 1px, transparent 12px
+        );
+}
+
+[data-edition="edition-2018"] header {
+    background: linear-gradient(135deg, #7b1427 0%, #003087 100%);
+    border-radius: var(--radius-lg);
+    border: none;
+    border-bottom: 4px solid #c8102e;
+    padding: 24px 28px;
+    box-shadow: 0 8px 32px rgba(123,20,39,0.45);
+}
+
+[data-edition="edition-2018"] header::before {
+    background: linear-gradient(to bottom,
+        #003087 0% 33%,
+        #ffffff 33% 66%,
+        #c8102e 66% 100%);
+    width: 6px;
+    border-radius: 3px;
+}
+
+[data-edition="edition-2018"] header h1 {
+    color: #ffffff !important;
+    font-family: 'FuenteRusia', 'Barlow Condensed', sans-serif;
+    text-shadow: 0 2px 12px rgba(0,0,0,0.35);
+    letter-spacing: 0.02em;
+}
+
+[data-edition="edition-2018"] .header-sub {
+    color: rgba(255,255,255,0.75);
+}
+
+[data-edition="edition-2018"] .how-to {
+    background: linear-gradient(135deg, #7b1427 0%, #003087 100%) !important;
+    border: 1.5px solid rgba(200,16,46,0.5) !important;
+    box-shadow: 0 6px 24px rgba(123,20,39,0.35);
+    color: #fff;
+}
+
+[data-edition="edition-2018"] .how-to h2 {
+    color: #ffffff;
+    font-family: 'FuenteRusia', sans-serif;
+    letter-spacing: 1px;
+}
+
+[data-edition="edition-2018"] .how-to::after {
+    background: linear-gradient(to bottom,
+        #003087 0% 33%,
+        #ffffff 33% 66%,
+        #c8102e 66% 100%);
+}
+
+[data-edition="edition-2018"] .how-to a {
+    color: #f0c040;
+}
+
+[data-edition="edition-2018"] .card {
+    background: linear-gradient(145deg, #fffaf8 0%, #f5eded 100%);
+    border: 1.5px solid rgba(123,20,39,0.2);
+    border-left: 5px solid #7b1427;
+    box-shadow: 0 6px 20px rgba(123,20,39,0.12);
+}
+
+[data-edition="edition-2018"] .card:hover {
+    border-left-color: #c8102e;
+    box-shadow: 0 10px 28px rgba(123,20,39,0.22);
+    transform: translate(-2px, -2px);
+}
+
+[data-edition="edition-2018"] .card h3 {
+    color: #7b1427;
+    border-left-color: #c8102e !important;
+    font-family: 'FuenteRusia', sans-serif;
+    letter-spacing: 1.5px;
+}
+
+[data-edition="edition-2018"] .rainbow-bar {
+    background: linear-gradient(to right,
+        #003087 0% 33%,
+        #ffffff 33% 66%,
+        #c8102e 66% 100%) !important;
+    height: 6px;
+}
+
+[data-edition="edition-2018"] .dl-btn {
+    background: linear-gradient(135deg, #c8102e 0%, #9e0a22 100%);
+    color: #ffffff;
+    border: 2px solid #7b1427;
+    box-shadow: 0 5px 0 #7b1427;
+    font-family: 'FuenteRusia', sans-serif;
+    letter-spacing: 2px;
+}
+
+[data-edition="edition-2018"] .dl-btn:hover {
+    background: linear-gradient(135deg, #e01535 0%, #c8102e 100%);
+}
+
+[data-edition="edition-2018"] .dl-btn:active {
+    transform: translateY(4px);
+    box-shadow: 0 1px 0 #7b1427;
+}
+
+[data-edition="edition-2018"] .canvas-wrap {
+    box-shadow: 10px 10px 0 #7b1427;
+    border-color: #c8102e;
+}
+
+[data-edition="edition-2018"] input[type=range] {
+    accent-color: #c8102e;
+}
+
+[data-edition="edition-2018"] .frow input[type=text] {
+    border-color: rgba(123,20,39,0.35);
+    background: #fffaf8;
+}
+
+[data-edition="edition-2018"] .frow input[type=text]:focus {
+    border-color: #c8102e;
+    box-shadow: 0 0 0 3px rgba(200,16,46,0.2);
+}
+
+[data-edition="edition-2018"] .frow input[type=number] {
+    border-color: rgba(123,20,39,0.35);
+    background: #fffaf8;
+}
+
+[data-edition="edition-2018"] .frow input[type=number]:focus {
+    border-color: #c8102e;
+    box-shadow: 0 0 0 3px rgba(200,16,46,0.2);
+}
+
+[data-edition="edition-2018"] .removebg-tip {
+    background: linear-gradient(135deg, rgba(200,16,46,0.1), rgba(0,48,135,0.06));
+    border-color: rgba(200,16,46,0.45);
+    color: #3a0a14;
+}
+
+[data-edition="edition-2018"] .removebg-tip a {
+    color: #003087;
+}
+
+[data-edition="edition-2018"] .selected-country {
+    background: linear-gradient(135deg, #c8102e, #9e0a22);
+    border-color: #7b1427;
+    color: #fff;
+}
+
+[data-edition="edition-2018"] .sc-name,
+[data-edition="edition-2018"] .sc-code {
+    color: #fff;
+}
+
+[data-edition="edition-2018"] .upload-direct {
+    background: #003087;
+}
+
+[data-edition="edition-2018"] .upload-direct:hover {
+    background: #001f5e;
+}
+
+[data-edition="edition-2018"] .main-footer::before {
+    background: linear-gradient(to right,
+        #003087 0% 33%,
+        #ffffff 33% 66%,
+        #c8102e 66% 100%);
+}
+
+/* ── Tarjetas específicas de controles Rusia 2018 ── */
+.card--rusia-color {
+    --cardAccent1: #c8102e;
+    border-bottom: 4px solid #c8102e !important;
+}
+
+.card--rusia-pos {
+    --cardAccent1: #003087;
+    border-bottom: 4px solid #003087 !important;
+}
+
+.card--rusia-debut {
+    --cardAccent1: #7b1427;
+    border-bottom: 4px solid #7b1427 !important;
+}
+
+/* ── Botones de posición para Rusia 2018 ── */
+[data-edition="edition-2018"] .q-pos-btn {
+    background: rgba(123,20,39,0.07);
+    border: 1.5px solid rgba(123,20,39,0.25);
+    color: #7b1427;
+    padding: 11px 8px;
+    border-radius: 10px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+[data-edition="edition-2018"] .q-pos-btn::before {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 4px;
+    background: var(--pos-color, #c8102e);
+    border-radius: 0 0 8px 8px;
+}
+
+[data-edition="edition-2018"] .q-pos-btn:hover {
+    background: var(--pos-color, #c8102e);
+    color: #fff;
+    border-color: var(--pos-color, #c8102e);
+}
+
+[data-edition="edition-2018"] .q-pos-btn.active {
+    background: var(--pos-color, #c8102e);
+    color: #fff;
+    border-color: #7b1427;
+    box-shadow: 3px 3px 0 #7b1427;
+    transform: translateY(-2px);
+    font-weight: 900;
+}
+
+/* ── Canvas Rusia 2018 ── */
+#cv-rusia {
+    display: none;
+    width: 100%;
+    height: auto;
+    z-index: -999;
+}

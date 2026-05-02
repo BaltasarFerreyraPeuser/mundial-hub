@@ -32,11 +32,9 @@
     <link rel="icon" type="image/png" href="/frontend/assets/favicon.png">
     <link rel="apple-touch-icon" href="/frontend/assets/favicon.png">
 
-    <!-- Preconnect para reducir latencia de fuentes -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-    <!-- CSS crítico inline: evita render-blocking y fija el LCP sin esperar el stylesheet -->
     <style>
         *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
         html{overflow-x:clip}
@@ -52,14 +50,20 @@
         .preview{flex:1;min-width:0}
         .preview-sticky{position:sticky;top:16px;display:flex;flex-direction:column;align-items:center;overflow:visible;z-index:4;width:100%}
         .canvas-wrap{border-radius:28px;border:4px solid #000;overflow:hidden;box-shadow:10px 10px 0 #17277f;width:100%;max-width:420px}
-        /* aspect-ratio explícito para evitar CLS mientras el canvas carga */
         #cv-2026{display:block;width:100%;height:auto;aspect-ratio:1650/2310;background:#43c4c9}
         #cv-qatar{display:block;width:100%;height:auto;aspect-ratio:2994/3960;background:#5a0a28}
         #cv-extra{display:block;width:100%;height:auto;aspect-ratio:2994/3960;background:#7c4177}
+        #cv-rusia {
+            display: block;
+            width: 100%;
+            height: auto;
+            aspect-ratio: 2994/3960;
+            background: #7c4177
+        }
         @media(max-width:680px){.layout{flex-direction:column-reverse;gap:18px}.controls{flex:none;width:100%;max-width:100%}.canvas-wrap{max-width:100%;width:100%}}
     </style>
 
-    <!-- CSS no-crítico cargado de forma no bloqueante (evita render-blocking) -->
+
     <link rel="stylesheet" href="style.css" media="print" onload="this.media='all'">
     <noscript><link rel="stylesheet" href="style.css"></noscript>
 
@@ -182,6 +186,9 @@
                         <canvas id="cv-extra" width="2994" height="3960"
                                 role="img" aria-label="Vista previa Extra Card"
                                 class="edition-canvas" style="display:none"></canvas>
+                        <canvas id="cv-rusia" width="2994" height="3960"
+                                role="img" aria-label="Vista previa figurita Rusia 2018"
+                                class="edition-canvas" style="display:none"></canvas>
                     </div>
                     <p class="hint">Vista previa en tiempo real</p>
                     <button class="dl-btn dl-btn-preview" id="dlBtnMobile" aria-label="Descargar figurita en PNG">Descargar PNG</button>
@@ -267,6 +274,7 @@
     <script src="edition-2026.js"></script>
     <script src="edition-qatar2022.js"></script>
     <script src="edition-extracard.js"></script>
+    <script src="edition-rusia2018.js"></script>
     <script src="editor.js"></script>
     <script>
         document.getElementById('dlBtnMobile').addEventListener('click', function() {
