@@ -33,7 +33,7 @@ const EditionRusia2018 = {
             { code: 'POR', name: 'Portugal'           },
             { code: 'ESP', name: 'España'             },
             { code: 'MAR', name: 'Marruecos'          },
-            { code: 'IRN', name: 'Irán'               },
+            { code: 'IRI', name: 'Irán'               },
         ],
         C: [
             { code: 'FRA', name: 'Francia'            },

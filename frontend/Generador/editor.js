@@ -87,6 +87,16 @@ function loadFlag(code) {
     img.src = activeEdition.flagsPath + code + '.png';
 }
 
+let _shirtPending = null;
+function loadShirt(code) {
+    if (_shirtPending) { _shirtPending.onload = _shirtPending.onerror = null; }
+    const img = new Image();
+    _shirtPending = img;
+    img.onload  = () => { if (_shirtPending === img) { imgs['shirt'] = img; needsDraw = true; } };
+    img.onerror = () => { if (_shirtPending === img) { delete imgs['shirt']; needsDraw = true; } };
+    img.src = '/frontend/assets/Shirt/' + code + '.png';
+}
+
 function renderLoop() {
     if (needsDraw) {
         activeEdition.draw(ctx, state, imgs, tints, photo, flagImg);
@@ -168,6 +178,7 @@ function switchEdition(edition) {
         applyTheme(edition.theme);
         loadLayers(edition);
         loadFlag(state.code);
+        loadShirt(state.code);
         renderEditionControls(edition);
         renderDropdown('');
         renderTabs();
@@ -228,6 +239,7 @@ const selectedDiv = document.getElementById('selectedCountry');
 function selectCountry(country) {
     state.code = country.code;
     loadFlag(country.code);
+    loadShirt(country.code);
     const mfp = activeEdition.miniflagsPath || (activeEdition.flagsPath + 'miniflags/');
     selectedDiv.innerHTML =
         '<img src="' + mfp + country.code + '.png"' +
@@ -416,6 +428,7 @@ renderEditionControls(activeEdition);
 renderTabs();
 loadLayers(activeEdition);
 loadFlag(state.code);
+loadShirt(state.code);
 
 const initCountry = getAllCountries(activeEdition).find(c => c.code === 'ARG')
     || getAllCountries(activeEdition)[0];

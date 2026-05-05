@@ -119,6 +119,7 @@ const Edition2026 = {
         club:       'MY CLUB',
         code:       'ARG',
         bgVariant:  null,
+        showShirt:  true,
     },
 
     layerFiles: [
@@ -184,6 +185,8 @@ const Edition2026 = {
             ctx.restore();
         }
 
+        if (state.showShirt && imgs['shirt']) ctx.drawImage(imgs['shirt'], 0, 0, W, H);
+
         if (tints.marco)  ctx.drawImage(tints.marco,  0, 0, W, H);
         if (tints.marco6) ctx.drawImage(tints.marco6, 0, 0, W, H);
 
@@ -206,7 +209,7 @@ const Edition2026 = {
         if (tints.rectB) ctx.drawImage(tints.rectB, 81, 2130, 1022, 98);
         else if (imgs.rectB) ctx.drawImage(imgs.rectB, 81, 2130, 1022, 98);
 
-        if (imgs.fifa)   ctx.drawImage(imgs.fifa,   1269,  133,  288, 448);
+        if (imgs.fifa)   ctx.drawImage(imgs.fifa,   1251,  121,  285, 436);
         if (imgs.panini) ctx.drawImage(imgs.panini, 1124, 2130,  414,  98);
 
         ctx.save();
@@ -255,6 +258,14 @@ const Edition2026 = {
                 <input type="color" id="cCosito" value="${state.cCosito}">
                 <span>Middle color</span>
             </div>
+            <div class="crow">
+                <label for="showShirt">Shirt</label>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="showShirt" ${state.showShirt ? 'checked' : ''}>
+                    <span class="toggle-slider"></span>
+                </label>
+                <span>Show country shirt</span>
+            </div>
         </div>
         <div class="card card--red edition-controls" data-card-num="03">
             <h3>Position</h3>
@@ -269,6 +280,14 @@ const Edition2026 = {
             el.addEventListener('input', e => { state[key] = e.target.value; onUpdate('tints'); });
         };
         cp('cBg', 'cBg'); cp('c2', 'c2'); cp('c6', 'c6'); cp('cCosito', 'cCosito');
+
+        const shirtEl = document.getElementById('showShirt');
+        if (shirtEl) {
+            shirtEl.addEventListener('change', e => {
+                state.showShirt = e.target.checked;
+                onUpdate('draw');
+            });
+        }
 
         document.querySelectorAll('.q-pos-btn').forEach(btn => {
             btn.addEventListener('click', () => {
