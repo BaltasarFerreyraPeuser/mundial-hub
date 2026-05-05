@@ -26,7 +26,9 @@ const fontDefs = [
     ['FuentePersonalizadaA',     '/frontend/assets/fonts/fuente2.ttf'],
     ['FuentePersonalizadaAA',    '/frontend/assets/fonts/fuente3.ttf'],
     ['FuentePersonalizadaQatar', '/frontend/assets/fonts/qatarfuente.ttf'],
-    ['FuenteRusia',              '/frontend/assets/fonts/rusiafont.ttf']
+    ['FuenteRusia', '/frontend/assets/fonts/rusiafont.ttf'],
+    ['FuenteTahoma', '/frontend/assets/fonts/tahoma.ttf'],
+    ['FuentaTahomaBD', '/frontend/assets/fonts/tahomabd.ttf']
 ];
 
 Promise.all(

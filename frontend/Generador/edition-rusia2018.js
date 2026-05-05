@@ -74,9 +74,9 @@ const EditionRusia2018 = {
     },
 
     positions: {
-        gk:  { label: 'Goalkeeper', rectColor: '#003087' },
-        def: { label: 'Defender',   rectColor: '#c8102e' },
-        mid: { label: 'Midfielder', rectColor: '#7b1427' },
+        gk: { label: 'Goalkeeper', rectColor: '#23117d' },
+        def: { label: 'Defender', rectColor: '#d4151b' },
+        mid: { label: 'Midfielder', rectColor: '#ea8a25' },
         fwd: { label: 'Forward',    rectColor: '#03a258' },
     },
 
@@ -127,8 +127,9 @@ const EditionRusia2018 = {
 
     draw(ctx, state, imgs, tints, photo, flagImg) {
         const W = 2994, H = 3960;
-        const FONT_nombre = '"Tahoma", "Barlow Condensed", sans-serif';
+        const FONT_nombre = '"FuenteTahoma", "Barlow Condensed", sans-serif';
         const FONT_normal = '"FuenteRusia", "Barlow Condensed", sans-serif';
+        const FONT_bold = '"FuenteTahomaBold", "Barlow Condensed"';
 
         ctx.clearRect(0, 0, W, H);
         ctx.save();
@@ -157,62 +158,71 @@ const EditionRusia2018 = {
         if (imgs['textos']) ctx.drawImage(imgs['textos'], 0, 0, W, H);
         if (flagImg) ctx.drawImage(flagImg, 0, 0, W, H);
 
-        // --- PAIS CODE (FRA) ---
+        // ── PAIS CODE ──
         ctx.save();
-        ctx.font = `700 120px ${FONT_normal}`;
+        ctx.font = `400 112px ${FONT_nombre}`;
         ctx.textAlign = 'center';
         ctx.textBaseline = 'alphabetic';
         ctx.strokeStyle = 'rgba(0,0,0,0.6)';
         ctx.lineWidth = 4;
-        ctx.fillStyle = '#ffffff';
+        ctx.fillStyle = '#706d6d';
         const paisCode = state.code.toUpperCase().slice(0, 3);
-        ctx.strokeText(paisCode, 2182, 2450);  // ← corregido
-        ctx.fillText(paisCode, 2182, 2450);
+        ctx.strokeText(paisCode, 2125, 274);
+        ctx.fillText(paisCode, 2125, 274);
         ctx.restore();
 
-        // --- DEBUT ---
+        // ── DEBUT ──
         ctx.save();
-        ctx.font = `150px ${FONT_normal}`;
+        ctx.font = `120px ${FONT_normal}`;
         ctx.textAlign = 'center';
         ctx.textBaseline = 'alphabetic';
-        ctx.fillStyle = '#e5dfd9';
-        ctx.fillText(state.debut || '', 2204, 2170);  // ← corregido
+        ctx.fillStyle = '#706d6d';
+        ctx.fillText(state.debut || '', 2500, 689);
         ctx.restore();
 
-        // --- ALTURA ---
+        // ── ALTURA ──
         ctx.save();
-        ctx.font = `150px ${FONT_normal}`;
+        ctx.font = `110px ${FONT_normal}`;
         ctx.textAlign = 'center';
         ctx.textBaseline = 'alphabetic';
-        ctx.fillStyle = '#e5dfd9';
-        ctx.fillText(state.height, 691, 2450);  // ← corregido
+        ctx.fillStyle = '#706d6d';
+        ctx.fillText(state.height, 2685, 3174);
         ctx.restore();
 
-        // --- PESO ---
+        // ── PESO ──
         ctx.save();
-        ctx.font = `150px ${FONT_normal}`;
+        ctx.font = `110px ${FONT_normal}`;
         ctx.textAlign = 'center';
         ctx.textBaseline = 'alphabetic';
-        ctx.fillStyle = '#e5dfd9';
-        ctx.fillText(state.weight, 675, 2730);  // ← corregido
+        ctx.fillStyle = '#706d6d';
+        ctx.fillText(state.weight, 2675, 3410);
         ctx.restore();
 
-        // --- NOMBRE ---
+        // ── FECHA ──
         ctx.save();
-        ctx.font = `700 180px ${FONT_nombre}`;
+        ctx.font = `110px ${FONT_normal}`;
         ctx.textAlign = 'center';
         ctx.textBaseline = 'alphabetic';
-        ctx.fillStyle = '#843340';
-        ctx.fillText(state.name.toUpperCase(), 304, 1602, 467);  // ← corregido
+        ctx.fillStyle = '#706d6d';
+        ctx.fillText(state.date || '', 1199, 3425);
         ctx.restore();
 
-        // --- CLUB ---
+        // ── NOMBRE ──
         ctx.save();
-        ctx.font = `600 120px ${FONT_normal}`;
-        ctx.textAlign = 'center';
+        ctx.font = `200px ${FONT_bold}`;
+        ctx.textAlign = 'left';
         ctx.textBaseline = 'alphabetic';
-        ctx.fillStyle = '#e5dfd9';
-        ctx.fillText(state.club.toUpperCase(), 325, 1799, 509);  // ← corregido
+        ctx.fillStyle = '#000000';
+        ctx.fillText(state.name.toUpperCase(), 551, 3659, 1320);
+        ctx.restore();
+
+        // ── CLUB ──
+        ctx.save();
+        ctx.font = `400 107px ${FONT_nombre}`;
+        ctx.textAlign = 'right';
+        ctx.textBaseline = 'alphabetic';
+        ctx.fillStyle = '#706d6d';
+        ctx.fillText(state.club.toUpperCase(), 2736, 3805, 2200);
         ctx.restore();
 
         ctx.restore();

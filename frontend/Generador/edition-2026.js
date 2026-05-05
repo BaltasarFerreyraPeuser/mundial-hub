@@ -130,7 +130,6 @@ const Edition2026 = {
         { id: 'rectA',  src: '/frontend/assets/svg/rectanguloarriba.svg' },
         { id: 'rectB',  src: '/frontend/assets/svg/rectanguloabajo.svg'  },
         { id: 'fifa',   src: '/frontend/assets/svg/logofifa.svg'         },
-        { id: 'fifa2',  src: '/frontend/assets/svg/logofifa2.svg'        },
         { id: 'panini', src: '/frontend/assets/svg/panini.svg'           },
     ],
 
@@ -195,10 +194,9 @@ const Edition2026 = {
             ctx.textAlign    = 'center';
             ctx.textBaseline = 'alphabetic';
             ctx.strokeStyle  = 'rgba(255,255,255,1)';
-            ctx.lineWidth    = 3.08;
-            ctx.strokeText(l, W - 207, 1729 + i * 184);
-            ctx.fillStyle    = 'rgba(255,255,255,0.42)';
-            ctx.fillText(l, W - 207, 1729 + i * 184);
+            ctx.lineWidth    = 18.08;
+            ctx.strokeText(l, W - 207, 1729 + i * 190);
+            ctx.fillText(l, W - 207, 1729 + i * 190);
         });
         ctx.restore();
 
@@ -208,7 +206,6 @@ const Edition2026 = {
         if (tints.rectB) ctx.drawImage(tints.rectB, 81, 2130, 1022, 98);
         else if (imgs.rectB) ctx.drawImage(imgs.rectB, 81, 2130, 1022, 98);
 
-        if (imgs.fifa2)  ctx.drawImage(imgs.fifa2,  1353,  493,  128,  44);
         if (imgs.fifa)   ctx.drawImage(imgs.fifa,   1269,  133,  288, 448);
         if (imgs.panini) ctx.drawImage(imgs.panini, 1124, 2130,  414,  98);
 
