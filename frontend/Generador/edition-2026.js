@@ -120,6 +120,7 @@ const Edition2026 = {
         code:       'ARG',
         bgVariant:  null,
         showShirt:  true,
+        shirtY:     0,
     },
 
     layerFiles: [
@@ -185,7 +186,7 @@ const Edition2026 = {
             ctx.restore();
         }
 
-        if (state.showShirt && imgs['shirt']) ctx.drawImage(imgs['shirt'], 0, 0, W, H);
+        if (state.showShirt && imgs['shirt']) ctx.drawImage(imgs['shirt'], 0, state.shirtY || 0, W, H);
 
         if (tints.marco)  ctx.drawImage(tints.marco,  0, 0, W, H);
         if (tints.marco6) ctx.drawImage(tints.marco6, 0, 0, W, H);
@@ -266,6 +267,11 @@ const Edition2026 = {
                 </label>
                 <span>Show country shirt</span>
             </div>
+            <div class="crow" id="shirtYRow" style="${state.showShirt ? '' : 'display:none'}">
+                <label for="sShirtY">Shirt Y</label>
+                <input type="range" id="sShirtY" min="-500" max="500" step="1" value="${state.shirtY || 0}">
+                <span id="vShirtY">${state.shirtY || 0}</span>
+            </div>
         </div>
         <div class="card card--red edition-controls" data-card-num="03">
             <h3>Position</h3>
@@ -285,6 +291,18 @@ const Edition2026 = {
         if (shirtEl) {
             shirtEl.addEventListener('change', e => {
                 state.showShirt = e.target.checked;
+                const row = document.getElementById('shirtYRow');
+                if (row) row.style.display = e.target.checked ? '' : 'none';
+                onUpdate('draw');
+            });
+        }
+
+        const shirtYEl = document.getElementById('sShirtY');
+        if (shirtYEl) {
+            shirtYEl.addEventListener('input', e => {
+                state.shirtY = parseInt(e.target.value);
+                const vEl = document.getElementById('vShirtY');
+                if (vEl) vEl.textContent = e.target.value;
                 onUpdate('draw');
             });
         }
