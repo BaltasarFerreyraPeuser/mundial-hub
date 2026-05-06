@@ -192,10 +192,19 @@ document.getElementById('photoInputDirect').addEventListener('change', e => {
     if (!file) return;
     const url = URL.createObjectURL(file);
     const img = new Image();
-    img.onload = () => {
+    img.onload = async () => {
         URL.revokeObjectURL(url);
         photo = img;
         needsDraw = true;
+        // Auto-alinear remera si estamos en 2026 con remera activa
+        if (
+            typeof ShirtAlign !== 'undefined' &&
+            activeEdition.id === 'edition-2026' &&
+            state.showShirt &&
+            imgs['shirt']
+        ) {
+            await ShirtAlign.align(photo, imgs['shirt'], state, onUpdate);
+        }
     };
     img.src = url;
 });
