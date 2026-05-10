@@ -357,7 +357,8 @@ header {
     --cardAccent1: var(--greenB);
     border-bottom: 4px solid var(--greenB);
     overflow: visible;
-    z-index: 6;
+    position: relative;
+    z-index: 100;
 }
 
 .upload-btn {
@@ -596,12 +597,11 @@ header {
 
 .country-dropdown {
     position: absolute;
-    bottom: calc(100% + 6px);
-    top: auto;
+    top: calc(100% + 6px);
     left: 0;
     right: auto;
     width: 100%;
-    z-index: 9999;
+    z-index: 99999;
     max-height: 320px;
     background: var(--white);
     border: var(--border);
@@ -2158,12 +2158,12 @@ body, header, .how-to, .card, .rainbow-bar, .dl-btn, .canvas-wrap {
     z-index: -999;
 }
 
-/* ── Toggle switch (shirt/gold control) ── */
+/* ── Toggle switch (shirt control) ── */
 .toggle-switch {
     position: relative;
     display: inline-block;
-    width: 48px;
-    height: 26px;
+    width: 44px;
+    height: 24px;
     flex-shrink: 0;
 }
 .toggle-switch input {
@@ -2176,25 +2176,24 @@ body, header, .how-to, .card, .rainbow-bar, .dl-btn, .canvas-wrap {
     position: absolute;
     inset: 0;
     background: #ccc;
-    border-radius: 26px;
+    border-radius: 24px;
     cursor: pointer;
     transition: background 0.2s;
 }
 .toggle-slider::before {
     content: '';
     position: absolute;
-    width: 20px;
-    height: 20px;
+    width: 18px;
+    height: 18px;
     left: 3px;
     top: 3px;
     background: #fff;
     border-radius: 50%;
     transition: transform 0.2s;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.3);
 }
 .toggle-switch input:checked + .toggle-slider {
     background: var(--theme-accent, #43c4c9);
 }
 .toggle-switch input:checked + .toggle-slider::before {
-    transform: translateX(22px);
+    transform: translateX(20px);
 }

@@ -210,7 +210,8 @@ const Edition2026 = {
             ctx.font         = `900 220px ${FONT_PAIS}`;
             ctx.textAlign    = 'center';
             ctx.textBaseline = 'alphabetic';
-            ctx.strokeStyle  = 'rgba(255,255,255,1)';
+            ctx.fillStyle    = state.useGoldBg ? '#c8a000' : 'rgba(255,255,255,0.42)';
+            ctx.strokeStyle  = state.useGoldBg ? 'rgba(255,215,0,0.9)' : 'rgba(255,255,255,1)';
             ctx.lineWidth    = 18.08;
             ctx.strokeText(l, W - 207, 1729 + i * 190);
             ctx.fillText(l, W - 207, 1729 + i * 190);
