@@ -127,7 +127,8 @@ const Edition2026 = {
     },
 
     layerFiles: [
-        { id: 'gold',   src: '/frontend/assets/fondogold.png'            },
+        { id: 'gold', src: '/frontend/assets/fondogold.png' },
+        { id: 'marcogold', src: '/frontend/assets/marcogold.png'},
         { id: 'num2',   src: '/frontend/assets/2.png'                    },
         { id: 'num6',   src: '/frontend/assets/6.png'                    },
         { id: 'marco',  src: '/frontend/assets/marco.png'                },
@@ -196,7 +197,11 @@ const Edition2026 = {
 
         if (state.showShirt && imgs['shirt']) ctx.drawImage(imgs['shirt'], 0, state.shirtY || 0, W, H);
 
-        if (tints.marco)  ctx.drawImage(tints.marco,  0, 0, W, H);
+        if (tints.marco) ctx.drawImage(tints.marco, 0, 0, W, H);
+
+        if (state.useGoldBg && imgs['marcogold']) {
+            ctx.drawImage(imgs['marcogold'], 0, 0, W, H);
+        }
         if (tints.marco6) ctx.drawImage(tints.marco6, 0, 0, W, H);
 
         if (flagImg) ctx.drawImage(flagImg, 0, 0, W, H);
