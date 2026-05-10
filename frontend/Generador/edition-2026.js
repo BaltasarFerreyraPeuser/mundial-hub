@@ -99,9 +99,9 @@ const Edition2026 = {
     },
 
     positions: {
-        gk:  { label: 'Goalkeeper', rectColor: '#76418d' },
-        def: { label: 'Defender',   rectColor: '#c7004c' },
-        mid: { label: 'Midfielder', rectColor: '#de4f40' },
+        gk: { label: 'Goalkeeper', rectColor: '#894192' },
+        def: { label: 'Defender', rectColor: '#f4294b' },
+        mid: { label: 'Midfielder', rectColor: '#f76a20' },
         fwd: { label: 'Forward',    rectColor: '#1e8689' },
     },
 
@@ -109,7 +109,7 @@ const Edition2026 = {
         photoScale: 110,
         photoY:     -80,
         photoX:     0,
-        cBg:        '#43c4c9',
+        cBg:        '#65c8c9',
         useGoldBg:  false,
         c2:         '#74a9db',
         c6:         '#ffffff',
