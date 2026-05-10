@@ -92,7 +92,9 @@ const Edition2026 = {
             { code: 'PAN', name: 'Panamá' },
         ],
         Extra: [
-            { code: 'PLM', name: 'Paren la mano'},
+            { code: 'VEN', name: 'Venezuela' },
+            { code: 'IRL', name: 'Irlanda' },
+            { code: 'ITA', name: 'Italia'},
         ],
     },
 
