@@ -1,7 +1,10 @@
 'use strict';
 
 // ─────────────────────────────────────────────────────────────
-//  SHIRT ALIGN v3
+//  SHIRT ALIGN v4
+//  - Detección de cuello de remera por análisis de columna central
+//  - Detección de cara con face-api.js (68 landmarks)
+//  - Alineación cuello-persona con cuello-remera
 // ─────────────────────────────────────────────────────────────
 
 const ShirtAlign = (() => {
@@ -28,7 +31,7 @@ const ShirtAlign = (() => {
                 faceapi.nets.faceLandmark68TinyNet.loadFromUri(MODELS_URL),
             ]);
             _ready = true;
-            console.log('[ShirtAlign] Modelos cargados');
+            console.log('[ShirtAlign] ✓ Modelos cargados');
         } catch (err) {
             console.error('[ShirtAlign] Error cargando modelos:', err);
         }
@@ -36,17 +39,15 @@ const ShirtAlign = (() => {
         return _ready;
     }
 
+    // Precarga en background
     ensureLoaded();
 
-    // ── 1. Detectar cuello de la remera ──────────────────────
-    // Estrategia: buscar la abertura del cuello
-    // El cuello de una remera es una zona transparente en el centro
-    // rodeada de tela opaca arriba (hombros) y abajo (cuerpo).
-    // Algoritmo:
-    //   1. Encontrar la primera fila con hombros (pixels opacos en los bordes
-    //      pero transparente en el centro)
-    //   2. Desde ahí bajar hasta que el centro se vuelva opaco → ese es el
-    //      fondo del cuello (donde empieza la tela del cuerpo)
+    // ── 1. Detectar cuello de la remera ──────────────────────────
+    // Estrategia robusta:
+    // a) Escanear la columna central del PNG buscando el patrón:
+    //    [transparente] → [opaco=hombro/cuello] → [transparente=abertura cuello] → [opaco=cuerpo]
+    //    El punto donde vuelve a ser opaco después de la abertura = fondo del cuello
+    // b) Si no hay abertura clara, usar el primer pixel opaco en zona central alta
     function detectShirtNeckY(shirtImg) {
         const oc = document.createElement('canvas');
         oc.width  = W;
@@ -54,46 +55,42 @@ const ShirtAlign = (() => {
         oc.getContext('2d').drawImage(shirtImg, 0, 0, W, H);
         const data = oc.getContext('2d').getImageData(0, 0, W, H).data;
 
-        // Zonas para medir
-        const centerXMin = Math.floor(W * 0.38);
-        const centerXMax = Math.floor(W * 0.62);
-        const centerW    = centerXMax - centerXMin;
+        // Muestrear múltiples columnas en la zona central para robustez
+        const cols = [
+            Math.floor(W * 0.42),
+            Math.floor(W * 0.46),
+            Math.floor(W * 0.50),
+            Math.floor(W * 0.54),
+            Math.floor(W * 0.58),
+        ];
 
-        const shoulderXL = Math.floor(W * 0.15);
-        const shoulderXR = Math.floor(W * 0.85);
-        const shoulderW  = 80; // px a medir en cada hombro
-
-        function centerOpacity(y) {
+        // Para cada fila: promedio de alpha en las columnas centrales
+        function avgAlpha(y) {
             let sum = 0;
-            for (let x = centerXMin; x < centerXMax; x++)
-                sum += data[(y * W + x) * 4 + 3];
-            return sum / centerW; // promedio alpha 0-255
+            for (const x of cols) sum += data[(y * W + x) * 4 + 3];
+            return sum / cols.length;
         }
 
-        function shoulderOpacity(y) {
+        // Zona lateral (hombros): 15-30% y 70-85% del ancho
+        const leftCols  = Array.from({length: 20}, (_, i) => Math.floor(W * 0.15) + i * 5);
+        const rightCols = Array.from({length: 20}, (_, i) => Math.floor(W * 0.70) + i * 5);
+
+        function shoulderAlpha(y) {
             let sum = 0;
-            for (let x = shoulderXL; x < shoulderXL + shoulderW; x++)
-                sum += data[(y * W + x) * 4 + 3];
-            for (let x = shoulderXR - shoulderW; x < shoulderXR; x++)
-                sum += data[(y * W + x) * 4 + 3];
-            return sum / (shoulderW * 2);
+            for (const x of [...leftCols, ...rightCols]) sum += data[(y * W + x) * 4 + 3];
+            return sum / (leftCols.length + rightCols.length);
         }
 
-        // Paso 1: encontrar la fila donde aparecen los hombros
-        // (shoulders opacos > 60, centro todavía puede ser transparente)
-        let shoulderStartY = null;
-        for (let y = 0; y < H * 0.6; y++) {
-            if (shoulderOpacity(y) > 60) {
-                shoulderStartY = y;
-                break;
-            }
+        // Paso 1: encontrar la primera fila donde los hombros aparecen
+        let shoulderY = null;
+        for (let y = 0; y < H * 0.5; y++) {
+            if (shoulderAlpha(y) > 40) { shoulderY = y; break; }
         }
 
-        if (shoulderStartY === null) {
-            // Fallback: primer pixel opaco en zona central
-            console.warn('[ShirtAlign] No se detectaron hombros, usando fallback');
-            for (let y = 0; y < H; y++) {
-                if (centerOpacity(y) > 30) {
+        if (shoulderY === null) {
+            // Fallback total: primer pixel opaco en zona central
+            for (let y = 0; y < H * 0.6; y++) {
+                if (avgAlpha(y) > 30) {
                     console.log('[ShirtAlign] Fallback cuello Y=' + y);
                     return y;
                 }
@@ -101,26 +98,40 @@ const ShirtAlign = (() => {
             return null;
         }
 
-        console.log('[ShirtAlign] Hombros detectados en Y=' + shoulderStartY);
+        console.log('[ShirtAlign] Hombros en Y=' + shoulderY);
 
-        // Paso 2: desde shoulderStartY, bajar buscando dónde el centro
-        // se vuelve opaco (= fondo del cuello / inicio del cuerpo de la remera)
-        // El cuello real es ese punto.
-        for (let y = shoulderStartY; y < H * 0.7; y++) {
-            if (centerOpacity(y) > 60) {
-                console.log('[ShirtAlign] Fondo cuello remera en Y=' + y);
+        // Paso 2: desde los hombros, buscar la abertura del cuello
+        // (zona donde el centro se vuelve transparente)
+        let neckOpenY = null;
+        for (let y = shoulderY; y < shoulderY + H * 0.15; y++) {
+            if (avgAlpha(y) < 20) { neckOpenY = y; break; }
+        }
+
+        if (neckOpenY === null) {
+            // No hay abertura clara (remera cerrada o imagen rara)
+            // Usar shoulderY + offset estimado
+            const est = shoulderY + Math.floor(H * 0.04);
+            console.log('[ShirtAlign] Sin abertura, cuello estimado Y=' + est);
+            return est;
+        }
+
+        console.log('[ShirtAlign] Abertura cuello en Y=' + neckOpenY);
+
+        // Paso 3: desde la abertura, buscar dónde el centro vuelve a ser opaco
+        // Ese es el fondo del cuello (donde empieza la tela del torso)
+        for (let y = neckOpenY; y < H * 0.7; y++) {
+            if (avgAlpha(y) > 40) {
+                console.log('[ShirtAlign] ✓ Fondo cuello remera Y=' + y);
                 return y;
             }
         }
 
-        // Si no encontró transición (remera sin cuello visible o modelo raro),
-        // usar shoulderStartY + 15% de la altura como estimación
-        const fallback = shoulderStartY + Math.floor(H * 0.05);
-        console.log('[ShirtAlign] Cuello estimado (fallback) Y=' + fallback);
-        return fallback;
+        // Si nunca volvió a ser opaco, usar neckOpenY como referencia
+        console.log('[ShirtAlign] Fondo cuello no encontrado, usando abertura Y=' + neckOpenY);
+        return neckOpenY;
     }
 
-    // ── 2. Detectar cara con face-api.js ─────────────────────
+    // ── 2. Detectar cara con face-api.js ─────────────────────────
     async function detectFaceData(photoImg) {
         const ok = await ensureLoaded();
         if (!ok) return null;
@@ -133,8 +144,8 @@ const ShirtAlign = (() => {
         console.log('[ShirtAlign] Detectando cara en ' + tc.width + 'x' + tc.height);
 
         const options = new faceapi.TinyFaceDetectorOptions({
-            inputSize: 416,
-            scoreThreshold: 0.4,
+            inputSize: 512,
+            scoreThreshold: 0.35,
         });
 
         const result = await faceapi
@@ -146,19 +157,19 @@ const ShirtAlign = (() => {
             return null;
         }
 
-        const box       = result.detection.box;
-        const pts       = result.landmarks.positions;
+        const box = result.detection.box;
+        const pts = result.landmarks.positions;
 
-        // Landmarks 0-16 = contorno mandíbula
-        // Usamos puntos 5-11 (mandíbula inferior central) para el cuello
-        const jawLow    = pts.slice(5, 12);
-        const avgJawY   = jawLow.reduce((s, p) => s + p.y, 0) / jawLow.length;
+        // Puntos 6-10: mandíbula inferior central (los más bajos de la cara)
+        const jawBottom = pts.slice(6, 11);
+        const avgJawY   = jawBottom.reduce((s, p) => s + p.y, 0) / jawBottom.length;
 
-        // Cuello = mandíbula baja + 15% de la altura de la cara
-        const neckY     = avgJawY + box.height * 0.15;
+        // Cuello = mandíbula inferior + 12% de la altura del bounding box
+        // (ajustado para ser más conservador — no bajar demasiado)
+        const neckY   = avgJawY + box.height * 0.12;
 
-        // Centro X de la mandíbula (más estable que el bounding box)
-        const centerX   = pts.slice(0, 17).reduce((s, p) => s + p.x, 0) / 17;
+        // Centro horizontal: promedio de los 17 puntos del contorno mandíbula
+        const centerX = pts.slice(0, 17).reduce((s, p) => s + p.x, 0) / 17;
 
         console.log('[ShirtAlign] Cara h=' + Math.round(box.height) +
             ' jawY=' + Math.round(avgJawY) +
@@ -168,10 +179,10 @@ const ShirtAlign = (() => {
         return { faceHeight: box.height, neckY, centerX };
     }
 
-    // ── 3. Alinear ────────────────────────────────────────────
+    // ── 3. Calcular y aplicar alineación ─────────────────────────
     async function align(photoImg, shirtImg, state, onUpdate) {
         if (!photoImg || !shirtImg) return;
-        console.log('[ShirtAlign] Iniciando...');
+        console.log('[ShirtAlign] Iniciando alineación...');
 
         const shirtNeckY = detectShirtNeckY(shirtImg);
         if (shirtNeckY === null) return;
@@ -179,16 +190,21 @@ const ShirtAlign = (() => {
         const face = await detectFaceData(photoImg);
         if (!face) return;
 
-        const photoW = photoImg.naturalWidth  || photoImg.width;
+        const photoW = photoImg.naturalWidth || photoImg.width;
 
-        // Escala: cara = 24% del alto del canvas
-        const newPhotoScale = Math.min(Math.max((H * 0.24 / face.faceHeight) * 40, 40), 500);
-        const sc            = newPhotoScale / 40;
+        // Escala: cara ocupa ~22% del alto del canvas
+        // (ajustable — más % = más zoom)
+        const targetFaceRatio = 0.22;
+        const newPhotoScale   = Math.min(Math.max((H * targetFaceRatio / face.faceHeight) * 40, 40), 500);
+        const sc              = newPhotoScale / 40;
 
-        // Y: cuello persona coincide con cuello remera
+        // Y: cuello persona → cuello remera
+        // photoY + face.neckY * sc = shirtNeckY
         const newPhotoY = shirtNeckY - face.neckY * sc;
 
-        // X: cara centrada horizontalmente
+        // X: centrar cara horizontalmente en el canvas
+        // La foto se dibuja en x = (W - pw)/2 + photoX
+        // Queremos que face.centerX * sc quede en W/2
         const pw        = photoW * sc;
         const newPhotoX = (W / 2) - (W - pw) / 2 - face.centerX * sc;
 
@@ -204,7 +220,7 @@ const ShirtAlign = (() => {
 
         onUpdate('draw');
 
-        console.log('[ShirtAlign] Aplicado — scale=' + Math.round(newPhotoScale) +
+        console.log('[ShirtAlign] ✓ scale=' + Math.round(newPhotoScale) +
             ' Y=' + Math.round(newPhotoY) + ' X=' + Math.round(newPhotoX));
     }
 

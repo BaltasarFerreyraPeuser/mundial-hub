@@ -110,6 +110,7 @@ const Edition2026 = {
         photoY:     -80,
         photoX:     0,
         cBg:        '#43c4c9',
+        useGoldBg:  false,
         c2:         '#74a9db',
         c6:         '#ffffff',
         cCosito:    '#9ab7dd',
@@ -126,6 +127,7 @@ const Edition2026 = {
     },
 
     layerFiles: [
+        { id: 'gold',   src: '/frontend/assets/fondogold.png'            },
         { id: 'num2',   src: '/frontend/assets/2.png'                    },
         { id: 'num6',   src: '/frontend/assets/6.png'                    },
         { id: 'marco',  src: '/frontend/assets/marco.png'                },
@@ -171,6 +173,10 @@ const Edition2026 = {
 
         ctx.fillStyle = state.cBg;
         ctx.fillRect(0, 0, W, H);
+
+        if (state.useGoldBg && imgs['gold']) {
+            ctx.drawImage(imgs['gold'], 0, 0, W, H);
+        }
 
         if (tints.num2)   ctx.drawImage(tints.num2,   0, 0, W, H);
         if (tints.num6)   ctx.drawImage(tints.num6,   0, 0, W, H);
@@ -243,8 +249,16 @@ const Edition2026 = {
             <h3>Colors</h3>
             <div class="crow">
                 <label for="cBg">Background</label>
-                <input type="color" id="cBg" value="${state.cBg}">
+                <input type="color" id="cBg" value="${state.cBg}" ${state.useGoldBg ? 'disabled' : ''}>
                 <span>Background color</span>
+            </div>
+            <div class="crow">
+                <label for="useGoldBg">Gold</label>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="useGoldBg" ${state.useGoldBg ? 'checked' : ''}>
+                    <span class="toggle-slider"></span>
+                </label>
+                <span>Gold background</span>
             </div>
             <div class="crow">
                 <label for="c2">Number 2</label>
@@ -288,6 +302,16 @@ const Edition2026 = {
             el.addEventListener('input', e => { state[key] = e.target.value; onUpdate('tints'); });
         };
         cp('cBg', 'cBg'); cp('c2', 'c2'); cp('c6', 'c6'); cp('cCosito', 'cCosito');
+
+        const goldEl = document.getElementById('useGoldBg');
+        if (goldEl) {
+            goldEl.addEventListener('change', e => {
+                state.useGoldBg = e.target.checked;
+                const cBgInput = document.getElementById('cBg');
+                if (cBgInput) cBgInput.disabled = e.target.checked;
+                onUpdate('draw');
+            });
+        }
 
         const shirtEl = document.getElementById('showShirt');
         if (shirtEl) {
