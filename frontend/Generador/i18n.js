@@ -415,20 +415,28 @@ function patchEditorI18n() {
     //    NO usar MutationObserver con subtree:true aquí: modifica textContent
     //    dentro del nodo observado → loop infinito → la página lagguea.
     //    Sobreescribimos selectCountry directamente en su lugar.
-    const _origSelectCountry = window.selectCountry;
-    if (typeof _origSelectCountry === 'function') {
-        window.selectCountry = function(country) {
-            _origSelectCountry(country);
-            const selectedDiv = document.getElementById('selectedCountry');
-            if (!selectedDiv) return;
-            const codeSpan = selectedDiv.querySelector('.sc-code');
-            if (codeSpan) {
-                codeSpan.textContent = codeSpan.textContent
-                    .replace(/· Grupo\s/, '· ' + t('group-code') + ' ')
-                    .replace(/· Group\s/, '· ' + t('group-code') + ' ');
-            }
-        };
+    // IMPORTANTE: editor.js define selectCountry como función local (no en window),
+    // por lo que el parche se reintenta hasta que esté disponible en window.
+    function patchSelectCountry() {
+        const _origSelectCountry = window.selectCountry;
+        if (typeof _origSelectCountry === 'function') {
+            window.selectCountry = function(country) {
+                _origSelectCountry(country);
+                const selectedDiv = document.getElementById('selectedCountry');
+                if (!selectedDiv) return;
+                const codeSpan = selectedDiv.querySelector('.sc-code');
+                if (codeSpan) {
+                    codeSpan.textContent = codeSpan.textContent
+                        .replace(/· Grupo\s/, '· ' + t('group-code') + ' ')
+                        .replace(/· Group\s/, '· ' + t('group-code') + ' ');
+                }
+            };
+        } else {
+            // editor.js todavía no terminó de cargar, reintentar en el próximo tick
+            setTimeout(patchSelectCountry, 50);
+        }
     }
+    patchSelectCountry();
 
     // 4. Parche: tabs — "LOCKED" y "Coming soon"
     //    subtree:true + modificar texto/atributos dentro = loop infinito.

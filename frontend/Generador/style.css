@@ -185,6 +185,8 @@ header {
     display: flex;
     flex-direction: column;
     gap: 16px;
+    position: relative;
+    z-index: 10;
 }
 
 .world-cup-selector {
@@ -2163,8 +2165,14 @@ body, header, .how-to, .card, .rainbow-bar, .dl-btn, .canvas-wrap {
     position: relative;
     display: inline-block;
     width: 44px;
+    min-width: 44px;
     height: 24px;
     flex-shrink: 0;
+}
+/* Prevent .crow label { min-width:70px } from stretching the toggle-switch label */
+.crow .toggle-switch {
+    min-width: 44px;
+    width: 44px;
 }
 .toggle-switch input {
     opacity: 0;

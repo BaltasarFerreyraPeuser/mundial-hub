@@ -18,7 +18,7 @@ function switchCanvas(edition) {
     const target = canvasMap[edition.id] || canvasMap['edition-2026'];
     target.style.display = 'block';
     canvas = target;
-    ctx = canvas.getContext('2d') || canvas.getContext('2d', { alpha: false });
+    ctx = canvas.getContext('2d', { alpha: false });
 }
 
 const fontDefs = [
@@ -28,7 +28,7 @@ const fontDefs = [
     ['FuentePersonalizadaQatar', '/frontend/assets/fonts/qatarfuente.ttf'],
     ['FuenteRusia', '/frontend/assets/fonts/rusiafont.ttf'],
     ['FuenteTahoma', '/frontend/assets/fonts/tahoma.ttf'],
-    ['FuentaTahomaBD', '/frontend/assets/fonts/tahomabd.ttf']
+    ['FuenteTahomaBold', '/frontend/assets/fonts/tahomabd.ttf']
 ];
 
 Promise.all(

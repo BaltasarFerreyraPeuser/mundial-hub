@@ -107,7 +107,7 @@ const EditionExtraCard = {
     },
 
     rareza: {
-        com: { label: 'Común', layerId: 'bg-comun', fallback: '#7c4177', rectColor: '#7c4177' },
+        com: { label: 'ComÃºn', layerId: 'bg-comun', fallback: '#7c4177', rectColor: '#7c4177' },
         bro: { label: 'Bronze', layerId: 'bg-bronce', fallback: '#b87b4c', rectColor: '#b87b4c' },
         pla: { label: 'Silver', layerId: 'bg-plata', fallback: '#aaaaaa', rectColor: '#aaaaaa' },
         oro: { label: 'Gold', layerId: 'bg-oro', fallback: '#c5a214', rectColor: '#c5a214' },
