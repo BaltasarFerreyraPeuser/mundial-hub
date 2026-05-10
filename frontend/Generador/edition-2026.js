@@ -212,7 +212,7 @@ const Edition2026 = {
             ctx.textBaseline = 'alphabetic';
             ctx.fillStyle    = 'transparent';
             ctx.strokeStyle  = 'rgba(255,255,255,1)';
-            ctx.lineWidth    = 18.08;
+            ctx.lineWidth    = 9.58;
             ctx.strokeText(l, W - 207, 1729 + i * 190);
             ctx.fillText(l, W - 207, 1729 + i * 190);
         });
