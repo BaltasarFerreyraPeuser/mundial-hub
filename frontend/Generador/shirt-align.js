@@ -201,9 +201,8 @@ const ShirtAlign = (() => {
         // Y: alinear cuello de la persona con el cuello de la remera
         const newPhotoY = shirtNeckY - face.neckY * sc;
 
-        // X: centrar cara horizontalmente
-        const pw        = photoW * sc;
-        const newPhotoX = (W / 2) - (W - pw) / 2 - face.centerX * sc;
+        // X: centrar la CARA (no la foto) horizontalmente en el canvas
+        const newPhotoX = (W / 2) - face.centerX * sc;
 
         state.photoScale = newPhotoScale;
         state.photoY     = newPhotoY;
