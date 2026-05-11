@@ -1,3 +1,18 @@
+const formatBirthDate = (value) => {
+    let v = value.replace(/[^0-9-]/g, '');
+
+    return v.slice(0, 10);
+};
+
+const formatHeight = (value) => {
+    let v = value.replace('.', ',').replace(/[^0-9,]/g, '');
+    return v.slice(0, 4);
+};
+
+const formatWeight = (value) => {
+    return value.replace(/\D/g, '').slice(0, 3);
+};
+
 const Edition2026 = {
 
     id: 'edition-2026',
@@ -94,7 +109,8 @@ const Edition2026 = {
         Extra: [
             { code: 'VEN', name: 'Venezuela' },
             { code: 'IRL', name: 'Irlanda' },
-            { code: 'ITA', name: 'Italia'},
+            { code: 'ITA', name: 'Italia' },
+            { code: 'POL', name: 'Polonia'},
         ],
     },
 
@@ -117,8 +133,8 @@ const Edition2026 = {
         position:   'mid',
         name:       'YOUR NAME',
         date:       '1-1-2000',
-        height:     '1.75m',
-        weight:     '70 kg',
+        height:     '1.75',
+        weight:     '70',
         club:       'MY CLUB',
         code:       'ARG',
         bgVariant:  null,
@@ -227,6 +243,10 @@ const Edition2026 = {
         if (imgs.fifa)   ctx.drawImage(imgs.fifa,   1251,  121,  285, 436);
         if (imgs.panini) ctx.drawImage(imgs.panini, 1124, 2130,  414,  98);
 
+        const cleanDate = formatBirthDate(state.date);
+        const cleanHeight = formatHeight(state.height);
+        const cleanWeight = formatWeight(state.weight);
+
         ctx.save();
         ctx.textAlign = 'center';
         const cx = 88 + 1166 / 2;
@@ -234,7 +254,7 @@ const Edition2026 = {
         ctx.fillStyle = '#fff';
         ctx.fillText(state.name.toUpperCase(), cx, H - 316.8, 1166);
         ctx.font = `400 66px ${FONT_RESTO}`;
-        ctx.fillText(`${state.date}  |  ${state.height}  |  ${state.weight}`, cx, H - 233.4, 1166);
+        ctx.fillText(`${cleanDate}  |  ${cleanHeight} m  |  ${cleanWeight} kg`, cx, H - 233.4, 1166);
         ctx.font = `100 66px ${FONT_RESTO}`;
         ctx.fillText(state.club.toUpperCase(), 88 + 1012 / 2, H - 110, 1012);
         ctx.restore();
