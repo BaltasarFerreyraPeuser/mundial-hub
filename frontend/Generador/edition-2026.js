@@ -1,9 +1,3 @@
-const formatBirthDate = (value) => {
-    let v = value.replace(/[^0-9-]/g, '');
-
-    return v.slice(0, 10);
-};
-
 const formatHeight = (value) => {
     let v = value.replace('.', ',').replace(/[^0-9,]/g, '');
     return v.slice(0, 4);
@@ -124,7 +118,7 @@ const Edition2026 = {
     defaultState: {
         photoScale: 110,
         photoY:     -80,
-        photoX:     0,
+        photoX:     null,   // null = centrar automáticamente hasta que ShirtAlign escriba coord absoluta
         cBg:        '#65c8c9',
         useGoldBg:  false,
         c2:         '#74a9db',
@@ -132,7 +126,9 @@ const Edition2026 = {
         cCosito:    '#9ab7dd',
         position:   'mid',
         name:       'YOUR NAME',
-        date:       '1-1-2000',
+        day: '1',
+        month: '1',
+        year: '2000',
         height:     '1.75',
         weight:     '70',
         club:       'MY CLUB',
@@ -203,11 +199,13 @@ const Edition2026 = {
             const sc = state.photoScale / 40;
             const pw = photo.width  * sc;
             const ph = photo.height * sc;
+            // photoX null = centrado automático (antes de que ShirtAlign escriba coord absoluta)
+            const px = state.photoX !== null ? state.photoX : (W - pw) / 2;
             ctx.save();
             ctx.beginPath();
             ctx.roundRect(0, 0, W, H, 14);
             ctx.clip();
-            ctx.drawImage(photo, (W - pw) / 2 + state.photoX, state.photoY, pw, ph);
+            ctx.drawImage(photo, px, state.photoY, pw, ph);
             ctx.restore();
         }
 
@@ -243,7 +241,7 @@ const Edition2026 = {
         if (imgs.fifa)   ctx.drawImage(imgs.fifa,   1251,  121,  285, 436);
         if (imgs.panini) ctx.drawImage(imgs.panini, 1124, 2130,  414,  98);
 
-        const cleanDate = formatBirthDate(state.date);
+        const cleanDate = `${state.day}-${state.month}-${state.year}`;
         const cleanHeight = formatHeight(state.height);
         const cleanWeight = formatWeight(state.weight);
 
@@ -338,6 +336,21 @@ const Edition2026 = {
                 onUpdate('draw');
             });
         }
+
+        ['inDay', 'inMonth', 'inYear'].forEach(id => {
+            const el = document.getElementById(id);
+            if (el) {
+                el.addEventListener('input', e => {
+                    const val = e.target.value.replace(/\D/g, '');
+                    if (id === 'inDay') state.day = val.slice(0, 2);
+                    if (id === 'inMonth') state.month = val.slice(0, 2);
+                    if (id === 'inYear') state.year = val.slice(0, 4);
+
+                    e.target.value = (id === 'inYear') ? state.year : (id === 'inDay' ? state.day : state.month);
+                    onUpdate('draw');
+                });
+            }
+        });
 
         const shirtEl = document.getElementById('showShirt');
         if (shirtEl) {

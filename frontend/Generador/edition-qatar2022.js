@@ -1,3 +1,12 @@
+const formatHeight = (value) => {
+    let v = value.replace('.', ',').replace(/[^0-9,]/g, '');
+    return v.slice(0, 4);
+};
+
+const formatWeight = (value) => {
+    return value.replace(/\D/g, '').slice(0, 3);
+};
+
 const EditionQatar2022 = {
 
     id: 'edition-qatar2022',
@@ -87,7 +96,9 @@ const EditionQatar2022 = {
         bgVariant:  'orange',
         position:   'mid',
         name:       'YOUR NAME',
-        date:       '1-1-2000',
+        day: '1',
+        month: '1',
+        year: '2000',
         height:     '1,75',
         weight:     '70',
         debut:      '2022',
@@ -203,6 +214,10 @@ const EditionQatar2022 = {
 
         if (flagImg) ctx.drawImage(flagImg, 0, 0, W, H);
 
+        const cleanDate = `${state.day}-${state.month}-${state.year}`;
+        const cleanHeight = formatHeight(state.height);
+        const cleanWeight = formatWeight(state.weight);
+
         ctx.save();
         ctx.textAlign = 'center';
         const cx = W / 2;
@@ -214,15 +229,15 @@ const EditionQatar2022 = {
 
         ctx.font = `600 120px ${FONT}`;
         ctx.fillStyle = '#e5dfd9';
-        ctx.fillText(state.date, cx, 3771, W - 200);
+        ctx.fillText(cleanDate, cx, 3771, W - 200);
 
         ctx.font = `150px ${FONT}`;
         ctx.fillStyle = '#e5dfd9';
-        ctx.fillText(state.height, 2423.5, 1539, W - 200);
+        ctx.fillText(cleanHeight, 2423.5, 1539, W - 200);
 
         ctx.font = `150px ${FONT}`;
         ctx.fillStyle = '#e5dfd9';
-        ctx.fillText(state.weight, 2721, 1539, W - 200);
+        ctx.fillText(cleanWeight, 2721, 1539, W - 200);
 
         ctx.font = `150px ${FONT}`;
         ctx.fillStyle = '#e5dfd9';
@@ -273,6 +288,21 @@ const EditionQatar2022 = {
                 btn.classList.add('active');
                 onUpdate('draw');
             });
+        });
+
+        ['inDay', 'inMonth', 'inYear'].forEach(id => {
+            const el = document.getElementById(id);
+            if (el) {
+                el.addEventListener('input', e => {
+                    const val = e.target.value.replace(/\D/g, '');
+                    if (id === 'inDay') state.day = val.slice(0, 2);
+                    if (id === 'inMonth') state.month = val.slice(0, 2);
+                    if (id === 'inYear') state.year = val.slice(0, 4);
+
+                    e.target.value = (id === 'inYear') ? state.year : (id === 'inDay' ? state.day : state.month);
+                    onUpdate('draw');
+                });
+            }
         });
 
         document.querySelectorAll('.q-pos-btn').forEach(btn => {

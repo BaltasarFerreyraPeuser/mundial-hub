@@ -154,12 +154,11 @@ function switchEdition(edition) {
         const prevTouched = state._touched || {};
         const newState    = { ...edition.defaultState, code: prevCode, _touched: {} };
 
-        ['name', 'date', 'height', 'weight'].forEach(k => {
+        ['name', 'day', 'month', 'year', 'height', 'weight'].forEach(k => {
             if (prevTouched[k]) { newState[k] = prevTouched[k]; newState._touched[k] = prevTouched[k]; }
         });
 
         const fieldsToToggle = {
-            'tDate':   edition.id !== 'edition-extracard',
             'tHeight': edition.id !== 'edition-extracard',
             'tWeight': edition.id !== 'edition-extracard',
             'tClub':   edition.id !== 'edition-extracard' && edition.id !== 'edition-qatar2022',
@@ -435,10 +434,11 @@ applyTheme(activeEdition.theme);
 switchCanvas(activeEdition);
 renderEditionControls(activeEdition);
 renderTabs();
-loadLayers(activeEdition);
-loadFlag(state.code);
-loadShirt(state.code);
-
-const initCountry = getAllCountries(activeEdition).find(c => c.code === 'ARG')
-    || getAllCountries(activeEdition)[0];
-if (initCountry) selectCountry(initCountry);
+loadLayers(activeEdition).then(() => {
+    loadFlag(state.code);
+    loadShirt(state.code);
+    const initCountry = getAllCountries(activeEdition).find(c => c.code === 'ARG')
+        || getAllCountries(activeEdition)[0];
+    if (initCountry) selectCountry(initCountry);
+    needsDraw = true;
+});

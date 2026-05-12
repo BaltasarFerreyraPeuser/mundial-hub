@@ -137,8 +137,14 @@
                         <input type="text" id="tName" value="TU NOMBRE" placeholder="NOMBRE" aria-label="Nombre del jugador">
                     </div>
                     <div class="frow">
-                        <label for="tDate">Fecha</label>
-                        <input type="text" id="tDate" value="112000" placeholder="dd-mm-aaaa" aria-label="Fecha de nacimiento">
+                        <label for="inDay">Nacimiento</label>
+                        <div style="display: flex; gap: 5px;">
+                            <input type="text" id="inDay" placeholder="D" style="width: 20%; text-align: center;">
+                            <span style="align-self: center;">-</span>
+                            <input type="text" id="inMonth" placeholder="M" style="width: 20%; text-align: center;">
+                            <span style="align-self: center;">-</span>
+                            <input type="text" id="inYear" placeholder="AAAA" style="width: 60%; text-align: center;">
+                        </div>
                     </div>
                     <div class="frow">
                         <label for="tHeight">Altura</label>
@@ -272,10 +278,10 @@
     <script src="edition-2026.js"></script>
     <script src="edition-qatar2022.js"></script>
     <script src="edition-extracard.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js"></script>
-    <!--<script src="shirt-align.js"></script>-->
     <script src="edition-rusia2018.js"></script>
+    <script src="shirt-align.js"></script>
     <script src="editor.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js"></script>
     <script>
         document.getElementById('dlBtnMobile').addEventListener('click', function () {
             document.getElementById('dlBtn').click();
