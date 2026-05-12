@@ -1,19 +1,17 @@
 'use strict';
 
-/* ─── Traducciones ──────────────────────────────────────────── */
 const TRANSLATIONS = {
     es: {
-        // HTML estático
         'skip-link':          'Ir al contenido',
         'header-h1':          'Creá tu Figurita del Mundial',
         'header-sub':         'Generador CROMO/FIGURITA con Inteligencia Artificial · Gratis · Alta Resolución',
         'howto-h2':           '¿Cómo crear tu cromo del Mundial?',
         'howto-1':            '<strong>Elegi el mundial</strong> - Hay varios diseños para elegir',
-        'howto-2':            '<strong>Subí tu foto</strong> — Usá <a href="https://fyrean.itch.io/bgbye" target="_blank" rel="noopener noreferrer">BGBye</a> gratis para quitar el fondo y después subila acá',
+        'howto-2':            '<strong>Subí tu foto</strong> — Usá <a href="https://www.iloveimg.com/remove-background" target="_blank" rel="noopener noreferrer">IloveBGRemove</a> gratis para quitar el fondo y después subila acá',
         'howto-3':            '<strong>Personalizá tu figurita</strong> — Elegí tu país, colores y escribí tu nombre y datos',
         'howto-4':            '<strong>Descargá gratis</strong> — PNG en alta resolución listo para imprimir o compartir en redes',
         'card-photo-h3':      'Foto del jugador',
-        'removebg-tip':       '💡 Te recomendamos quitar el fondo gratis en <a href="https://fyrean.itch.io/bgbye" target="_blank" rel="noopener noreferrer">BGBye remover</a> antes de subir tu foto.',
+        'removebg-tip':       '💡 Te recomendamos quitar el fondo gratis en <a href="https://www.iloveimg.com/remove-background" target="_blank" rel="noopener noreferrer">IloveBGRemove</a> antes de subir tu foto.',
         'upload-btn-span':    '📁 Subir foto',
         'label-scale':        'Tamaño',
         'label-vertical':     'Vertical',
@@ -106,11 +104,11 @@ const TRANSLATIONS = {
         'header-sub':         'AI-Powered Sticker/Card Generator · Free · High Resolution',
         'howto-h2':           'How to create your World Cup card?',
         'howto-1':            '<strong>Choose the World Cup</strong> - Several designs to pick from',
-        'howto-2':            '<strong>Upload your photo</strong> — Use <a href="https://fyrean.itch.io/bgbye" target="_blank" rel="noopener noreferrer">BGBye</a> for free to remove the background and then upload it here',
+        'howto-2':            '<strong>Upload your photo</strong> — Use <a href="https://www.iloveimg.com/remove-background" target="_blank" rel="noopener noreferrer">IloveBGRemovw</a> for free to remove the background and then upload it here',
         'howto-3':            '<strong>Customize your sticker</strong> — Choose your country, colors and write your name and stats',
         'howto-4':            '<strong>Download for free</strong> — High-resolution PNG ready to print or share on social media',
         'card-photo-h3':      'Player photo',
-        'removebg-tip':       '💡 We recommend removing the background for free at <a href="https://fyrean.itch.io/bgbye" target="_blank" rel="noopener noreferrer">BGBye remover</a> before uploading your photo.',
+        'removebg-tip':       '💡 We recommend removing the background for free at <a href="https://www.iloveimg.com/remove-background" target="_blank" rel="noopener noreferrer">IloveBGRemove</a> before uploading your photo.',
         'upload-btn-span':    '📁 Upload photo',
         'label-scale':        'Size',
         'label-vertical':     'Vertical',
@@ -190,14 +188,12 @@ const TRANSLATIONS = {
     },
 };
 
-/* ─── Estado de idioma ──────────────────────────────────────── */
 let currentLang = localStorage.getItem('lang') || 'es';
 
 function t(key) {
     return TRANSLATIONS[currentLang][key] ?? TRANSLATIONS['es'][key] ?? key;
 }
 
-/* ─── Aplicar traducciones al DOM estático ──────────────────── */
 function applyStaticTranslations() {
     const lang = currentLang;
 
@@ -318,8 +314,6 @@ function applyStaticTranslations() {
     document.documentElement.lang = lang;
 }
 
-/* ─── Aplicar traducciones a controles de edición (dinámicos) ── */
-// Se llama después de que renderControls() inyecta el HTML de cada edición
 function applyEditionTranslations() {
     // --- Qatar 2022 ---
     document.querySelectorAll('.q-bg-btn').forEach(btn => {
@@ -379,12 +373,7 @@ function applyEditionTranslations() {
     });
 }
 
-/* ─── Parchear editor.js para que use i18n ──────────────────── */
-// Sobrescribimos las funciones que generan texto dinámico
-// Esto se ejecuta DESPUÉS de que editor.js haya cargado
-
 function patchEditorI18n() {
-    // 1. Parche: loader de edición
     const origShowLoader = window.showEditionLoader;
     if (origShowLoader) {
         window.showEditionLoader = function() {
@@ -394,8 +383,6 @@ function patchEditorI18n() {
         };
     }
 
-    // 2. Parche: renderDropdown — traducir "Grupo/Group" y "Sin resultados/No results"
-    //    Guard _ddBusy para evitar que el observer se re-dispare al modificar el DOM.
     const dropdown = document.getElementById('countryDropdown');
     if (dropdown) {
         let _ddBusy = false;
@@ -410,13 +397,6 @@ function patchEditorI18n() {
             _ddBusy = false;
         }).observe(dropdown, { childList: true, subtree: false });
     }
-
-    // 3. Parche: selectCountry — "· Grupo K" en el selected-country.
-    //    NO usar MutationObserver con subtree:true aquí: modifica textContent
-    //    dentro del nodo observado → loop infinito → la página lagguea.
-    //    Sobreescribimos selectCountry directamente en su lugar.
-    // IMPORTANTE: editor.js define selectCountry como función local (no en window),
-    // por lo que el parche se reintenta hasta que esté disponible en window.
     function patchSelectCountry() {
         const _origSelectCountry = window.selectCountry;
         if (typeof _origSelectCountry === 'function') {

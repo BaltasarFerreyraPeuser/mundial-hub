@@ -1,12 +1,3 @@
-const formatHeight = (value) => {
-    let v = value.replace('.', ',').replace(/[^0-9,]/g, '');
-    return v.slice(0, 4);
-};
-
-const formatWeight = (value) => {
-    return value.replace(/\D/g, '').slice(0, 3);
-};
-
 const EditionQatar2022 = {
 
     id: 'edition-qatar2022',
