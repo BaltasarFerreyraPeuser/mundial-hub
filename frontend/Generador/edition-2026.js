@@ -221,7 +221,7 @@ const Edition2026 = {
         if (flagImg) ctx.drawImage(flagImg, 0, 0, W, H);
         ctx.save();
         state.code.toUpperCase().slice(0, 3).split('').forEach((l, i) => {
-            ctx.font         = `900 220px ${FONT_PAIS}`;
+            ctx.font         = `900 350px ${FONT_PAIS}`;
             ctx.textAlign    = 'center';
             ctx.textBaseline = 'alphabetic';
             ctx.fillStyle    = 'transparent';
