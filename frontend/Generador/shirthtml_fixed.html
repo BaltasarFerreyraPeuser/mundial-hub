@@ -1,0 +1,1135 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShirtAlign Debug</title>
+    <script src="https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js"></script>
+    <style>
+        :root {
+            --bg: #0a0a0f;
+            --panel: #13131a;
+            --border: #2a2a3a;
+            --accent: #43c4c9;
+            --accent2: #e5ff00;
+            --red: #ff4455;
+            --green: #00ff88;
+            --blue: #4488ff;
+            --orange: #ff8800;
+            --purple: #cc44ff;
+            --text: #e8e8f0;
+            --muted: #666680;
+            --font: 'Courier New', monospace;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: var(--font);
+            font-size: 13px;
+            min-height: 100vh;
+        }
+
+        header {
+            background: var(--panel);
+            border-bottom: 1px solid var(--border);
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+            header h1 {
+                font-size: 15px;
+                font-weight: bold;
+                color: var(--accent);
+                letter-spacing: 2px;
+                text-transform: uppercase;
+            }
+
+            header span {
+                color: var(--muted);
+                font-size: 11px;
+            }
+
+        .layout {
+            display: grid;
+            grid-template-columns: 320px 1fr 320px;
+            gap: 0;
+            height: calc(100vh - 57px);
+        }
+
+        /* ── Panel izquierdo ── */
+        .panel-left {
+            background: var(--panel);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+
+        .section {
+            border-bottom: 1px solid var(--border);
+            padding: 16px;
+        }
+
+            .section h2 {
+                font-size: 10px;
+                letter-spacing: 2px;
+                text-transform: uppercase;
+                color: var(--accent);
+                margin-bottom: 12px;
+            }
+
+        .upload-zone {
+            border: 1.5px dashed var(--border);
+            border-radius: 6px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: border-color 0.2s, background 0.2s;
+            position: relative;
+        }
+
+            .upload-zone:hover {
+                border-color: var(--accent);
+                background: rgba(67,196,201,0.05);
+            }
+
+            .upload-zone input {
+                position: absolute;
+                inset: 0;
+                opacity: 0;
+                cursor: pointer;
+                width: 100%;
+                height: 100%;
+            }
+
+            .upload-zone .label {
+                color: var(--muted);
+                font-size: 12px;
+            }
+
+                .upload-zone .label span {
+                    color: var(--accent);
+                }
+
+            .upload-zone .preview-thumb {
+                width: 100%;
+                max-height: 120px;
+                object-fit: contain;
+                border-radius: 4px;
+                margin-top: 8px;
+            }
+
+        .models-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            border-radius: 4px;
+            background: rgba(0,0,0,0.3);
+            font-size: 11px;
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--muted);
+            flex-shrink: 0;
+            transition: background 0.3s;
+        }
+
+            .dot.loading {
+                background: var(--orange);
+                animation: pulse 1s infinite;
+            }
+
+            .dot.ready {
+                background: var(--green);
+            }
+
+            .dot.error {
+                background: var(--red);
+            }
+
+        @keyframes pulse {
+            0%,100% {
+                opacity: 1
+            }
+
+            50% {
+                opacity: 0.3
+            }
+        }
+
+        .param-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+
+            .param-row label {
+                color: var(--muted);
+                font-size: 11px;
+                width: 110px;
+                flex-shrink: 0;
+            }
+
+            .param-row input[type=range] {
+                flex: 1;
+                accent-color: var(--accent);
+            }
+
+            .param-row input[type=number] {
+                width: 58px;
+                background: rgba(0,0,0,0.4);
+                border: 1px solid var(--border);
+                color: var(--text);
+                padding: 3px 6px;
+                border-radius: 3px;
+                font-family: var(--font);
+                font-size: 11px;
+            }
+
+        .param-val {
+            color: var(--accent2);
+            font-size: 11px;
+            width: 36px;
+            text-align: right;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            font-family: var(--font);
+            font-size: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: opacity 0.2s, transform 0.1s;
+        }
+
+            .btn:hover {
+                opacity: 0.85;
+            }
+
+            .btn:active {
+                transform: scale(0.98);
+            }
+
+        .btn-primary {
+            background: var(--accent);
+            color: #000;
+        }
+
+        .btn-secondary {
+            background: var(--border);
+            color: var(--text);
+            margin-top: 6px;
+        }
+
+        .btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        /* ── Canvas central ── */
+        .canvas-wrap {
+            background: #050508;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        #debugCanvas {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            border-radius: 4px;
+        }
+
+        .canvas-info {
+            position: absolute;
+            bottom: 12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.7);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 10px;
+            color: var(--muted);
+            letter-spacing: 1px;
+        }
+
+        .mode-badge {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            background: rgba(0,0,0,0.7);
+            border: 1px solid var(--border);
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 10px;
+            letter-spacing: 1px;
+            color: var(--accent);
+        }
+
+        /* ── Panel derecho (log) ── */
+        .panel-right {
+            background: var(--panel);
+            border-left: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .log-header {
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+            .log-header h2 {
+                font-size: 10px;
+                letter-spacing: 2px;
+                text-transform: uppercase;
+                color: var(--accent);
+            }
+
+        .log-clear {
+            background: none;
+            border: none;
+            color: var(--muted);
+            cursor: pointer;
+            font-size: 10px;
+        }
+
+            .log-clear:hover {
+                color: var(--red);
+            }
+
+        #logBox {
+            flex: 1;
+            overflow-y: auto;
+            padding: 8px;
+            font-size: 10px;
+            line-height: 1.7;
+        }
+
+        .log-line {
+            padding: 2px 6px;
+            border-radius: 3px;
+            margin-bottom: 1px;
+        }
+
+            .log-line.info {
+                color: var(--text);
+            }
+
+            .log-line.ok {
+                color: var(--green);
+            }
+
+            .log-line.warn {
+                color: var(--orange);
+            }
+
+            .log-line.err {
+                color: var(--red);
+                background: rgba(255,68,85,0.08);
+            }
+
+            .log-line.val {
+                color: var(--accent2);
+            }
+
+            .log-line.sep {
+                color: var(--border);
+                border-top: 1px solid var(--border);
+                margin: 6px 0;
+                padding: 0;
+            }
+
+        /* ── Legend overlay ── */
+        .legend {
+            padding: 12px 16px;
+            border-top: 1px solid var(--border);
+        }
+
+            .legend h3 {
+                font-size: 10px;
+                letter-spacing: 1px;
+                text-transform: uppercase;
+                color: var(--muted);
+                margin-bottom: 8px;
+            }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 4px;
+            font-size: 10px;
+        }
+
+        .legend-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .legend-line {
+            width: 20px;
+            height: 2px;
+            flex-shrink: 0;
+        }
+
+        /* Checkbox */
+        .check-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+            font-size: 11px;
+            color: var(--muted);
+        }
+
+            .check-row input {
+                accent-color: var(--accent);
+            }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>⚙ ShirtAlign Debug</h1>
+        <span>Herramienta de calibración visual — canvas 1650×2310</span>
+    </header>
+
+    <div class="layout">
+
+        <!-- ── Panel izquierdo ── -->
+        <div class="panel-left">
+
+            <div class="section">
+                <h2>Estado modelos</h2>
+                <div class="models-status">
+                    <div class="dot loading" id="modelDot"></div>
+                    <span id="modelStatus">Cargando modelos...</span>
+                </div>
+                <p style="color:var(--muted);font-size:10px;margin-top:8px;line-height:1.6">
+                    Modelos desde <code style="color:var(--accent)">/frontend/assets/face-models</code><br>
+                    Abrí este archivo desde tu servidor local (no file://)
+                </p>
+            </div>
+
+            <div class="section">
+                <h2>📸 Foto de la persona</h2>
+                <div class="upload-zone" id="photoZone">
+                    <input type="file" id="photoInput" accept="image/*">
+                    <div class="label">Subir foto →<br><span>JPG / PNG</span></div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>👕 Remera (PNG con alpha)</h2>
+                <div class="upload-zone" id="shirtZone">
+                    <input type="file" id="shirtInput" accept="image/png">
+                    <div class="label">Subir remera →<br><span>PNG transparente</span></div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>Parámetros</h2>
+                <div class="param-row">
+                    <label>Face ratio (%H)</label>
+                    <input type="range" id="pFaceRatio" min="10" max="50" step="0.5" value="31.8">
+                    <span class="param-val" id="vFaceRatio">31.8</span>
+                </div>
+                <div class="param-row">
+                    <label>Target Y top (px)</label>
+                    <input type="range" id="pTargetY" min="0" max="400" step="1" value="85">
+                    <span class="param-val" id="vTargetY">85</span>
+                </div>
+                <div class="param-row">
+                    <label>Neck offset (%H)</label>
+                    <input type="range" id="pNeckOff" min="0" max="40" step="1" value="20">
+                    <span class="param-val" id="vNeckOff">20</span>
+                </div>
+                <div class="param-row">
+                    <label>Shirt zone wide</label>
+                    <input type="range" id="pShirtWide" min="5" max="50" step="1" value="20">
+                    <span class="param-val" id="vShirtWide">20%–80%</span>
+                </div>
+                <div class="param-row">
+                    <label>Shirt zone narrow</label>
+                    <input type="range" id="pShirtNarrow" min="1" max="30" step="1" value="6">
+                    <span class="param-val" id="vShirtNarrow">44%–56%</span>
+                </div>
+                <div class="param-row">
+                    <label>Umbral negro (0–60)</label>
+                    <input type="range" id="pBlackThresh" min="0" max="60" step="1" value="18">
+                    <span class="param-val" id="vBlackThresh">18</span>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>Visualización</h2>
+                <label class="check-row"><input type="checkbox" id="chkFace" checked> Landmarks cara</label>
+                <label class="check-row"><input type="checkbox" id="chkShirt" checked> Detección remera</label>
+                <label class="check-row"><input type="checkbox" id="chkProfile" checked> Perfil de alpha</label>
+                <label class="check-row"><input type="checkbox" id="chkResult" checked> Resultado final</label>
+                <label class="check-row"><input type="checkbox" id="chkGrid"> Grilla 100px</label>
+            </div>
+
+            <div class="section">
+                <button class="btn btn-primary" id="btnAnalyze" disabled>▶ ANALIZAR</button>
+                <button class="btn btn-secondary" id="btnExport">↓ Exportar config JS</button>
+            </div>
+
+        </div>
+
+        <!-- ── Canvas central ── -->
+        <div class="canvas-wrap">
+            <canvas id="debugCanvas" width="1650" height="2310"></canvas>
+            <div class="canvas-info">1650 × 2310 px</div>
+            <div class="mode-badge" id="modeBadge">SIN DATOS</div>
+        </div>
+
+        <!-- ── Panel derecho (log) ── -->
+        <div class="panel-right">
+            <div class="log-header">
+                <h2>📋 Log de detección</h2>
+                <button class="log-clear" id="btnClearLog">limpiar</button>
+            </div>
+            <div id="logBox"></div>
+            <div class="legend">
+                <h3>Leyenda</h3>
+                <div class="legend-item"><div class="legend-dot" style="background:#ff4455"></div> Bounding box cara</div>
+                <div class="legend-item"><div class="legend-dot" style="background:#00ff88"></div> Landmarks mandíbula</div>
+                <div class="legend-item"><div class="legend-dot" style="background:#4488ff"></div> Punto cuello persona</div>
+                <div class="legend-item"><div class="legend-dot" style="background:#ff8800"></div> Zona wide remera (hombros)</div>
+                <div class="legend-item"><div class="legend-dot" style="background:#cc44ff"></div> Zona narrow remera (cuello)</div>
+                <div class="legend-item" style="margin-top:6px">
+                    <div class="legend-line" style="background:#ff8800"></div> Shoulder Y
+                </div>
+                <div class="legend-item">
+                    <div class="legend-line" style="background:#cc44ff"></div> Collar top Y
+                </div>
+                <div class="legend-item">
+                    <div class="legend-line" style="background:#4488ff;height:3px"></div> Shirt neck Y (resultado)
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+// ── Constantes canvas ──────────────────────────────────────
+const CW = 1650, CH = 2310;
+const MODELS_URL = '/frontend/assets/face-models';
+
+let photoImg = null;
+let shirtImg = null;
+let modelsReady = false;
+let lastResult = null;
+
+const canvas = document.getElementById('debugCanvas');
+const ctx    = canvas.getContext('2d', { alpha: true, willReadFrequently: true });
+
+// ── Log ───────────────────────────────────────────────────
+const logBox = document.getElementById('logBox');
+function log(msg, type = 'info') {
+  const d = document.createElement('div');
+  d.className = 'log-line ' + type;
+  d.textContent = (type === 'sep' ? '' : new Date().toLocaleTimeString('es', {hour12:false}) + '  ') + msg;
+  logBox.appendChild(d);
+  logBox.scrollTop = logBox.scrollHeight;
+}
+function logSep() { log('', 'sep'); }
+
+document.getElementById('btnClearLog').onclick = () => { logBox.innerHTML = ''; };
+
+// ── Cargar modelos ────────────────────────────────────────
+async function loadModels() {
+  const dot = document.getElementById('modelDot');
+  const st  = document.getElementById('modelStatus');
+  dot.className = 'dot loading';
+  st.textContent = 'Cargando modelos...';
+  log('Cargando modelos face-api.js...', 'info');
+  try {
+    await Promise.all([
+      faceapi.nets.tinyFaceDetector.loadFromUri(MODELS_URL),
+      faceapi.nets.faceLandmark68TinyNet.loadFromUri(MODELS_URL),
+    ]);
+    modelsReady = true;
+    dot.className = 'dot ready';
+    st.textContent = 'Modelos listos ✓';
+    log('✓ Modelos cargados', 'ok');
+  } catch (e) {
+    dot.className = 'dot error';
+    st.textContent = 'Error cargando modelos';
+    log('Error: ' + e.message, 'err');
+    log('Asegurate de abrir desde un servidor local (no file://)', 'warn');
+  }
+  checkReady();
+}
+loadModels();
+
+// ── Upload handlers ───────────────────────────────────────
+function setupUpload(inputId, zoneId, callback) {
+  const input = document.getElementById(inputId);
+  const zone  = document.getElementById(zoneId);
+  input.addEventListener('change', e => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const url = URL.createObjectURL(file);
+    const img = new Image();
+    img.onload = () => {
+      URL.revokeObjectURL(url);
+      // Mostrar thumbnail
+      let thumb = zone.querySelector('.preview-thumb');
+      if (!thumb) { thumb = document.createElement('img'); thumb.className = 'preview-thumb'; zone.appendChild(thumb); }
+      thumb.src = img.src = url.replace('blob:', '') || URL.createObjectURL(file);
+      // Volver a crear porque revocamos
+      const url2 = URL.createObjectURL(file);
+      const img2 = new Image();
+      img2.onload = () => { URL.revokeObjectURL(url2); callback(img2); checkReady(); };
+      img2.src = url2;
+      log('Cargado: ' + file.name + ' (' + img.width + '×' + img.height + ')', 'info');
+      thumb.src = img2.src;
+    };
+    img.src = url;
+  });
+}
+
+setupUpload('photoInput', 'photoZone', img => { photoImg = img; drawInitial(); });
+setupUpload('shirtInput', 'shirtZone', img => { shirtImg = img; drawShirtOnly(); });
+
+function checkReady() {
+  document.getElementById('btnAnalyze').disabled = !(modelsReady && photoImg && shirtImg);
+}
+
+// ── Parámetros ────────────────────────────────────────────
+function param(id, valId, fmt) {
+  const el  = document.getElementById(id);
+  const vel = document.getElementById(valId);
+  el.addEventListener('input', () => {
+    vel.textContent = fmt ? fmt(+el.value) : el.value;
+  });
+  return () => +el.value;
+}
+
+const getFaceRatio   = param('pFaceRatio',    'vFaceRatio',    v => v.toFixed(1));
+const getTargetY    = param('pTargetY',     'vTargetY',     null);
+const getNeckOff    = param('pNeckOff',     'vNeckOff',     null);
+const getShirtWide  = param('pShirtWide',   'vShirtWide',   v => v + '%–' + (100-v) + '%');
+const getShirtNarrow= param('pShirtNarrow', 'vShirtNarrow', v => (50-v) + '%–' + (50+v) + '%');
+const getBlackThresh= param('pBlackThresh', 'vBlackThresh', null);
+
+// ── Dibujo inicial ────────────────────────────────────────
+function clearCanvas() {
+  ctx.clearRect(0, 0, CW, CH);
+  ctx.fillStyle = '#050508';
+  ctx.fillRect(0, 0, CW, CH);
+}
+
+function drawInitial() {
+  if (!photoImg) return;
+  clearCanvas();
+  // Dibujar foto centrada/escalada como referencia
+  const sc = Math.min(CW / photoImg.width, CH / photoImg.height);
+  const pw = photoImg.width * sc, ph = photoImg.height * sc;
+  ctx.globalAlpha = 0.4;
+  ctx.drawImage(photoImg, (CW-pw)/2, (CH-ph)/2, pw, ph);
+  ctx.globalAlpha = 1;
+  document.getElementById('modeBadge').textContent = 'FOTO CARGADA';
+}
+
+function drawShirtOnly() {
+  if (!shirtImg) return;
+  clearCanvas();
+  ctx.drawImage(shirtImg, 0, 0, CW, CH);
+
+  // Dibujar el perfil de alpha de la remera
+  drawShirtProfile();
+  document.getElementById('modeBadge').textContent = 'REMERA CARGADA';
+}
+
+function drawShirtProfile() {
+  if (!shirtImg || !document.getElementById('chkProfile').checked) return;
+
+  // Obtener datos de alpha
+  const oc  = document.createElement('canvas');
+  oc.width  = CW; oc.height = CH;
+  const ox  = oc.getContext('2d', { alpha: true, willReadFrequently: true });
+  ox.drawImage(shirtImg, 0, 0, CW, CH);
+  const data = ox.getImageData(0, 0, CW, CH).data;
+
+  const wideL  = Math.floor(CW * getShirtWide() / 100);
+  const wideR  = Math.floor(CW * (1 - getShirtWide() / 100));
+  const narrowL= Math.floor(CW * (0.5 - getShirtNarrow() / 100));
+  const narrowR= Math.floor(CW * (0.5 + getShirtNarrow() / 100));
+
+  // Perfil de alpha (suavizado)
+  const WIN = 15;
+  function profile(x0, x1) {
+    const raw = new Float32Array(CH);
+    for (let y = 0; y < CH; y++) {
+      let s = 0;
+      for (let x = x0; x < x1; x++) s += data[(y * CW + x) * 4 + 3];
+      raw[y] = s / (x1 - x0);
+    }
+    const sm = new Float32Array(CH);
+    for (let y = 0; y < CH; y++) {
+      let s = 0, n = 0;
+      for (let k = -WIN; k <= WIN; k++) {
+        const yk = y + k;
+        if (yk >= 0 && yk < CH) { s += raw[yk]; n++; }
+      }
+      sm[y] = s / n;
+    }
+    return sm;
+  }
+
+  const wide   = profile(wideL,   wideR);
+  const narrow = profile(narrowL, narrowR);
+
+  // Dibujar perfil wide como curva en el lado derecho
+  const chartX = CW - 120;
+  const chartW = 100;
+
+  ctx.save();
+  ctx.globalAlpha = 0.7;
+
+  // Wide profile (naranja)
+  ctx.beginPath();
+  ctx.strokeStyle = '#ff8800';
+  ctx.lineWidth = 1.5;
+  for (let y = 0; y < CH; y++) {
+    const x = chartX + wide[y] / 255 * chartW;
+    if (y === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+  }
+  ctx.stroke();
+
+  // Narrow profile (morado)
+  ctx.beginPath();
+  ctx.strokeStyle = '#cc44ff';
+  ctx.lineWidth = 1.5;
+  for (let y = 0; y < CH; y++) {
+    const x = chartX + narrow[y] / 255 * chartW;
+    if (y === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+  }
+  ctx.stroke();
+
+  ctx.globalAlpha = 1;
+  ctx.restore();
+
+  return { wide, narrow };
+}
+
+// ── Análisis principal ────────────────────────────────────
+document.getElementById('btnAnalyze').addEventListener('click', analyze);
+
+async function analyze() {
+  clearCanvas();
+  logSep();
+  log('▶ Iniciando análisis...', 'info');
+
+  const faceRatio  = getFaceRatio() / 100;
+  const targetYTop = getTargetY();
+  const neckOffPct = getNeckOff() / 100;
+  const shirtWide  = getShirtWide() / 100;
+  const shirtNarrow= getShirtNarrow() / 100;
+  const blackThresh= getBlackThresh();
+
+  // ── 1. Dibujar foto de fondo ──────────────────────────
+  if (document.getElementById('chkResult').checked && photoImg) {
+    ctx.save();
+    ctx.globalAlpha = 0.3;
+    const sc = Math.min(CW / photoImg.width, CH / photoImg.height);
+    const pw = photoImg.width * sc, ph = photoImg.height * sc;
+    ctx.drawImage(photoImg, (CW-pw)/2, (CH-ph)/2, pw, ph);
+    ctx.restore();
+  }
+
+  // ── 2. Detección de cara ──────────────────────────────
+  let face = null;
+  {
+    const tc  = document.createElement('canvas');
+    tc.width  = photoImg.naturalWidth || photoImg.width;
+    tc.height = photoImg.naturalHeight || photoImg.height;
+    tc.getContext('2d').drawImage(photoImg, 0, 0);
+
+    log('Detectando cara en ' + tc.width + '×' + tc.height + '...', 'info');
+
+    const result = await faceapi
+      .detectSingleFace(tc, new faceapi.TinyFaceDetectorOptions({ inputSize: 512, scoreThreshold: 0.35 }))
+      .withFaceLandmarks(true);
+
+    if (!result) {
+      log('✗ No se detectó cara', 'err');
+      return;
+    }
+
+    const box = result.detection.box;
+    const pts = result.landmarks.positions;
+    const chinY   = pts[8].y;
+    const neckY   = chinY + box.height * neckOffPct;
+    const centerX = pts.slice(0, 17).reduce((s, p) => s + p.x, 0) / 17;
+
+    log('Cara detectada:', 'ok');
+    log('  bbox: x=' + Math.round(box.x) + ' y=' + Math.round(box.y) + ' w=' + Math.round(box.width) + ' h=' + Math.round(box.height), 'val');
+    log('  chinY=' + Math.round(chinY) + ' neckY=' + Math.round(neckY) + ' cx=' + Math.round(centerX), 'val');
+
+    face = { box, pts, chinY, neckY, centerX, faceHeight: box.height };
+
+    // ── Calcular escala y posición ──────────────────────
+    const faceTargetPx  = CH * faceRatio;
+    const newScale      = Math.min(Math.max((faceTargetPx / box.height) * 40, 20), 500);
+    const sc            = newScale / 40;
+    const photoW        = photoImg.naturalWidth || photoImg.width;
+    const newPhotoY     = targetYTop - box.y * sc;
+    const pw            = photoW * sc;
+    const newPhotoX     = (CW / 2) - (CW - pw) / 2 - centerX * sc;
+
+    face.scale  = newScale;
+    face.sc     = sc;
+    face.photoY = newPhotoY;
+    face.photoX = newPhotoX;
+    face.neckInCanvas = newPhotoY + neckY * sc;
+
+    log('Cálculo escala:', 'ok');
+    log('  photoScale=' + Math.round(newScale) + ' (sc=' + sc.toFixed(3) + ')', 'val');
+    log('  photoY=' + Math.round(newPhotoY) + ' photoX=' + Math.round(newPhotoX), 'val');
+    log('  neckInCanvas Y=' + Math.round(face.neckInCanvas), 'val');
+
+    // ── Dibujar foto en posición calculada ─────────────
+    if (document.getElementById('chkResult').checked) {
+      const ph = (photoImg.naturalHeight || photoImg.height) * sc;
+      ctx.save();
+      ctx.beginPath();
+      ctx.roundRect(0, 0, CW, CH, 8);
+      ctx.clip();
+      ctx.drawImage(photoImg, newPhotoX, newPhotoY, pw, ph);
+      ctx.restore();
+    }
+
+    // ── Dibujar landmarks ───────────────────────────────
+    if (document.getElementById('chkFace').checked) {
+      // Bounding box
+      ctx.save();
+      ctx.strokeStyle = '#ff4455';
+      ctx.lineWidth = 3;
+      ctx.setLineDash([8, 4]);
+      ctx.strokeRect(
+        newPhotoX + box.x * sc,
+        newPhotoY + box.y * sc,
+        box.width * sc, box.height * sc
+      );
+      ctx.setLineDash([]);
+
+      // 68 landmarks
+      pts.forEach((p, i) => {
+        const cx2 = newPhotoX + p.x * sc;
+        const cy2 = newPhotoY + p.y * sc;
+        const isJaw = i <= 16;
+        ctx.fillStyle = isJaw ? '#00ff88' : 'rgba(255,68,85,0.5)';
+        ctx.beginPath();
+        ctx.arc(cx2, cy2, isJaw ? 5 : 3, 0, Math.PI * 2);
+        ctx.fill();
+      });
+
+      // Punto mentón (pts[8])
+      const chin8x = newPhotoX + pts[8].x * sc;
+      const chin8y = newPhotoY + pts[8].y * sc;
+      ctx.fillStyle = '#e5ff00';
+      ctx.beginPath(); ctx.arc(chin8x, chin8y, 8, 0, Math.PI*2); ctx.fill();
+
+      // Línea cuello persona (horizontal)
+      const neckCanvasY = newPhotoY + neckY * sc;
+      ctx.strokeStyle = '#4488ff';
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.moveTo(0, neckCanvasY);
+      ctx.lineTo(CW, neckCanvasY);
+      ctx.stroke();
+
+      // Label
+      label('NECK PERSONA', 10, neckCanvasY - 8, '#4488ff');
+
+      ctx.restore();
+    }
+  }
+
+  // ── 3. Detección remera ───────────────────────────────
+  let shirtNeckY = null;
+  if (shirtImg) {
+    const oc  = document.createElement('canvas');
+    oc.width  = CW; oc.height = CH;
+    const ox  = oc.getContext('2d', { alpha: true, willReadFrequently: true });
+    ox.clearRect(0, 0, CW, CH);
+    ox.drawImage(shirtImg, 0, 0, CW, CH);
+    const data = ox.getImageData(0, 0, CW, CH).data;
+
+    const wideL  = Math.floor(CW * shirtWide);
+    const wideR  = Math.floor(CW * (1 - shirtWide));
+    const narrowL= Math.floor(CW * (0.5 - shirtNarrow));
+    const narrowR= Math.floor(CW * (0.5 + shirtNarrow));
+
+    // CLAVE: píxel de remera = coloreado (no negro puro, no transparente)
+    // Ignoramos negro (fondo) chequeando que no sea casi-negro
+    function isShirtPx(idx) {
+      const r=data[idx], g=data[idx+1], b=data[idx+2], a=data[idx+3];
+      if (a < 20) return false;                          // transparente → fondo
+      const bright = 0.299*r + 0.587*g + 0.114*b;
+      if (bright < blackThresh) return false;            // negro/oscuro → fondo
+      return true;                                       // píxel de tela real
+    }
+
+    const WIN = 10;
+    function buildProfile(x0, x1) {
+      const raw = new Float32Array(CH);
+      for (let y = 0; y < CH; y++) {
+        let cnt=0;
+        for (let x=x0; x<x1; x++) if(isShirtPx((y*CW+x)*4)) cnt++;
+        raw[y] = cnt/(x1-x0);
+      }
+      const sm = new Float32Array(CH);
+      for (let y=0;y<CH;y++) {
+        let s=0,n=0;
+        for (let k=-WIN;k<=WIN;k++) { const yk=y+k; if(yk>=0&&yk<CH){s+=raw[yk];n++;} }
+        sm[y]=s/n;
+      }
+      return sm;
+    }
+
+    const wide   = buildProfile(wideL, wideR);
+    const narrow = buildProfile(narrowL, narrowR);
+
+    // shoulderY: primera fila con píxeles de remera en zona wide
+    let shoulderY = null;
+    for (let y=0;y<CH*0.9;y++) { if(wide[y]>0.05){shoulderY=y;break;} }
+
+    // collarTop: desde shoulderY, primera fila con píxeles de color en zona NARROW
+    // (el cuello de la remera en el centro)
+    let collarTop = null;
+    const startY = shoulderY||0;
+    for (let y=startY;y<CH*0.85;y++) { if(narrow[y]>0.04){collarTop=y;break;} }
+
+    // neckBottom: desde collarTop, buscar el MÁXIMO del narrow profile
+    // luego encontrar donde narrow cae (fondo del hueco del cuello)
+    // Estrategia: buscar el pico de narrow y luego donde baja a <0.5 del pico
+    let neckBottom = null;
+    if (collarTop !== null) {
+      // Encontrar pico en zona narrow desde collarTop
+      let peakVal = 0, peakY = collarTop;
+      for (let y=collarTop;y<Math.min(collarTop+CH*0.25,CH);y++) {
+        if(narrow[y]>peakVal){peakVal=narrow[y];peakY=y;}
+      }
+      // neckBottom = donde narrow baja al 50% del pico (después del pico)
+      for (let y=peakY;y<Math.min(peakY+CH*0.2,CH);y++) {
+        if(narrow[y]<peakVal*0.5){neckBottom=y;break;}
+      }
+      if(neckBottom===null) neckBottom=peakY;
+      log('  peakY=' + peakY + ' peakVal=' + peakVal.toFixed(3), 'val');
+    }
+
+    if (neckBottom===null || collarTop===null) {
+      neckBottom = (shoulderY||0)+Math.floor(CH*0.12);
+      collarTop  = neckBottom-Math.floor(CH*0.03);
+    }
+    collarTop = collarTop||neckBottom;
+    // shirtNeckY = punto medio del cuello de la remera
+    shirtNeckY = Math.round((collarTop + neckBottom) / 2);
+
+    log('Detección remera:', 'ok');
+    log('  shoulderY=' + shoulderY, 'val');
+    log('  collarTop=' + collarTop + ' neckBottom=' + neckBottom, 'val');
+    log('  → shirtNeckY=' + shirtNeckY, 'val');
+
+    if (document.getElementById('chkShirt').checked) {
+      // Dibujar zonas de muestreo
+      ctx.save();
+      ctx.globalAlpha = 0.15;
+      ctx.fillStyle = '#ff8800';
+      ctx.fillRect(wideL, 0, wideR-wideL, CH);
+      ctx.fillStyle = '#cc44ff';
+      ctx.fillRect(narrowL, 0, narrowR-narrowL, CH);
+      ctx.globalAlpha = 1;
+
+      // Shoulder line
+      if (shoulderY !== null) {
+        hline(shoulderY, '#ff8800', 2, [6,3]);
+        label('SHOULDER', CW/2, shoulderY - 8, '#ff8800');
+      }
+      // Collar top
+      if (collarTop !== null) {
+        hline(collarTop, '#cc44ff', 2, [6,3]);
+        label('COLLAR TOP', CW/2, collarTop - 8, '#cc44ff');
+      }
+      // Neck bottom
+      if (neckBottom !== null) {
+        hline(neckBottom, '#cc44ff', 2, [4,2]);
+        label('NECK BOTTOM', CW/2, neckBottom + 18, '#cc44ff');
+      }
+      // Shirt neck (resultado)
+      hline(shirtNeckY, '#4488ff', 4, []);
+      label('SHIRT NECK ← RESULTADO', 10, shirtNeckY - 10, '#4488ff');
+
+      ctx.restore();
+    }
+
+    // Perfil alpha
+    if (document.getElementById('chkProfile').checked) {
+      const chartX = CW - 130;
+      const chartW = 110;
+      ctx.save();
+      ctx.globalAlpha = 0.8;
+      ctx.beginPath(); ctx.strokeStyle = '#ff8800'; ctx.lineWidth = 1.5;
+      for (let y=0;y<CH;y++) {
+        const x = chartX + wide[y]*chartW;
+        if(y===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+      }
+      ctx.stroke();
+      ctx.beginPath(); ctx.strokeStyle = '#cc44ff'; ctx.lineWidth = 1.5;
+      for (let y=0;y<CH;y++) {
+        const x = chartX + narrow[y]*chartW;
+        if(y===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+      }
+      ctx.stroke();
+      // Labels del gráfico
+      ctx.fillStyle = '#ff8800'; ctx.font = '18px monospace';
+      ctx.fillText('WIDE', chartX+2, 20);
+      ctx.fillStyle = '#cc44ff';
+      ctx.fillText('NARROW', chartX+2, 40);
+      ctx.globalAlpha = 1;
+      ctx.restore();
+    }
+
+    // ── 4. ShirtY resultado ─────────────────────────────
+    if (face && shirtNeckY !== null) {
+      const shirtY = Math.round(face.neckInCanvas - shirtNeckY);
+      log('Resultado final:', 'ok');
+      log('  neckInCanvas=' + Math.round(face.neckInCanvas), 'val');
+      log('  shirtNeckY=' + shirtNeckY, 'val');
+      log('  → shirtY=' + shirtY, 'val');
+
+      // Dibujar remera en posición calculada
+      if (document.getElementById('chkResult').checked) {
+        ctx.save();
+        ctx.globalAlpha = 0.85;
+        ctx.drawImage(shirtImg, 0, shirtY, CW, CH);
+        ctx.globalAlpha = 1;
+        ctx.restore();
+      }
+
+      lastResult = {
+        photoScale: face.scale,
+        photoY:     face.photoY,
+        photoX:     face.photoX,
+        shirtY,
+        // Parámetros usados
+        faceRatio:   getFaceRatio(),
+        targetYTop:  getTargetY(),
+        neckOffPct:  getNeckOff(),
+        shirtWide:   getShirtWide(),
+        shirtNarrow: getShirtNarrow(),
+      };
+    }
+  }
+
+  // ── Grilla ────────────────────────────────────────────
+  if (document.getElementById('chkGrid').checked) {
+    ctx.save();
+    ctx.strokeStyle = 'rgba(255,255,255,0.1)';
+    ctx.lineWidth = 1;
+    for (let x=0;x<CW;x+=100) { ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,CH);ctx.stroke(); }
+    for (let y=0;y<CH;y+=100) { ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(CW,y);ctx.stroke(); }
+    ctx.fillStyle='rgba(255,255,255,0.25)'; ctx.font='20px monospace';
+    for (let x=100;x<CW;x+=100) ctx.fillText(x,x+3,18);
+    for (let y=100;y<CH;y+=100) ctx.fillText(y,3,y-3);
+    ctx.restore();
+  }
+
+  document.getElementById('modeBadge').textContent = 'ANÁLISIS COMPLETO';
+  log('✓ Análisis completo', 'ok');
+}
+
+// ── Helpers de dibujo ──────────────────────────────────
+function hline(y, color, width, dash) {
+  ctx.save();
+  ctx.strokeStyle = color;
+  ctx.lineWidth = width;
+  if (dash && dash.length) ctx.setLineDash(dash);
+  ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(CW, y); ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.restore();
+}
+
+function label(text, x, y, color) {
+  ctx.save();
+  ctx.font = 'bold 22px monospace';
+  ctx.fillStyle = 'rgba(0,0,0,0.7)';
+  const m = ctx.measureText(text);
+  ctx.fillRect(x - 2, y - 20, m.width + 6, 24);
+  ctx.fillStyle = color;
+  ctx.fillText(text, x, y);
+  ctx.restore();
+}
+
+// ── Exportar config ───────────────────────────────────
+document.getElementById('btnExport').addEventListener('click', () => {
+  if (!lastResult) { log('Primero ejecutá el análisis', 'warn'); return; }
+  const r = lastResult;
+  const code = `// ShirtAlign calibration — ${new Date().toLocaleDateString()}
+// Parámetros óptimos detectados:
+
+const TARGET_Y_TOP       = ${r.targetYTop};     // top de la cabeza en el canvas
+const TARGET_FACE_PCT    = ${(r.faceRatio/100).toFixed(3)}; // cara = ${r.faceRatio}% del alto del canvas
+const NECK_OFFSET_PCT    = ${(r.neckOffPct/100).toFixed(3)}; // offset cuello desde mentón
+const SHIRT_ZONE_WIDE    = ${(r.shirtWide/100).toFixed(2)};  // zona de muestreo de hombros
+const SHIRT_ZONE_NARROW  = ${(r.shirtNarrow/100).toFixed(2)}; // zona de muestreo del cuello
+
+// Resultado para esta foto + remera:
+// photoScale = ${Math.round(r.photoScale)}
+// photoY     = ${Math.round(r.photoY)}
+// photoX     = ${Math.round(r.photoX)}
+// shirtY     = ${r.shirtY}
+`;
+  navigator.clipboard.writeText(code).then(() => {
+    log('✓ Config copiada al portapapeles', 'ok');
+  });
+});
+
+// ── Redibujar cuando cambian checkboxes o parámetros ──
+['chkFace','chkShirt','chkProfile','chkResult','chkGrid'].forEach(id => {
+  document.getElementById(id).addEventListener('change', () => {
+    if (photoImg || shirtImg) analyze();
+  });
+});
+['pFaceRatio','pTargetY','pNeckOff','pShirtWide','pShirtNarrow','pBlackThresh'].forEach(id => {
+  document.getElementById(id).addEventListener('change', () => {
+    if (photoImg || shirtImg) analyze();
+  });
+});
+    </script>
+</body>
+</html>
