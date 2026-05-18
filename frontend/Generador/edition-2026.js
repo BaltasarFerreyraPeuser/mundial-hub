@@ -221,12 +221,12 @@ const Edition2026 = {
         if (flagImg) ctx.drawImage(flagImg, 0, 0, W, H);
         ctx.save();
         state.code.toUpperCase().slice(0, 3).split('').forEach((l, i) => {
-            ctx.font         = `900 350px ${FONT_PAIS}`;
+            ctx.font         = `900 385px ${FONT_PAIS}`;
             ctx.textAlign    = 'center';
             ctx.textBaseline = 'alphabetic';
             ctx.fillStyle    = 'transparent';
             ctx.strokeStyle  = 'rgba(255,255,255,1)';
-            ctx.lineWidth    = 8.00;
+            ctx.lineWidth    = 5.00;
             ctx.strokeText(l, W - 207, 1729 + i * 175);
             ctx.fillText(l, W - 207, 1729 + i * 175);
         });
