@@ -146,9 +146,9 @@ const Edition2026 = {
         { id: 'marco',  src: '/frontend/assets/marco.png'                },
         { id: 'marco6', src: '/frontend/assets/marco6.png'               },
         { id: 'cosito', src: '/frontend/assets/cosito.png'               },
-        { id: 'rectA',  src: '/frontend/assets/svg/rectanguloarriba.png' },
-        { id: 'rectB',  src: '/frontend/assets/svg/rectanguloabajo.png'  },
-        { id: 'fifa',   src: '/frontend/assets/svg/logofifa.svg'         },
+        { id: 'rectA',  src: '/frontend/assets/rectanguloarriba.png' },
+        { id: 'rectB',  src: '/frontend/assets/rectanguloabajo.png'  },
+        { id: 'fifa',   src: '/frontend/assets/logofifa.png'         },
         { id: 'panini', src: '/frontend/assets/svg/panini.svg'           },
     ],
 
@@ -219,28 +219,26 @@ const Edition2026 = {
         }
         if (tints.marco6) ctx.drawImage(tints.marco6, 0, 0, W, H);
 
-        if (flagImg) ctx.drawImage(flagImg, 2242, 2075, 413, 413);
+        if (flagImg) ctx.drawImage(flagImg, -32, -78, W, H);
         ctx.save();
         state.code.toUpperCase().slice(0, 3).split('').forEach((l, i) => {
-            ctx.font         = `900 385px ${FONT_PAIS}`;
+            ctx.font         = `680px ${FONT_PAIS}`;
             ctx.textAlign    = 'center';
             ctx.textBaseline = 'alphabetic';
             ctx.fillStyle    = 'transparent';
             ctx.strokeStyle  = 'rgba(255,255,255,1)';
-            ctx.lineWidth    = 5.00;
-            ctx.strokeText(l, W - 207, 1729 + i * 175);
-            ctx.fillText(l, W - 207, 1729 + i * 175);
+            ctx.lineWidth    = 18.00;
+            ctx.strokeText(l, W - 435, 2810 + i * 305);
+            ctx.fillText(l, W - 435, 2810 + i * 305);
         });
         ctx.restore();
 
         if (tints.rectA) ctx.drawImage(tints.rectA, 0, 0, W, H);
-        else if (imgs.rectA) ctx.drawImage(tints.rectA, 0, 0, W, H);
 
         if (tints.rectB) ctx.drawImage(tints.rectB, 0, 0, W, H);
-        else if (imgs.rectB) ctx.drawImage(tints.rectB, 0, 0, W, H);
 
-        if (imgs.fifa)   ctx.drawImage(imgs.fifa,   2180,  190,  471, 720);
-        if (imgs.panini) ctx.drawImage(imgs.panini, 1945, 3467,  706,  167);
+        if (imgs.fifa)   ctx.drawImage(imgs.fifa,   0,  0,  W, H);
+        if (imgs.panini) ctx.drawImage(imgs.panini, 2020, 3467,  706,  167);
 
         const cleanDate = `${state.day}-${state.month}-${state.year}`;
         const cleanHeight = formatHeight(state.height);
@@ -249,13 +247,13 @@ const Edition2026 = {
         ctx.save();
         ctx.textAlign = 'center';
         const cx = 137 + 2052 / 2;
-        ctx.font = `88px ${FONT_NOMBRE}`;
+        ctx.font = `165px ${FONT_NOMBRE}`;
         ctx.fillStyle = '#fff';
-        ctx.fillText(state.name.toUpperCase(), cx, H - 577, 1166);
-        ctx.font = `137px ${FONT_NACI}`;
-        ctx.fillText(`${cleanDate}  |  ${cleanHeight} m  |  ${cleanWeight} kg`, cx, H - 420, 1166);
-        ctx.font = `144px ${FONT_APELLIDO}`;
-        ctx.fillText(state.club.toUpperCase(), 88 + 1777 / 2, H - 237, 1760);
+        ctx.fillText(state.name.toUpperCase(), cx, H - 600, 2040);
+        ctx.font = `88px ${FONT_NACI}`;
+        ctx.fillText(`${cleanDate}  |  ${cleanHeight} m  |  ${cleanWeight} kg`, cx, H - 440, 2040);
+        ctx.font = `115px ${FONT_APELLIDO}`;
+        ctx.fillText(state.club.toUpperCase(), 145 + 1777 / 2, H - 250, 1760);
         ctx.restore();
 
         ctx.restore();
