@@ -109,10 +109,10 @@ const Edition2026 = {
     },
 
     positions: {
-        gk: { label: 'Goalkeeper', rectColor: '#894192' },
-        def: { label: 'Defender', rectColor: '#f4294b' },
-        mid: { label: 'Midfielder', rectColor: '#f76a20' },
-        fwd: { label: 'Forward',    rectColor: '#1e8689' },
+        gk: { label: 'Goalkeeper', rectColor: '#79438e' },
+        def: { label: 'Defender', rectColor: '#d22d4b' },
+        mid: { label: 'Midfielder', rectColor: '#da6a2c' },
+        fwd: { label: 'Forward', rectColor: '#007c8d' },
     },
 
     defaultState: {
@@ -178,7 +178,7 @@ const Edition2026 = {
     },
 
     draw(ctx, state, imgs, tints, photo, flagImg) {
-        const W = 2985, H = 3840;
+        const W = 2895, H = 3840;
         const FONT_NOMBRE = '"FuentePersonalizadaA"';
         const FONT_NACI = "'FuenteNacimiento'";
         const FONT_APELLIDO = '"FuentePersonalizadaAA", "Barlow Condensed", sans-serif';
@@ -239,41 +239,29 @@ const Edition2026 = {
         if (tints.rectB) ctx.drawImage(tints.rectB, 0, 0, W, H);
 
         if (imgs.fifa)   ctx.drawImage(imgs.fifa,   0,  0,  W, H);
-        if (imgs.panini) ctx.drawImage(imgs.panini, 2020, 3467,  706,  167);
+        if (imgs.panini) ctx.drawImage(imgs.panini, 1950, 3467,  706,  167);
 
         const cleanDate = `${state.day}-${state.month}-${state.year}`;
         const cleanHeight = formatHeight(state.height);
         const cleanWeight = formatWeight(state.weight);
-
+       
         ctx.save();
         ctx.textAlign = 'center';
-        const cx = 137 + 2052 / 2;
-        const nameText = state.name.toUpperCase();
-
-        const spaceText = " ";
-        const apellidoText = (state.apellido || '').toUpperCase();
-        ctx.font = `165px ${FONT_NOMBRE}`;
-        const nameWidth = ctx.measureText(nameText).width;
-
-        ctx.font = `145px ${FONT_APELLIDO}`;
-        const apellidoWidth = ctx.measureText(apellidoText).width;
-        const spaceWidth = ctx.measureText(spaceText).width;
-
-        const totalWidth = nameWidth + spaceWidth + apellidoWidth;
-
-        ctx.textAlign = 'left';
-        let currentX = cx - (totalWidth / 2);
-
-        ctx.font = `165px ${FONT_NOMBRE}`;
-        ctx.fillText(nameText, currentX, lineY);
-        currentX += nameWidth + spaceWidth; 
-
-        ctx.font = `145px ${FONT_APELLIDO}`;
-        ctx.fillText(apellidoText, currentX, lineY);
-        ctx.font = `88px ${FONT_NACI}`;
-        ctx.fillText(`${cleanDate}  |  ${cleanHeight} m  |  ${cleanWeight} kg`, cx, H - 440, 2040);
-        ctx.font = `115px ${FONT_APELLIDO}`;
-        ctx.fillText(state.club.toUpperCase(), 145 + 1777 / 2, H - 250, 1760);
+        const cx = 160 + 2052 / 2;
+        ctx.font = `180px ${FONT_APELLIDO}`;
+        ctx.fillStyle = '#fff';
+        ctx.fillText(`${state.name.toUpperCase()} ${state.apellido.toUpperCase()}`, cx, H - 572, 2040);
+        ctx.save();
+        ctx.font = `80px ${FONT_NACI}`;
+        ctx.translate(cx, H - 440);
+        ctx.scale(1, 1.32);
+        ctx.fillText(`${cleanDate}  |  ${cleanHeight} m  |  ${cleanWeight} kg`, 0, 0, 2040);
+        ctx.restore();
+        ctx.save();
+        ctx.font = `110px ${FONT_APELLIDO}`;
+        ctx.translate(145 + 1777 / 2, H - 245);
+        ctx.scale(1, 1.15);
+        ctx.fillText(state.club.toUpperCase(), 0, 0, 1760);
         ctx.restore();
 
         ctx.restore();

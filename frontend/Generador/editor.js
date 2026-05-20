@@ -222,7 +222,6 @@ function syncControls(sliderId, numberId, key) {
         sl.value = val;
         num.value = val;
 
-        // OPTIMIZACIÓN: Debounce para evitar Lag renderizando el 4K.
         clearTimeout(sliderDebounce);
         sliderDebounce = setTimeout(() => {
             needsDraw = true;
