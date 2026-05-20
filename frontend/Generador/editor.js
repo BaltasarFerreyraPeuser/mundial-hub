@@ -162,7 +162,8 @@ function switchEdition(edition) {
         const fieldsToToggle = {
             'tHeight': edition.id !== 'edition-extracard',
             'tWeight': edition.id !== 'edition-extracard',
-            'tClub':   edition.id !== 'edition-extracard' && edition.id !== 'edition-qatar2022',
+            'tClub': edition.id !== 'edition-extracard' && edition.id !== 'edition-qatar2022',
+            'tApellido': edition.id === 'edition-2026'
         };
         Object.entries(fieldsToToggle).forEach(([id, show]) => {
             const el = document.getElementById(id);
@@ -209,18 +210,32 @@ document.getElementById('photoInputDirect').addEventListener('change', e => {
     img.src = url;
 });
 
-function slider(id, key, vid, sfx) {
-    const el = document.getElementById(id);
-    if (!el) return;
-    el.addEventListener('input', e => {
-        state[key] = parseFloat(e.target.value);
-        document.getElementById(vid).textContent = e.target.value + (sfx || '');
-        needsDraw = true;
-    });
+let sliderDebounce;
+
+function syncControls(sliderId, numberId, key) {
+    const sl = document.getElementById(sliderId);
+    const num = document.getElementById(numberId);
+    if (!sl || !num) return;
+
+    const updateValue = (val) => {
+        state[key] = parseFloat(val);
+        sl.value = val;
+        num.value = val;
+
+        // OPTIMIZACIÓN: Debounce para evitar Lag renderizando el 4K.
+        clearTimeout(sliderDebounce);
+        sliderDebounce = setTimeout(() => {
+            needsDraw = true;
+        }, 15);
+    };
+
+    sl.addEventListener('input', e => updateValue(e.target.value));
+    num.addEventListener('input', e => updateValue(e.target.value));
 }
-slider('sScale', 'photoScale', 'vScale', '%');
-slider('sY',     'photoY',     'vY',     '');
-slider('sX',     'photoX',     'vX',     '');
+
+syncControls('sScale', 'vScale', 'photoScale');
+syncControls('sY', 'vY', 'photoY');
+syncControls('sX', 'vX', 'photoX');
 
 function textField(id, key, upper) {
     const el = document.getElementById(id);
@@ -235,7 +250,8 @@ function textField(id, key, upper) {
         t = setTimeout(() => { needsDraw = true; }, 50);
     });
 }
-textField('tName',   'name',   true);
+textField('tName', 'name', true);
+textField('tApellido', 'apellido', true);
 textField('tDate',   'date',   false);
 textField('tHeight', 'height', false);
 textField('tWeight', 'weight', false);

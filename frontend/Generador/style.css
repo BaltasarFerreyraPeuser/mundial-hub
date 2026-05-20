@@ -2205,3 +2205,27 @@ body, header, .how-to, .card, .rainbow-bar, .dl-btn, .canvas-wrap {
 .toggle-switch input:checked + .toggle-slider::before {
     transform: translateX(20px);
 }
+.srow input[type=number].srow-num {
+    width: 55px;
+    font-size: 11px;
+    font-weight: 700;
+    text-align: center;
+    border: 2px solid var(--black);
+    border-radius: 8px;
+    padding: 4px;
+    background: var(--gray);
+    color: var(--black);
+    font-family: 'Barlow', sans-serif;
+    outline: none;
+    transition: all 0.15s;
+}
+
+    .srow input[type=number].srow-num:focus {
+        border-color: var(--blueB);
+        background: var(--white);
+    }
+
+    .srow input[type=number].srow-num::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }

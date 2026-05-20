@@ -125,7 +125,8 @@ const Edition2026 = {
         c6:         '#ffffff',
         cCosito:    '#9ab7dd',
         position:   'mid',
-        name:       'YOUR NAME',
+        name: 'YOUR NAME',
+        apellido: 'TU APELLIDO',
         day: '1',
         month: '1',
         year: '2000',
@@ -247,9 +248,28 @@ const Edition2026 = {
         ctx.save();
         ctx.textAlign = 'center';
         const cx = 137 + 2052 / 2;
+        const nameText = state.name.toUpperCase();
+
+        const spaceText = " ";
+        const apellidoText = (state.apellido || '').toUpperCase();
         ctx.font = `165px ${FONT_NOMBRE}`;
-        ctx.fillStyle = '#fff';
-        ctx.fillText(state.name.toUpperCase(), cx, H - 600, 2040);
+        const nameWidth = ctx.measureText(nameText).width;
+
+        ctx.font = `145px ${FONT_APELLIDO}`;
+        const apellidoWidth = ctx.measureText(apellidoText).width;
+        const spaceWidth = ctx.measureText(spaceText).width;
+
+        const totalWidth = nameWidth + spaceWidth + apellidoWidth;
+
+        ctx.textAlign = 'left';
+        let currentX = cx - (totalWidth / 2);
+
+        ctx.font = `165px ${FONT_NOMBRE}`;
+        ctx.fillText(nameText, currentX, lineY);
+        currentX += nameWidth + spaceWidth; 
+
+        ctx.font = `145px ${FONT_APELLIDO}`;
+        ctx.fillText(apellidoText, currentX, lineY);
         ctx.font = `88px ${FONT_NACI}`;
         ctx.fillText(`${cleanDate}  |  ${cleanHeight} m  |  ${cleanWeight} kg`, cx, H - 440, 2040);
         ctx.font = `115px ${FONT_APELLIDO}`;
