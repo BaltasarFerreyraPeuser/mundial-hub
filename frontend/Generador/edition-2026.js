@@ -118,7 +118,7 @@ const Edition2026 = {
     defaultState: {
         photoScale: 110,
         photoY:     -80,
-        photoX:     null,   // null = centrar automáticamente hasta que ShirtAlign escriba coord absoluta
+        photoX:     null,  
         cBg:        '#65c8c9',
         useGoldBg:  false,
         c2:         '#74a9db',
@@ -146,8 +146,8 @@ const Edition2026 = {
         { id: 'marco',  src: '/frontend/assets/marco.png'                },
         { id: 'marco6', src: '/frontend/assets/marco6.png'               },
         { id: 'cosito', src: '/frontend/assets/cosito.png'               },
-        { id: 'rectA',  src: '/frontend/assets/svg/rectanguloarriba.svg' },
-        { id: 'rectB',  src: '/frontend/assets/svg/rectanguloabajo.svg'  },
+        { id: 'rectA',  src: '/frontend/assets/svg/rectanguloarriba.png' },
+        { id: 'rectB',  src: '/frontend/assets/svg/rectanguloabajo.png'  },
         { id: 'fifa',   src: '/frontend/assets/svg/logofifa.svg'         },
         { id: 'panini', src: '/frontend/assets/svg/panini.svg'           },
     ],
@@ -156,12 +156,12 @@ const Edition2026 = {
         const tint = (src, hex) => {
             if (!src) return null;
             const oc = document.createElement('canvas');
-            oc.width = 1650; oc.height = 2310;
+            oc.width = 2895; oc.height = 3840;
             const ox = oc.getContext('2d');
             ox.fillStyle = hex;
-            ox.fillRect(0, 0, 1650, 2310);
+            ox.fillRect(0, 0, 2895, 3840);
             ox.globalCompositeOperation = 'destination-in';
-            ox.drawImage(src, 0, 0, 1650, 2310);
+            ox.drawImage(src, 0, 0, 2895, 3840);
             return oc;
         };
         const posColor = (this.positions[state.position] || this.positions.mid).rectColor;
@@ -177,8 +177,10 @@ const Edition2026 = {
     },
 
     draw(ctx, state, imgs, tints, photo, flagImg) {
-        const W = 1650, H = 2310;
-        const FONT_RESTO = '"FuentePersonalizadaAA", "Barlow Condensed", sans-serif';
+        const W = 2985, H = 3840;
+        const FONT_NOMBRE = '"FuentePersonalizadaA"';
+        const FONT_NACI = "'FuenteNacimiento'";
+        const FONT_APELLIDO = '"FuentePersonalizadaAA", "Barlow Condensed", sans-serif';
         const FONT_PAIS  = '"FuentePersonalizada",   "Barlow Condensed", sans-serif';
 
         ctx.clearRect(0, 0, W, H);
@@ -199,7 +201,6 @@ const Edition2026 = {
             const sc = state.photoScale / 40;
             const pw = photo.width  * sc;
             const ph = photo.height * sc;
-            // photoX null = centrado automático (antes de que ShirtAlign escriba coord absoluta)
             const px = state.photoX !== null ? state.photoX : (W - pw) / 2;
             ctx.save();
             ctx.beginPath();
@@ -218,7 +219,7 @@ const Edition2026 = {
         }
         if (tints.marco6) ctx.drawImage(tints.marco6, 0, 0, W, H);
 
-        if (flagImg) ctx.drawImage(flagImg, 0, 0, W, H);
+        if (flagImg) ctx.drawImage(flagImg, 2242, 2075, 413, 413);
         ctx.save();
         state.code.toUpperCase().slice(0, 3).split('').forEach((l, i) => {
             ctx.font         = `900 385px ${FONT_PAIS}`;
@@ -232,14 +233,14 @@ const Edition2026 = {
         });
         ctx.restore();
 
-        if (tints.rectA) ctx.drawImage(tints.rectA, 81, 1900, 1183, 207);
-        else if (imgs.rectA) ctx.drawImage(imgs.rectA, 81, 1900, 1183, 207);
+        if (tints.rectA) ctx.drawImage(tints.rectA, 0, 0, W, H);
+        else if (imgs.rectA) ctx.drawImage(tints.rectA, 0, 0, W, H);
 
-        if (tints.rectB) ctx.drawImage(tints.rectB, 81, 2130, 1022, 98);
-        else if (imgs.rectB) ctx.drawImage(imgs.rectB, 81, 2130, 1022, 98);
+        if (tints.rectB) ctx.drawImage(tints.rectB, 0, 0, W, H);
+        else if (imgs.rectB) ctx.drawImage(tints.rectB, 0, 0, W, H);
 
-        if (imgs.fifa)   ctx.drawImage(imgs.fifa,   1251,  121,  285, 436);
-        if (imgs.panini) ctx.drawImage(imgs.panini, 1124, 2130,  414,  98);
+        if (imgs.fifa)   ctx.drawImage(imgs.fifa,   2180,  190,  471, 720);
+        if (imgs.panini) ctx.drawImage(imgs.panini, 1945, 3467,  706,  167);
 
         const cleanDate = `${state.day}-${state.month}-${state.year}`;
         const cleanHeight = formatHeight(state.height);
@@ -247,14 +248,14 @@ const Edition2026 = {
 
         ctx.save();
         ctx.textAlign = 'center';
-        const cx = 88 + 1166 / 2;
-        ctx.font = `700 88px ${FONT_RESTO}`;
+        const cx = 137 + 2052 / 2;
+        ctx.font = `88px ${FONT_NOMBRE}`;
         ctx.fillStyle = '#fff';
-        ctx.fillText(state.name.toUpperCase(), cx, H - 316.8, 1166);
-        ctx.font = `400 66px ${FONT_RESTO}`;
-        ctx.fillText(`${cleanDate}  |  ${cleanHeight} m  |  ${cleanWeight} kg`, cx, H - 233.4, 1166);
-        ctx.font = `100 66px ${FONT_RESTO}`;
-        ctx.fillText(state.club.toUpperCase(), 88 + 1012 / 2, H - 110, 1012);
+        ctx.fillText(state.name.toUpperCase(), cx, H - 577, 1166);
+        ctx.font = `137px ${FONT_NACI}`;
+        ctx.fillText(`${cleanDate}  |  ${cleanHeight} m  |  ${cleanWeight} kg`, cx, H - 420, 1166);
+        ctx.font = `144px ${FONT_APELLIDO}`;
+        ctx.fillText(state.club.toUpperCase(), 88 + 1777 / 2, H - 237, 1760);
         ctx.restore();
 
         ctx.restore();

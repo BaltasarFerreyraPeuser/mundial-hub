@@ -1,7 +1,7 @@
 'use strict';
 
-const W = 1650;
-const H = 2310;
+const W = 2895;
+const H = 3840;
 
 const canvasMap = {
     'edition-2026':      document.getElementById('cv-2026'),
@@ -23,8 +23,9 @@ function switchCanvas(edition) {
 
 const fontDefs = [
     ['FuentePersonalizada',      '/frontend/assets/fonts/truly-26.otf'],
-    ['FuentePersonalizadaA',     '/frontend/assets/fonts/fuente2.ttf'],
-    ['FuentePersonalizadaAA',    '/frontend/assets/fonts/fuente3.ttf'],
+    ['FuentePersonalizadaA',     '/frontend/assets/fonts/nombre.ttf'],
+    ['FuentePersonalizadaAA', '/frontend/assets/fonts/apellido.ttf'],
+    ['FuenteNacimiento', '/frontend/assets/fonts/nacimiento.ttf'],
     ['FuentePersonalizadaQatar', '/frontend/assets/fonts/qatarfuente.ttf'],
     ['FuenteRusia', '/frontend/assets/fonts/rusiafont.ttf'],
     ['FuenteTahoma', '/frontend/assets/fonts/tahoma.ttf'],
