@@ -125,8 +125,8 @@ const Edition2026 = {
         c6:         '#ffffff',
         cCosito:    '#9ab7dd',
         position:   'mid',
-        name: 'YOUR NAME',
-        apellido: 'TU APELLIDO',
+        name: 'NAME',
+        apellido: 'LASTNAME',
         day: '1',
         month: '1',
         year: '2000',
@@ -176,14 +176,12 @@ const Edition2026 = {
             rectB:  tint(imgs.rectB,  posColor),
         };
     },
-
     draw(ctx, state, imgs, tints, photo, flagImg) {
         const W = 2895, H = 3840;
         const FONT_NOMBRE = '"FuentePersonalizadaA"';
         const FONT_NACI = "'FuenteNacimiento'";
         const FONT_APELLIDO = '"FuentePersonalizadaAA", "Barlow Condensed", sans-serif';
         const FONT_PAIS  = '"FuentePersonalizada",   "Barlow Condensed", sans-serif';
-
         ctx.clearRect(0, 0, W, H);
         ctx.save();
 
@@ -244,21 +242,53 @@ const Edition2026 = {
         const cleanDate = `${state.day}-${state.month}-${state.year}`;
         const cleanHeight = formatHeight(state.height);
         const cleanWeight = formatWeight(state.weight);
-       
+
+        //Nombre y Apellido
+        ctx.save();
+        const cx = 160 + 2052 / 2;
+        ctx.font = `170px ${FONT_NOMBRE}`;
+        const nameWidth = ctx.measureText(state.name.toUpperCase() + ' ').width * 0.60;
+        ctx.font = `170px ${FONT_APELLIDO}`;
+        const apellidoWidth = ctx.measureText(state.apellido.toUpperCase()).width * 1.20;
+        const totalWidth = nameWidth + apellidoWidth;
+        const startX = cx - totalWidth / 2;
+
+        // Nombre
+        ctx.save();
+        ctx.translate(startX, H - 585);
+        ctx.scale(0.60, 1);
+        ctx.textAlign = 'left';
+        ctx.font = `170px ${FONT_NOMBRE}`;
+        ctx.fillStyle = '#fff';
+        ctx.fillText(state.name.toUpperCase() + ' ', 0, 0);
+        ctx.restore();
+
+        // Apellido
+        ctx.save();
+        ctx.translate(startX + nameWidth, H - 585);
+        ctx.scale(1.20, 1);
+        ctx.textAlign = 'left';
+        ctx.font = `170px ${FONT_APELLIDO}`;
+        ctx.fillStyle = '#fff';
+        ctx.fillText(state.apellido.toUpperCase(), 0, 0);
+        ctx.restore();
+
+        ctx.restore();
+        //Naci
         ctx.save();
         ctx.textAlign = 'center';
-        const cx = 160 + 2052 / 2;
-        ctx.font = `180px ${FONT_APELLIDO}`;
+        const cx2 = 160 + 2052 / 2
+        ctx.font = `88px ${FONT_NACI}`;
         ctx.fillStyle = '#fff';
-        ctx.fillText(`${state.name.toUpperCase()} ${state.apellido.toUpperCase()}`, cx, H - 572, 2040);
-        ctx.save();
-        ctx.font = `80px ${FONT_NACI}`;
-        ctx.translate(cx, H - 440);
-        ctx.scale(1, 1.32);
+        ctx.translate(cx2, H - 440);
+        ctx.scale(1, 1.35);
         ctx.fillText(`${cleanDate}  |  ${cleanHeight} m  |  ${cleanWeight} kg`, 0, 0, 2040);
         ctx.restore();
+        //Club
         ctx.save();
+        ctx.textAlign = 'center';
         ctx.font = `110px ${FONT_APELLIDO}`;
+        ctx.fillStyle = '#fff';
         ctx.translate(145 + 1777 / 2, H - 245);
         ctx.scale(1, 1.15);
         ctx.fillText(state.club.toUpperCase(), 0, 0, 1760);
