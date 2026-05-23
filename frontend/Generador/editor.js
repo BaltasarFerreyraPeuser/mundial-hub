@@ -78,6 +78,40 @@ function loadLayers(edition) {
     });
 }
 
+// Coordenadas del área del marco-bandera en el canvas (2895×3840),
+// derivadas del rect en marcobandera.svg (viewBox 765.96873×1016).
+const MARCO_FLAG = { x: 2256, y: 2093, w: 391, h: 388 };
+
+// Mapeo FIFA alpha-3 → ISO alpha-2 (para CDN flagicons lipis)
+const ALPHA3_TO_ALPHA2 = {
+    // Grupo A
+    MEX: 'mx', RSA: 'za', KOR: 'kr', CZE: 'cz',
+    // Grupo B
+    CAN: 'ca', BIH: 'ba', QAT: 'qa', SUI: 'ch',
+    // Grupo C
+    BRA: 'br', MAR: 'ma', HAI: 'ht', SCO: 'gb-sct',
+    // Grupo D
+    USA: 'us', PAR: 'py', AUS: 'au', TUR: 'tr',
+    // Grupo E
+    GER: 'de', CUW: 'cw', CIV: 'ci', ECU: 'ec',
+    // Grupo F
+    NED: 'nl', JPN: 'jp', SWE: 'se', TUN: 'tn',
+    // Grupo G
+    BEL: 'be', EGY: 'eg', IRI: 'ir', NZL: 'nz',
+    // Grupo H
+    ESP: 'es', CPV: 'cv', KSA: 'sa', URU: 'uy',
+    // Grupo I
+    FRA: 'fr', SEN: 'sn', IRQ: 'iq', NOR: 'no',
+    // Grupo J
+    ARG: 'ar', ALG: 'dz', AUT: 'at', JOR: 'jo',
+    // Grupo K
+    POR: 'pt', COD: 'cd', UZB: 'uz', COL: 'co',
+    // Grupo L
+    ENG: 'gb-eng', CRO: 'hr', GHA: 'gh', PAN: 'pa',
+    // Extra
+    VEN: 've', IRL: 'ie', ITA: 'it', POL: 'pl', CHI: 'cl', BOL: 'bo',
+};
+
 let _flagPending = null;
 function loadFlag(code) {
     if (_flagPending) { _flagPending.onload = _flagPending.onerror = null; }
@@ -85,7 +119,50 @@ function loadFlag(code) {
     _flagPending = img;
     img.onload  = () => { if (_flagPending === img) { flagImg = img; needsDraw = true; } };
     img.onerror = () => { if (_flagPending === img) { flagImg = null; needsDraw = true; } };
-    img.src = activeEdition.flagsPath + code + '.png';
+    if (activeEdition.flagsSvgPath) {
+        // Ediciones con SVG del CDN (2026, extracard, etc.)
+        img.crossOrigin = 'anonymous';
+        const alpha2 = ALPHA3_TO_ALPHA2[code] || code.toLowerCase();
+        img.src = activeEdition.flagsSvgPath + alpha2 + '.svg';
+    } else {
+        // Ediciones con banderas PNG propias (Qatar 2022, Rusia 2018, etc.)
+        img.src = activeEdition.flagsPath + code + '.png';
+    }
+}
+
+/**
+ * Dibuja la bandera centrada dentro del marco, ajustada al alto del área
+ * (top/bottom respetados, puede salirse por los costados).
+ */
+function drawFlagInMarco(ctx, flagImg) {
+    if (!flagImg) return;
+    const { x, y, w, h } = MARCO_FLAG;
+    const scale = h / (flagImg.naturalHeight || flagImg.height || h);
+    const dw = (flagImg.naturalWidth || flagImg.width) * scale;
+    const dh = h;
+    const dx = x + (w - dw) / 2; // centra horizontalmente
+    const dy = y;
+
+    // El marcobandera tiene 3 esquinas redondeadas y 1 recta (bottom-right).
+    // Radio calculado del SVG transformado al canvas 2895x3840: ~197px.
+    const r = 197;
+    const x2 = x + w, y2 = y + h;
+
+    ctx.save();
+    ctx.beginPath();
+    ctx.moveTo(x + r, y);          // top-left redondeada
+    ctx.lineTo(x2 - r, y);
+    ctx.arcTo(x2, y,  x2, y + r, r);  // top-right redondeada
+    ctx.lineTo(x2, y2);            // bottom-right RECTA
+    ctx.lineTo(x + r, y2);
+    ctx.arcTo(x,  y2, x, y2 - r,  r); // bottom-left redondeada
+    ctx.lineTo(x,  y + r);
+    ctx.arcTo(x,  y,  x + r, y,   r); // top-left redondeada (cierre)
+    ctx.closePath();
+    ctx.clip();
+
+    ctx.drawImage(flagImg, dx, dy, dw, dh);
+    ctx.restore();
 }
 
 let _shirtPending = null;
@@ -95,7 +172,7 @@ function loadShirt(code) {
     _shirtPending = img;
     img.onload  = () => { if (_shirtPending === img) { imgs['shirt'] = img; needsDraw = true; } };
     img.onerror = () => { if (_shirtPending === img) { delete imgs['shirt']; needsDraw = true; } };
-    img.src = '/frontend/assets/Shirt/' + code + '.png';
+    img.src = '/frontend/assets/Shirt/' + code + '.webp';
 }
 
 function renderLoop() {
@@ -276,11 +353,15 @@ function selectCountry(country) {
     dropdown.style.display = 'none';
 }
 
+function normalizeStr(str) {
+    return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+}
+
 function renderDropdown(query) {
     const allCountries = getAllCountries(activeEdition);
-    const q = query.toLowerCase().trim();
+    const q = normalizeStr(query.trim());
     const results = q
-        ? allCountries.filter(c => c.name.toLowerCase().includes(q) || c.code.toLowerCase().includes(q))
+        ? allCountries.filter(c => normalizeStr(c.name).includes(q) || c.code.toLowerCase().includes(q))
         : allCountries;
 
     if (!results.length) {

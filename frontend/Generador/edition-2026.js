@@ -14,6 +14,7 @@ const Edition2026 = {
     downloadSuffix: '2026',
 
     flagsPath: '/frontend/assets/flags/',
+    flagsSvgPath: 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.3.2/flags/4x3/',
 
     theme: {
         '--theme-primary':    '#17277f',
@@ -104,7 +105,9 @@ const Edition2026 = {
             { code: 'VEN', name: 'Venezuela' },
             { code: 'IRL', name: 'Irlanda' },
             { code: 'ITA', name: 'Italia' },
-            { code: 'POL', name: 'Polonia'},
+            { code: 'POL', name: 'Polonia' },
+            { code: 'CHI', name: 'Chile' },
+            { code: 'BOL', name: 'Bolivia' },
         ],
     },
 
@@ -140,17 +143,18 @@ const Edition2026 = {
     },
 
     layerFiles: [
-        { id: 'gold', src: '/frontend/assets/fondogold.png' },
-        { id: 'marcogold', src: '/frontend/assets/marcogold.png'},
-        { id: 'num2',   src: '/frontend/assets/2.png'                    },
-        { id: 'num6',   src: '/frontend/assets/6.png'                    },
-        { id: 'marco',  src: '/frontend/assets/marco.png'                },
-        { id: 'marco6', src: '/frontend/assets/marco6.png'               },
-        { id: 'cosito', src: '/frontend/assets/cosito.png'               },
-        { id: 'rectA',  src: '/frontend/assets/rectanguloarriba.png' },
-        { id: 'rectB',  src: '/frontend/assets/rectanguloabajo.png'  },
-        { id: 'fifa',   src: '/frontend/assets/logofifa.png'         },
-        { id: 'panini', src: '/frontend/assets/svg/panini.svg'           },
+        { id: 'gold',      src: '/frontend/assets/fondogold.png'    },
+        { id: 'marcogold', src: '/frontend/assets/marcogold.png'    },
+        { id: 'num2',      src: '/frontend/assets/svg/2.svg'        },
+        { id: 'num6',      src: '/frontend/assets/svg/6.svg'        },
+        { id: 'marco', src: '/frontend/assets/svg/marco.svg' },
+        { id: 'marcobandera', src: '/frontend/assets/svg/marcobandera.svg' },
+        { id: 'marco6',    src: '/frontend/assets/svg/marco6.svg'   },
+        { id: 'cosito',    src: '/frontend/assets/svg/medio.svg'    },
+        { id: 'rectA',     src: '/frontend/assets/svg/rectAR.svg'   },
+        { id: 'rectB',     src: '/frontend/assets/svg/rectAB.svg'   },
+        { id: 'fifa',      src: '/frontend/assets/svg/logofifa.svg' },
+        { id: 'panini',    src: '/frontend/assets/svg/panini.svg'   },
     ],
 
     buildTints(imgs, state) {
@@ -173,7 +177,8 @@ const Edition2026 = {
             marco:  tint(imgs.marco,  state.cBg),
             marco6: tint(imgs.marco6, state.c6),
             rectA:  tint(imgs.rectA,  posColor),
-            rectB:  tint(imgs.rectB,  posColor),
+            rectB: tint(imgs.rectB, posColor),
+            marcobandera: tint(imgs.marcobandera, '#ffffff'),
         };
     },
     draw(ctx, state, imgs, tints, photo, flagImg) {
@@ -193,8 +198,8 @@ const Edition2026 = {
         }
 
         if (tints.num2)   ctx.drawImage(tints.num2,   0, 0, W, H);
-        if (tints.num6)   ctx.drawImage(tints.num6,   0, 0, W, H);
-        if (tints.cosito) ctx.drawImage(tints.cosito, 0, 0, W, H);
+        if (tints.num6)   ctx.drawImage(tints.num6, 0, 0, W, H);
+        if (tints.cosito) ctx.drawImage(tints.cosito, -1, 0, W, H);
 
         if (photo) {
             const sc = state.photoScale / 40;
@@ -216,9 +221,13 @@ const Edition2026 = {
         if (state.useGoldBg && imgs['marcogold']) {
             ctx.drawImage(imgs['marcogold'], 0, 0, W, H);
         }
-        if (tints.marco6) ctx.drawImage(tints.marco6, 0, 0, W, H);
-
-        if (flagImg) ctx.drawImage(flagImg, -32, -78, W, H);
+        if (tints.marco6) ctx.drawImage(tints.marco6, 515, -48.5, W, H);
+        if (typeof drawFlagInMarco === 'function') {
+            drawFlagInMarco(ctx, flagImg);
+        } else if (flagImg) {
+            ctx.drawImage(flagImg, -32, -78, W, H); // fallback legacy
+        }
+        if (tints.marcobandera) ctx.drawImage(tints.marcobandera, 0, 0, W, H);
         ctx.save();
         state.code.toUpperCase().slice(0, 3).split('').forEach((l, i) => {
             ctx.font         = `680px ${FONT_PAIS}`;
@@ -226,17 +235,17 @@ const Edition2026 = {
             ctx.textBaseline = 'alphabetic';
             ctx.fillStyle    = 'transparent';
             ctx.strokeStyle  = 'rgba(255,255,255,1)';
-            ctx.lineWidth    = 18.00;
+            ctx.lineWidth    = 15.00;
             ctx.strokeText(l, W - 435, 2810 + i * 305);
             ctx.fillText(l, W - 435, 2810 + i * 305);
         });
         ctx.restore();
 
-        if (tints.rectA) ctx.drawImage(tints.rectA, 0, 0, W, H);
+        if (tints.rectA) ctx.drawImage(tints.rectA, 12, 472, W, H);
 
-        if (tints.rectB) ctx.drawImage(tints.rectB, 0, 0, W, H);
+        if (tints.rectB) ctx.drawImage(tints.rectB, -17, 267, W, H);
 
-        if (imgs.fifa)   ctx.drawImage(imgs.fifa,   0,  0,  W, H);
+        if (imgs.fifa)   ctx.drawImage(imgs.fifa,   2135,  130,  585, 827);
         if (imgs.panini) ctx.drawImage(imgs.panini, 1950, 3467,  706,  167);
 
         const cleanDate = `${state.day}-${state.month}-${state.year}`;

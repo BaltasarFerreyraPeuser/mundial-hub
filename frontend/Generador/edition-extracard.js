@@ -8,6 +8,14 @@ const EditionExtraCard = {
     canvasH: 3960,
 
     flagsPath: '/frontend/assets/flags/extraflags/',
+    flagsSvgPath: 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.3.2/flags/4x3/',
+
+    // Dos instancias del marcobandera rotado -90° en el canvas 2994x3960.
+    // Coordenadas tomadas de Inkscape. La esquina RECTA queda top-right (rot -90°).
+    marcoBanderaSlots: [
+        { x: 349,  y: 712,  w: 2264, h: 2246, r: 1141 }, // grande
+        { x: 214,  y: 2834, w: 524,  h: 520,  r: 264  }, // chico
+    ],
     miniflagsPath: '/frontend/assets/flags/miniflags/',
 
     theme: {
@@ -95,6 +103,14 @@ const EditionExtraCard = {
             { code: 'GHA', name: 'Ghana' },
             { code: 'PAN', name: 'Panama' },
         ],
+        Extra: [
+            { code: 'VEN', name: 'Venezuela' },
+            { code: 'IRL', name: 'Irlanda' },
+            { code: 'ITA', name: 'Italia' },
+            { code: 'POL', name: 'Polonia' },
+            { code: 'CHI', name: 'Chile' },
+            { code: 'BOL', name: 'Bolivia'},
+        ],
     },
 
     defaultState: {
@@ -119,7 +135,8 @@ const EditionExtraCard = {
         { id: 'bg-plata', src: '/frontend/assets/extracard/fondoplata.png' },
         { id: 'bg-oro', src: '/frontend/assets/extracard/fondoro.png' },
         { id: 'extra', src: '/frontend/assets/extracard/extrasticker.png' },
-        { id: 'fifa', src: '/frontend/assets/extracard/fifa.png' },
+        { id: 'fifa', src: '/frontend/assets/svg/fifa2.svg' },
+        { id: 'marcobandera', src: '/frontend/assets/svg/marcoextra.svg' },
         { id: 'rectangulo', src: '/frontend/assets/extracard/rectangulo.png' },
         { id: 'marco', src: '/frontend/assets/extracard/marco.png' },
     ],
@@ -144,8 +161,33 @@ const EditionExtraCard = {
             ctx.fillRect(0, 0, W, H);
         }
 
-        if (flagImg) ctx.drawImage(flagImg, 0, 0, W, H);
+        if (flagImg && this.marcoBanderaSlots) {
+            this.marcoBanderaSlots.forEach(slot => {
+                const { x, y, w, h, r } = slot;
+                const scale = h / (flagImg.naturalHeight || flagImg.height || h);
+                const dw = (flagImg.naturalWidth || flagImg.width) * scale;
+                const dh = h;
+                const dx = x + (w - dw) / 2;
+                const dy = y;
+                const x2 = x + w, y2 = y + h;
 
+                ctx.save();
+                ctx.beginPath();
+                ctx.moveTo(x + r, y);
+                ctx.lineTo(x2, y);
+                ctx.lineTo(x2, y2 - r);
+                ctx.arcTo(x2, y2, x2 - r, y2, r);
+                ctx.lineTo(x + r, y2);
+                ctx.arcTo(x, y2, x, y2 - r, r);
+                ctx.lineTo(x, y + r);
+                ctx.arcTo(x, y, x + r, y, r);
+                ctx.closePath();
+                ctx.clip();
+                ctx.drawImage(flagImg, dx, dy, dw, dh);
+                ctx.restore();
+            });
+        }
+        if (imgs['marcobandera']) ctx.drawImage(imgs['marcobandera'], 0, 0, W, H);
         if (photo) {
             const sc = state.photoScale / 20;
             const pw = photo.width * sc;
