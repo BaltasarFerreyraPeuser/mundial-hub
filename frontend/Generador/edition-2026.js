@@ -143,8 +143,8 @@ const Edition2026 = {
     },
 
     layerFiles: [
-        { id: 'gold',      src: '/frontend/assets/fondogold.png'    },
-        { id: 'marcogold', src: '/frontend/assets/marcogold.png'    },
+        { id: 'gold',      src: '/frontend/assets/fondogold.webp'    },
+        { id: 'marcogold', src: '/frontend/assets/marcogold.webp'    },
         { id: 'num2',      src: '/frontend/assets/svg/2.svg'        },
         { id: 'num6',      src: '/frontend/assets/svg/6.svg'        },
         { id: 'marco', src: '/frontend/assets/svg/marco.svg' },
@@ -225,7 +225,7 @@ const Edition2026 = {
         if (typeof drawFlagInMarco === 'function') {
             drawFlagInMarco(ctx, flagImg);
         } else if (flagImg) {
-            ctx.drawImage(flagImg, -32, -78, W, H); // fallback legacy
+            ctx.drawImage(flagImg, -32, -78, W, H);
         }
         if (tints.marcobandera) ctx.drawImage(tints.marcobandera, 0, 0, W, H);
         ctx.save();
