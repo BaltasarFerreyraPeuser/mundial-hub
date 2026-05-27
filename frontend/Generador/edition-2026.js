@@ -214,7 +214,9 @@ const Edition2026 = {
             ctx.restore();
         }
 
-        if (state.showShirt && imgs['shirt']) ctx.drawImage(imgs['shirt'], 0, state.shirtY || 0, W, H);
+        if (state.showShirt && imgs['shirt']) {
+            ctx.drawImage(imgs['shirt'], 0, state.shirtY || 0, W, H);
+        }
 
         if (tints.marco) ctx.drawImage(tints.marco, 0, 0, W, H);
 
@@ -252,32 +254,37 @@ const Edition2026 = {
         const cleanHeight = formatHeight(state.height);
         const cleanWeight = formatWeight(state.weight);
 
-        //Nombre y Apellido
         ctx.save();
         const cx = 160 + 2052 / 2;
-        ctx.font = `170px ${FONT_NOMBRE}`;
-        const nameWidth = ctx.measureText(state.name.toUpperCase() + ' ').width * 0.60;
-        ctx.font = `170px ${FONT_APELLIDO}`;
-        const apellidoWidth = ctx.measureText(state.apellido.toUpperCase()).width * 1.20;
+        const MAX_NAME_W = 1850;
+
+        ctx.font = `180px ${FONT_NOMBRE}`;
+        const nameWidth = ctx.measureText(state.name.toUpperCase() + ' ').width * 0.70;
+        ctx.font = `180px ${FONT_APELLIDO}`;
+        const apellidoWidth = ctx.measureText(state.apellido.toUpperCase()).width * 1.15;
         const totalWidth = nameWidth + apellidoWidth;
-        const startX = cx - totalWidth / 2;
+
+        const compress = totalWidth > MAX_NAME_W ? MAX_NAME_W / totalWidth : 1;
+        const nameW_final = nameWidth * compress;
+        const apellidoW_final = apellidoWidth * compress;
+        const startX = cx - (nameW_final + apellidoW_final) / 2;
 
         // Nombre
         ctx.save();
         ctx.translate(startX, H - 585);
-        ctx.scale(0.60, 1);
+        ctx.scale(0.70 * compress, 1);
         ctx.textAlign = 'left';
-        ctx.font = `170px ${FONT_NOMBRE}`;
+        ctx.font = `180px ${FONT_NOMBRE}`;
         ctx.fillStyle = '#fff';
         ctx.fillText(state.name.toUpperCase() + ' ', 0, 0);
         ctx.restore();
 
         // Apellido
         ctx.save();
-        ctx.translate(startX + nameWidth, H - 585);
-        ctx.scale(1.20, 1);
+        ctx.translate(startX + nameW_final, H - 585);
+        ctx.scale(1.15 * compress, 1);
         ctx.textAlign = 'left';
-        ctx.font = `170px ${FONT_APELLIDO}`;
+        ctx.font = `180px ${FONT_APELLIDO}`;
         ctx.fillStyle = '#fff';
         ctx.fillText(state.apellido.toUpperCase(), 0, 0);
         ctx.restore();
@@ -296,7 +303,7 @@ const Edition2026 = {
         //Club
         ctx.save();
         ctx.textAlign = 'center';
-        ctx.font = `110px ${FONT_APELLIDO}`;
+        ctx.font = `115px ${FONT_NOMBRE}`;
         ctx.fillStyle = '#fff';
         ctx.translate(145 + 1777 / 2, H - 245);
         ctx.scale(1, 1.15);
@@ -404,7 +411,16 @@ const Edition2026 = {
                 state.showShirt = e.target.checked;
                 const row = document.getElementById('shirtYRow');
                 if (row) row.style.display = e.target.checked ? '' : 'none';
-                onUpdate('draw');
+                if (e.target.checked && imgs && imgs['shirt'] && typeof ShirtAlign !== 'undefined') {
+                    const photoEl = typeof photo !== 'undefined' ? photo : null;
+                    if (photoEl && state._photoBounds) {
+                        ShirtAlign.align(photoEl, imgs['shirt'], state, onUpdate);
+                    } else {
+                        ShirtAlign.alignShirt(imgs['shirt'], state, onUpdate);
+                    }
+                } else {
+                    onUpdate('draw');
+                }
             });
         }
 

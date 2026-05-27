@@ -112,18 +112,18 @@
                     <div class="sliders">
                         <div class="srow">
                             <label for="sScale">Tamaño</label>
-                            <input type="range" id="sScale" min="10" max="300" value="110" aria-label="Escala de la foto">
-                            <input type="number" id="vScale" class="srow-num" min="10" max="300" value="110">
+                            <input type="range" id="sScale" min="10" max="3000" value="110" aria-label="Escala de la foto">
+                            <input type="number" id="vScale" class="srow-num" min="10" max="3000" value="110">
                         </div>
                         <div class="srow">
                             <label for="sY">Vertical</label>
-                            <input type="range" id="sY" min="-2000" max="3000" value="1200" aria-label="Posición vertical de la foto">
-                            <input type="number" id="vY" class="srow-num" min="-2000" max="3000" value="1200">
+                            <input type="range" id="sY" min="-2000" max="30000" value="1200" aria-label="Posición vertical de la foto">
+                            <input type="number" id="vY" class="srow-num" min="-2000" max="30000" value="1200">
                         </div>
                         <div class="srow">
                             <label for="sX">Horizontal</label>
-                            <input type="range" id="sX" min="-1000" max="1000" value="0" aria-label="Posición horizontal de la foto">
-                            <input type="number" id="vX" class="srow-num" min="-1000" max="1000" value="0">
+                            <input type="range" id="sX" min="-1000" max="10000" value="0" aria-label="Posición horizontal de la foto">
+                            <input type="number" id="vX" class="srow-num" min="-1000" max="10000" value="0">
                         </div>
                     </div>
                 </div>
@@ -283,9 +283,9 @@
     <script src="edition-qatar2022.js"></script>
     <script src="edition-extracard.js"></script>
     <script src="edition-rusia2018.js"></script>
-    <!-- <script src="shirt-align.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/@vladmandic/face-api/dist/face-api.js"></script>
+    <script src="shirt-align.js"></script>
     <script src="editor.js"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js"></script>
     <script>
         document.getElementById('dlBtnMobile').addEventListener('click', function () {
             document.getElementById('dlBtn').click();

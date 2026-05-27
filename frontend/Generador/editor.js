@@ -23,8 +23,8 @@ function switchCanvas(edition) {
 
 const fontDefs = [
     ['FuentePersonalizada',      '/frontend/assets/fonts/truly-26.otf'],
-    ['FuentePersonalizadaA',     '/frontend/assets/fonts/nombre.ttf'],
-    ['FuentePersonalizadaAA', '/frontend/assets/fonts/apellido.ttf'],
+    ['FuentePersonalizadaA',     '/frontend/assets/fonts/nombre2.ttf'],
+    ['FuentePersonalizadaAA', '/frontend/assets/fonts/apellido2.ttf'],
     ['FuenteNacimiento', '/frontend/assets/fonts/nacimiento.ttf'],
     ['FuentePersonalizadaQatar', '/frontend/assets/fonts/qatarfuente.ttf'],
     ['FuenteRusia', '/frontend/assets/fonts/rusiafont.ttf'],
@@ -38,6 +38,9 @@ Promise.all(
     fonts.forEach(f => document.fonts.add(f));
     needsDraw = true;
 }).catch(() => { needsDraw = true; });
+
+// Cargar modelos de face-api en cuanto el script cargue
+if (typeof ShirtAlign !== 'undefined') ShirtAlign.loadModels();
 
 const EDITIONS = [Edition2026, EditionQatar2022, EditionExtraCard, EditionRusia2018];
 
@@ -170,7 +173,22 @@ function loadShirt(code) {
     if (_shirtPending) { _shirtPending.onload = _shirtPending.onerror = null; }
     const img = new Image();
     _shirtPending = img;
-    img.onload  = () => { if (_shirtPending === img) { imgs['shirt'] = img; needsDraw = true; } };
+    img.onload  = () => {
+        if (_shirtPending === img) {
+            imgs['shirt'] = img;
+            if (state.showShirt && typeof ShirtAlign !== 'undefined') {
+                if (photo && state._photoBounds) {
+                    // Re-alinear la FOTO para que encaje en el cuello de la nueva remera
+                    ShirtAlign.align(photo, img, state, onUpdate);
+                } else {
+                    // Sin foto: posicionar la remera por defecto
+                    ShirtAlign.alignShirt(img, state, onUpdate);
+                }
+            } else {
+                needsDraw = true;
+            }
+        }
+    };
     img.onerror = () => { if (_shirtPending === img) { delete imgs['shirt']; needsDraw = true; } };
     img.src = '/frontend/assets/Shirt/' + code + '.webp';
 }
@@ -198,6 +216,24 @@ function renderEditionControls(edition) {
 
 function onUpdate(type) {
     if (type === 'tints') tints = activeEdition.buildTints(imgs, state);
+
+    if (type === 'draw') {
+        const controls = [
+            { sl: 'sScale', num: 'vScale', key: 'photoScale' },
+            { sl: 'sY', num: 'vY', key: 'photoY' },
+            { sl: 'sX', num: 'vX', key: 'photoX' }
+        ];
+
+        controls.forEach(({ sl, num, key }) => {
+            const sliderEl = document.getElementById(sl);
+            const numberEl = document.getElementById(num);
+            if (state[key] !== undefined) {
+                if (sliderEl) sliderEl.value = state[key];
+                if (numberEl) numberEl.value = state[key];
+            }
+        });
+    }
+
     needsDraw = true;
 }
 
@@ -274,14 +310,15 @@ document.getElementById('photoInputDirect').addEventListener('change', e => {
         URL.revokeObjectURL(url);
         photo = img;
         needsDraw = true;
-        // Auto-alinear remera si estamos en 2026 con remera activa
         if (
             typeof ShirtAlign !== 'undefined' &&
-            activeEdition.id === 'edition-2026' &&
-            state.showShirt &&
-            imgs['shirt']
+            activeEdition.id === 'edition-2026'
         ) {
             await ShirtAlign.align(photo, imgs['shirt'], state, onUpdate);
+            // Si la remera ya estaba activa, alinearla también con la foto nueva
+            if (state.showShirt && imgs['shirt'] && state._photoBounds) {
+                ShirtAlign.alignShirt(imgs['shirt'], state, onUpdate);
+            }
         }
     };
     img.src = url;
