@@ -29,15 +29,20 @@ const fontDefs = [
     ['FuentePersonalizadaQatar', '/frontend/assets/fonts/qatarfuente.ttf'],
     ['FuenteRusia', '/frontend/assets/fonts/rusiafont.ttf'],
     ['FuenteTahoma', '/frontend/assets/fonts/tahoma.ttf'],
-    ['FuenteTahomaBold', '/frontend/assets/fonts/tahomabd.ttf']
+    ['FuenteTahomaBold', '/frontend/assets/fonts/tahomabd.ttf'],
 ];
-
-Promise.all(
+Promise.allSettled(
     fontDefs.map(([name, url]) => new FontFace(name, `url(${url})`).load())
-).then(fonts => {
-    fonts.forEach(f => document.fonts.add(f));
+).then(results => {
+    results.forEach((result, index) => {
+        if (result.status === 'fulfilled') {
+            document.fonts.add(result.value);
+        } else {
+            console.error(`Fallo al cargar la fuente: ${fontDefs[index][0]} ->`, result.reason);
+        }
+    });
     needsDraw = true;
-}).catch(() => { needsDraw = true; });
+});
 
 // Cargar modelos de face-api en cuanto el script cargue
 if (typeof ShirtAlign !== 'undefined') ShirtAlign.loadModels();
