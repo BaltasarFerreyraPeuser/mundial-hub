@@ -23,8 +23,8 @@ function switchCanvas(edition) {
 
 const fontDefs = [
     ['FuentePersonalizada',      '/frontend/assets/fonts/truly-26.otf'],
-    ['FuentePersonalizadaA',     '/frontend/assets/fonts/nombre2.ttf'],
-    ['FuentePersonalizadaAA', '/frontend/assets/fonts/apellido2.ttf'],
+    ['FuentePersonalizadaA',     '/frontend/assets/fonts/Nombre2.ttf'],
+    ['FuentePersonalizadaAA', '/frontend/assets/fonts/Apellido2.ttf'],
     ['FuenteNacimiento', '/frontend/assets/fonts/nacimiento.ttf'],
     ['FuentePersonalizadaQatar', '/frontend/assets/fonts/qatarfuente.ttf'],
     ['FuenteRusia', '/frontend/assets/fonts/rusiafont.ttf'],
