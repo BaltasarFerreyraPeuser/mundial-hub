@@ -86,11 +86,8 @@ function loadLayers(edition) {
     });
 }
 
-// Coordenadas del área del marco-bandera en el canvas (2895×3840),
-// derivadas del rect en marcobandera.svg (viewBox 765.96873×1016).
 const MARCO_FLAG = { x: 2256, y: 2093, w: 391, h: 388 };
 
-// Mapeo FIFA alpha-3 → ISO alpha-2 (para CDN flagicons lipis)
 const ALPHA3_TO_ALPHA2 = {
     // Grupo A
     MEX: 'mx', RSA: 'za', KOR: 'kr', CZE: 'cz',
@@ -117,7 +114,7 @@ const ALPHA3_TO_ALPHA2 = {
     // Grupo L
     ENG: 'gb-eng', CRO: 'hr', GHA: 'gh', PAN: 'pa',
     // Extra
-    VEN: 've', IRL: 'ie', ITA: 'it', POL: 'pl', CHI: 'cl', BOL: 'bo',
+    VEN: 've', IRL: 'ie', ITA: 'it', POL: 'pl', CHI: 'cl', BOL: 'bo', RUS: 'ru', DEN: 'dk', PER: 'pe', ISL: 'is', NGA: 'ng', CRC: 'cr', SRB: 'rs', 
 };
 
 let _flagPending = null;
@@ -393,6 +390,20 @@ function selectCountry(country) {
         '</div>';
     searchInput.value      = '';
     dropdown.style.display = 'none';
+
+    const colors = activeEdition.countryColors?.[state.code];
+    if (colors) {
+        state.c2 = colors.c2;
+        state.c6 = colors.c6;
+        state.cCosito = colors.cCosito;
+        const c2El = document.getElementById('c2');
+        const c6El = document.getElementById('c6');
+        const cCositoEl = document.getElementById('cCosito');
+        if (c2El) c2El.value = colors.c2;
+        if (c6El) c6El.value = colors.c6;
+        if (cCositoEl) cCositoEl.value = colors.cCosito;
+        onUpdate('tints');
+    }
 }
 
 function normalizeStr(str) {
@@ -527,7 +538,7 @@ const TABS = [
     { label: '2026',              edition: Edition2026,      disabled: false, icon: '/frontend/assets/svg/logofifa3.svg' },
     { label: '2022', edition: EditionQatar2022, disabled: false, icon: '/frontend/assets/svg/logoqatar.svg' },
     { label: 'EXTRA STICKER 2026', edition: EditionExtraCard, disabled: false, icon: '/frontend/assets/extra.png' },
-    { label: '2018', edition: EditionRusia2018, disabled: true, icon: '/frontend/assets/svg/logorusia.svg' },
+    { label: '2018', edition: EditionRusia2018, disabled: false, icon: '/frontend/assets/svg/logorusia.svg' },
     { label: 'EXTRA STICKER 2022', sub: 'COMING SOON', edition: null, disabled: true, icon: '/frontend/assets/extra22.png' },
     { label: '2014', sub: 'COMING SOON', edition: null, disabled: true, icon: '/frontend/assets/svg/logobrasil.svg' },
 ];

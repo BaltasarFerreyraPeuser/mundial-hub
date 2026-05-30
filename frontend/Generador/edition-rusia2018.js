@@ -5,6 +5,7 @@ const EditionRusia2018 = {
     downloadSuffix: '2018',
 
     flagsPath: '/frontend/assets/flags/rusiaflags/',
+    flagsSvgPath: 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.3.2/flags/4x3/',
     miniflagsPath: '/frontend/assets/flags/miniflags/',
 
     canvasW: 2994,
@@ -104,6 +105,8 @@ const EditionRusia2018 = {
         { id: 'logo',     src: '/frontend/assets/rusia18/logorusia.png'  },
         { id: 'posicion', src: '/frontend/assets/rusia18/posicion.png'   },
         { id: 'textos',   src: '/frontend/assets/rusia18/textos.png'     },
+        { id: 'flagmask', src: '/frontend/assets/rusia18/flagmask.png' },
+        { id: 'bandera',  src: '/frontend/assets/rusia18/bandera.png'},
     ],
 
     buildTints(imgs, state) {
@@ -156,7 +159,33 @@ const EditionRusia2018 = {
         if (tints.posicion) ctx.drawImage(tints.posicion, 0, 0, W, H);
         if (imgs['logo']) ctx.drawImage(imgs['logo'], 0, 0, W, H);
         if (imgs['textos']) ctx.drawImage(imgs['textos'], 0, 0, W, H);
-        if (flagImg) ctx.drawImage(flagImg, 0, 0, W, H);
+        // ── BANDERA con máscara ───────────────────────────────────────────────
+        // La máscara (rusia2018.png) es una imagen con la forma blanca sobre fondo negro.
+        // Se dibuja la bandera en un canvas offscreen, luego se aplica la máscara
+        // con destination-in para recortarla a la forma exacta.
+        if (flagImg && imgs['flagmask']) {
+            const fOff = document.createElement('canvas');
+            fOff.width  = W;
+            fOff.height = H;
+            const fCtx = fOff.getContext('2d');
+
+            // Área de la máscara en canvas 2994×3960 (medida de rusia2018.png)
+            const MX = 2331, MY = 159, MW = 343, MH = 359;
+
+            // Escalar bandera para cubrir el alto del área, centrada en X
+            const fScale = MH / (flagImg.naturalHeight || flagImg.height || MH);
+            const fW     = (flagImg.naturalWidth  || flagImg.width)  * fScale;
+            const fX     = MX + (MW - fW) / 2;
+            fCtx.drawImage(flagImg, fX, MY, fW, MH);
+
+            // Recortar con la máscara: los píxeles blancos de flagmask definen la forma
+            fCtx.globalCompositeOperation = 'destination-in';
+            fCtx.drawImage(imgs['flagmask'], 0, 0, W, H);
+
+            // Componer sobre el canvas principal
+            ctx.drawImage(fOff, 0, 0);
+        }
+        if (imgs['bandera']) ctx.drawImage(imgs['bandera'], 0, 0, W, H);
 
         // ── PAIS CODE ──
         ctx.save();

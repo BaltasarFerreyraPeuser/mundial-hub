@@ -84,8 +84,8 @@ const Edition2026 = {
             { code: 'NOR', name: 'Noruega' },
         ],
         J: [
-            { code: 'ARG', name: 'Argentina' },
-            { code: 'ALG', name: 'Argelia' },
+            { code: 'ARG', name: 'Argentina'},
+            { code: 'ALG', name: 'Argelia'},
             { code: 'AUT', name: 'Austria' },
             { code: 'JOR', name: 'Jordania' },
         ],
@@ -111,6 +111,38 @@ const Edition2026 = {
         ],
     },
 
+    countryColors: {
+        'MEX': { c2: '#006847', c6: '#ce1126', cCosito: '#ffffff' },
+        'RSA': { c2: '#e1392d', c6: '#000c8a', cCosito: '#007847'},
+        'KOR': { c2: '#ffffff', c6: '#0047a0', cCosito: '#cd2e3a'},
+        'CZE': { c2: '#11457e', c6: '#ffffff', cCosito: '#d7141a'},
+        'CAN': { c2: '#d52b1e', c6: '#ffffff', cCosito: '#d45c54'},
+        'BIH': { c2: '#000099', c6: '#ffcc00', cCosito: '#5b7fd2'},
+        'QAT': { c2: '#ffffff', c6: '#8d1b3d', cCosito: '#b05e77'},
+        'SUI': { c2: '#ff0000', c6: '#ff0000', cCosito: '#ffffff'},
+        'BRA': { c2: '#229e45', c6: '#229e45', cCosito: '#f8e509'},
+        'MAR': { c2: '#c1272d', c6: '#c1272d', cCosito: '#0c5d32'},
+        'HAI': { c2: '#00209f', c6: '#d21034', cCosito: '#db768a'},
+        'SCO': { c2: '#0065bd', c6: '#0065bd', cCosito: '#ffffff'},
+        'USA': { c2: '#0065bd', c6: '#192f5d', cCosito: '#e4102b'},
+        'PAR': { c2: '#d52b1e', c6: '#0038a8', cCosito: '#ffffff'},
+        'AUS': { c2: '#00008b', c6: '#ffffff', cCosito: '#ff0000' },
+        'TUR': { c2: '#e30a17', c6: '#e30a17', cCosito: '#ffffff'},
+        'GER': { c2: '#000001', c6: '#ffcc00', cCosito: '#ff0000'},
+        'CUW': { c2: '#002b7f', c6: '#f9e814', cCosito: '#5f7fbf'},
+        'CIV': { c2: '#ff9a00', c6: '#00cd00', cCosito: '#ffffff'},
+        'ECU': { c2: '#ffe800', c6: '#da0010', cCosito: '#00148e'},
+        'NED': { c2: '#ae1c28', c6: '#21468b', cCosito: '#ffffff'},
+        'JPN': { c2: '#ffffff', c6: '#ffffff', cCosito: '#bc002d'},
+        'SWE': { c2: '#005293', c6: '#005293', cCosito: '#fecb00'},
+        'TUN': { c2: '#e70013', c6: '#e70013', cCosito: '#ffffff'},
+        'BEL': { c2: '#000001', c6: '#f31830', cCosito: '#ffd90c'},
+        'EGY': { c2: '#ce1126', c6: '#000001', cCosito: '#ffffff'},
+        'IRI': { c2: '#239f40', c6: '#da0000', cCosito: '#ffffff'},
+        'NZL': { c2: '#00247d', c6: '#c8102e', cCosito: '#385aa8'},
+        'ARG': { c2: '#74a9db', c6: '#ffffff', cCosito: '#9ab7dd' },
+    },
+
     positions: {
         gk: { label: 'Goalkeeper', rectColor: '#79438e' },
         def: { label: 'Defender', rectColor: '#d22d4b' },
@@ -123,10 +155,8 @@ const Edition2026 = {
         photoY:     -80,
         photoX:     null,  
         cBg:        '#65c8c9',
-        useGoldBg:  false,
-        c2:         '#74a9db',
-        c6:         '#ffffff',
-        cCosito:    '#9ab7dd',
+        useGoldBg: false,
+        c2: '#74a9db', c6: '#ffffff', cCosito: '#9ab7dd',
         position:   'mid',
         name: 'NAME',
         apellido: 'LASTNAME',
@@ -199,7 +229,7 @@ const Edition2026 = {
 
         if (tints.num2)   ctx.drawImage(tints.num2,   0, 0, W, H);
         if (tints.num6)   ctx.drawImage(tints.num6, 0, 0, W, H);
-        if (tints.cosito) ctx.drawImage(tints.cosito, -1, 0, W, H);
+        if (tints.cosito) ctx.drawImage(tints.cosito, 0, 0, W, H);
 
         if (photo) {
             const sc = state.photoScale / 40;
@@ -223,7 +253,7 @@ const Edition2026 = {
         if (state.useGoldBg && imgs['marcogold']) {
             ctx.drawImage(imgs['marcogold'], 0, 0, W, H);
         }
-        if (tints.marco6) ctx.drawImage(tints.marco6, 515, -48.5, W, H);
+        if (tints.marco6) ctx.drawImage(tints.marco6, 0, 0, W, H);
         if (typeof drawFlagInMarco === 'function') {
             drawFlagInMarco(ctx, flagImg);
         } else if (flagImg) {
