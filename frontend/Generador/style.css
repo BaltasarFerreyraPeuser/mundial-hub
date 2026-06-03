@@ -1027,6 +1027,8 @@ header {
 @media (max-width: 680px) {
     .page {
         padding: 14px 14px 0;
+        /* Espacio al fondo para que el panel fixed no tape el último control */
+        padding-bottom: 310px;
     }
 
     .amplify-center-26 {
@@ -1076,9 +1078,15 @@ header {
             line-height: 1.7;
         }
 
+    /* ── Layout: controles en columna, preview OCULTO del flujo ── */
     .layout {
-        flex-direction: column-reverse;
+        flex-direction: column;
         gap: 18px;
+    }
+
+    /* El main.preview original se esconde — lo reemplaza el panel fixed */
+    .preview {
+        display: none;
     }
 
     .controls {
@@ -1086,6 +1094,84 @@ header {
         width: 100%;
         max-width: 100%;
         gap: 12px;
+    }
+
+    /* ── Botón de descarga principal sigue visible en los controles ── */
+    .controls .dl-btn {
+        display: block;
+    }
+
+    /* ── Panel fixed en el bottom: siempre visible ── */
+    .mobile-preview-bar {
+        display: flex !important;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 200;
+        align-items: center;
+        gap: 14px;
+        padding: 10px 16px 10px;
+        padding-bottom: calc(10px + env(safe-area-inset-bottom, 0px));
+        background: var(--theme-bg-body, #ffffff);
+        border-top: 3px solid var(--black);
+        box-shadow: 0 -4px 20px rgba(0,0,0,0.13);
+    }
+
+    .mobile-preview-bar .mpb-canvas-wrap {
+        flex-shrink: 0;
+        width: 220px;
+        border-radius: 12px;
+        border: 3px solid var(--black);
+        box-shadow: 4px 4px 0 var(--theme-primary, var(--blueA));
+        overflow: hidden;
+        background: var(--theme-accent, #43c4c9);
+    }
+
+    .mobile-preview-bar .mpb-canvas-wrap canvas {
+        display: block;
+        width: 100%;
+        height: auto;
+    }
+
+    /* Columna derecha: label + botón apilados */
+    .mobile-preview-bar .mpb-right {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .mobile-preview-bar .mpb-label {
+        font-size: 11px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: .06em;
+        color: #555;
+        line-height: 1.35;
+        margin: 0;
+    }
+
+    .mobile-preview-bar .mpb-dl {
+        width: 100%;
+        padding: 12px 10px;
+        font-size: 14px;
+        font-weight: 900;
+        text-transform: uppercase;
+        letter-spacing: .04em;
+        background: var(--black);
+        color: var(--white);
+        border: 2px solid var(--black);
+        border-radius: 12px;
+        cursor: pointer;
+        transition: background .15s, transform .1s;
+        font-family: 'Barlow', sans-serif;
+        text-align: center;
+    }
+
+    .mobile-preview-bar .mpb-dl:active {
+        transform: scale(0.97);
     }
 
     .card {
@@ -1143,26 +1229,6 @@ header {
         font-size: 15px;
         padding: 14px;
         border-radius: var(--radius);
-    }
-
-    .preview {
-        width: 100%;
-    }
-
-    .canvas-wrap {
-        max-width: 100%;
-        width: 100%;
-        border-radius: var(--radius);
-        box-shadow: 8px 8px 0 var(--blueA);
-    }
-
-    .dl-btn-preview {
-        display: block;
-        width: 100%;
-    }
-
-    .controls .dl-btn {
-        display: none;
     }
 
     .country-dropdown {
@@ -1224,6 +1290,11 @@ header {
     .support-buttons {
         justify-content: center;
     }
+}
+
+/* El panel fixed está oculto en desktop */
+.mobile-preview-bar {
+    display: none;
 }
 
 @media (max-width: 380px) {

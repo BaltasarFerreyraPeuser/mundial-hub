@@ -113,7 +113,9 @@ const ALPHA3_TO_ALPHA2 = {
     // Grupo L
     ENG: 'gb-eng', CRO: 'hr', GHA: 'gh', PAN: 'pa',
     // Extra
-    VEN: 've', IRL: 'ie', ITA: 'it', POL: 'pl', CHI: 'cl', BOL: 'bo', RUS: 'ru', DEN: 'dk', PER: 'pe', ISL: 'is', NGA: 'ng', CRC: 'cr', SRB: 'rs', HON: 'hn', 
+    VEN: 've', IRL: 'ie', ITA: 'it', POL: 'pl', CHI: 'cl', BOL: 'bo', RUS: 'ru', DEN: 'dk', PER: 'pe', ISL: 'is', NGA: 'ng', CRC: 'cr', SRB: 'rs', HON: 'hn',
+    // Qatar 2022 exclusivos
+    WAL: 'gb-wls', CMR: 'cm',
 };
 
 let _flagPending = null;
@@ -205,8 +207,17 @@ function renderEditionControls(edition) {
     edition.bindControls(state, onUpdate);
 }
 
+let _tintDebounce = null;
 function onUpdate(type) {
-    if (type === 'tints') tints = activeEdition.buildTints(imgs, state);
+    if (type === 'tints') {
+        // Rebuild tints with caching — debounce rapid color picker drags
+        clearTimeout(_tintDebounce);
+        _tintDebounce = setTimeout(() => {
+            tints = activeEdition.buildTints(imgs, state, tints);
+            needsDraw = true;
+        }, 30);
+        return; // render loop will pick up needsDraw after timeout
+    }
 
     if (type === 'draw') {
         const controls = [
@@ -264,10 +275,10 @@ function switchEdition(edition) {
         });
 
         const fieldsToToggle = {
-            'tHeight': edition.id !== 'edition-extracard',
-            'tWeight': edition.id !== 'edition-extracard',
-            'tClub': edition.id !== 'edition-extracard' && edition.id !== 'edition-qatar2022',
-            'tApellido': edition.id === 'edition-2026'
+            'tHeight':   edition.id !== 'edition-extracard',
+            'tWeight':   edition.id !== 'edition-extracard',
+            'tClub':     edition.id !== 'edition-extracard' && edition.id !== 'edition-qatar2022',
+            'tApellido': edition.id === 'edition-2026',
         };
         Object.entries(fieldsToToggle).forEach(([id, show]) => {
             const el = document.getElementById(id);
@@ -276,6 +287,9 @@ function switchEdition(edition) {
                 if (row) row.style.display = show ? 'flex' : 'none';
             }
         });
+        // Fila de nacimiento: oculta en ExtraCard
+        const rowNaci = document.getElementById('rowNacimiento');
+        if (rowNaci) rowNaci.style.display = edition.id === 'edition-extracard' ? 'none' : 'flex';
 
         state = newState;
         switchCanvas(edition);

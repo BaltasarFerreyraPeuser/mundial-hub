@@ -8,6 +8,7 @@ const EditionQatar2022 = {
     canvasH: 3960,
 
     flagsPath: '/frontend/assets/flags/Qatarflags/',
+    flagsSvgPath: 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.3.2/flags/4x3/',
     miniflagsPath: '/frontend/assets/flags/miniflags/',
 
     theme: {
@@ -107,18 +108,19 @@ const EditionQatar2022 = {
     },
 
     layerFiles: [
-        { id: 'bg-orange', src: '/frontend/assets/qatar22/fondonaranja.png' },
-        { id: 'bg-blue',   src: '/frontend/assets/qatar22/fondoazul.png'    },
-        { id: 'pos-gk',    src: '/frontend/assets/qatar22/arquero.png'      },
-        { id: 'pos-def',   src: '/frontend/assets/qatar22/defensa.png'      },
-        { id: 'pos-mid',   src: '/frontend/assets/qatar22/medio.png'        },
-        { id: 'pos-fwd',   src: '/frontend/assets/qatar22/delantero.png'    },
-        { id: 'q-capa1',   src: '/frontend/assets/qatar22/abajo.png'        },
-        { id: 'q-capa2',   src: '/frontend/assets/qatar22/logo.png'         },
-        { id: 'q-capa3',   src: '/frontend/assets/qatar22/peso.png'         },
-        { id: 'q-capa4',   src: '/frontend/assets/qatar22/altura.png'       },
-        { id: 'q-capa5', src: '/frontend/assets/qatar22/abajotap.png' },
-        { id: 'q-capa6', src: '/frontend/assets/qatar22/abajotap2.png' },
+        { id: 'bg-orange',      src: '/frontend/assets/qatar22/fondonaranja.png'  },
+        { id: 'bg-blue',        src: '/frontend/assets/qatar22/fondoazul.png'     },
+        { id: 'pos-gk',         src: '/frontend/assets/qatar22/arquero.png'       },
+        { id: 'pos-def',        src: '/frontend/assets/qatar22/defensa.png'       },
+        { id: 'pos-mid',        src: '/frontend/assets/qatar22/medio.png'         },
+        { id: 'pos-fwd',        src: '/frontend/assets/qatar22/delantero.png'     },
+        { id: 'q-capa1',        src: '/frontend/assets/qatar22/abajo.png'         },
+        { id: 'q-capa2',        src: '/frontend/assets/qatar22/logo.png'          },
+        { id: 'q-capa3',        src: '/frontend/assets/qatar22/peso.png'          },
+        { id: 'q-capa4',        src: '/frontend/assets/qatar22/altura.png'        },
+        { id: 'q-capa5',        src: '/frontend/assets/qatar22/abajotap.png'      },
+        { id: 'q-capa6',        src: '/frontend/assets/qatar22/abajotap2.png'     },
+        { id: 'q-marcobandera', src: '/frontend/assets/qatar22/MarcoQatarSolo.png'},
     ],
 
     buildTints(_imgs, _state) {
@@ -203,7 +205,57 @@ const EditionQatar2022 = {
         if (imgs['q-capa3']) ctx.drawImage(imgs['q-capa3'], 0, 0, W, H);
         if (imgs['q-capa4']) ctx.drawImage(imgs['q-capa4'], 0, 0, W, H);
 
-        if (flagImg) ctx.drawImage(flagImg, 0, 0, W, H);
+        // ── Marco de bandera: cuadrado con bandera CDN + texto país ──────────
+        // Coordenadas medidas en el canvas 2994×3960:
+        //   Marco externo (beige): x=2301 y=167 w=541 h=654
+        //   Cuadrado interior (bandera): x=2318 y=299 w=507 h=504
+        //   Strip de texto (arriba del cuadrado): y=167 h=132
+        const MF = { ox: 2301, oy: 167, ow: 541, oh: 654,
+                     fx: 2318, fy: 299, fw: 507, fh: 504 };
+        const FONT_Q = '"FuentePersonalizadaQatar", "Barlow Condensed", sans-serif';
+
+        // 1. Fondo beige del marco completo
+        ctx.save();
+        ctx.fillStyle = '#ece9e0';
+        ctx.fillRect(MF.ox, MF.oy, MF.ow, MF.oh);
+
+        // 2. Bandera dentro del cuadrado interior (con clip)
+        if (flagImg) {
+            ctx.save();
+            ctx.beginPath();
+            ctx.rect(MF.fx, MF.fy, MF.fw, MF.fh);
+            ctx.clip();
+            // Escalar la bandera (4:3) para cubrir el cuadrado
+            const scale = Math.max(MF.fw / (flagImg.naturalWidth || flagImg.width || MF.fw),
+                                   MF.fh / (flagImg.naturalHeight || flagImg.height || MF.fh));
+            const dw = (flagImg.naturalWidth  || flagImg.width)  * scale;
+            const dh = (flagImg.naturalHeight || flagImg.height) * scale;
+            const dx = MF.fx + (MF.fw - dw) / 2;
+            const dy = MF.fy + (MF.fh - dh) / 2;
+            ctx.drawImage(flagImg, dx, dy, dw, dh);
+            ctx.restore();
+        }
+
+        // 3. Marco encima: imagen MarcoQatarSolo (solo el borde, sin texto)
+        if (imgs['q-marcobandera']) {
+            ctx.drawImage(imgs['q-marcobandera'], 0, 0, W, H);
+        } else {
+            // Fallback: dibujar el borde a mano si no cargó la imagen
+            ctx.strokeStyle = '#ece9e0';
+            ctx.lineWidth = 8;
+            ctx.strokeRect(MF.fx, MF.fy, MF.fw, MF.fh);
+        }
+
+        // 4. Texto alpha3 del país encima del marco (en el strip beige)
+        const labelText = state.code.toUpperCase().slice(0, 3);
+        const textCX = MF.ox + MF.ow / 2;     // centro horizontal del marco
+        const textCY = MF.oy + (MF.fy - MF.oy) / 2 + 55; // centro vertical del strip
+        ctx.font = `900 115px ${FONT_Q}`;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'alphabetic';
+        ctx.fillStyle = '#843340';
+        ctx.fillText(labelText, textCX, textCY, MF.ow - 20);
+        ctx.restore();
 
         const cleanDate = `${state.day}-${state.month}-${state.year}`;
         const cleanHeight = formatHeight(state.height);

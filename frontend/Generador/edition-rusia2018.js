@@ -92,8 +92,8 @@ const EditionRusia2018 = {
         day: '1',
         month: '1',
         year: '2000',
-        height:     'm 1.75',
-        weight:     'kg 70',
+        height:     '1.75',
+        weight:     '70',
         club:       'MY CLUB',
         code:       'ARG',
         debut:      '2017',
@@ -209,7 +209,7 @@ const EditionRusia2018 = {
         ctx.textAlign = 'center';
         ctx.textBaseline = 'alphabetic';
         ctx.fillStyle = '#706d6d';
-        ctx.fillText(state.height, 2685, 3174);
+        ctx.fillText(`m ${state.height}`, 2685, 3174);
         ctx.restore();
 
         // ── PESO ──
@@ -218,7 +218,7 @@ const EditionRusia2018 = {
         ctx.textAlign = 'center';
         ctx.textBaseline = 'alphabetic';
         ctx.fillStyle = '#706d6d';
-        ctx.fillText(state.weight, 2675, 3410);
+        ctx.fillText(`kg ${state.weight}`, 2675, 3410);
         ctx.restore();
 
         // ── FECHA ──
@@ -237,7 +237,7 @@ const EditionRusia2018 = {
         ctx.textAlign = 'left';
         ctx.textBaseline = 'alphabetic';
         ctx.fillStyle = '#000000';
-        ctx.fillText(state.name.toUpperCase(), 551, 3659, 1320);
+        ctx.fillText(state.name.toUpperCase(), 551, 3659, 1400);
         ctx.restore();
 
         // ── CLUB ──
@@ -308,5 +308,18 @@ const EditionRusia2018 = {
                 onUpdate('draw');
             });
         }
+
+        ['inDay', 'inMonth', 'inYear'].forEach(id => {
+            const el = document.getElementById(id);
+            if (!el) return;
+            el.addEventListener('input', e => {
+                const val = e.target.value.replace(/\D/g, '');
+                if (id === 'inDay')   state.day   = val.slice(0, 2);
+                if (id === 'inMonth') state.month = val.slice(0, 2);
+                if (id === 'inYear')  state.year  = val.slice(0, 4);
+                e.target.value = (id === 'inYear') ? state.year : (id === 'inDay' ? state.day : state.month);
+                onUpdate('draw');
+            });
+        });
     },
 };
