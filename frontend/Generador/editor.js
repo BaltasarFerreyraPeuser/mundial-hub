@@ -44,7 +44,6 @@ Promise.allSettled(
     needsDraw = true;
 });
 
-// Cargar modelos de face-api en cuanto el script cargue
 if (typeof ShirtAlign !== 'undefined') ShirtAlign.loadModels();
 
 const EDITIONS = [Edition2026, EditionQatar2022, EditionExtraCard, EditionRusia2018];
@@ -86,7 +85,7 @@ function loadLayers(edition) {
     });
 }
 
-const MARCO_FLAG = { x: 2256, y: 2093, w: 391, h: 388 };
+const MARCO_FLAG = { x: 2298, y: 2142, w: 390, h: 390 };
 
 const ALPHA3_TO_ALPHA2 = {
     // Grupo A
@@ -125,44 +124,36 @@ function loadFlag(code) {
     img.onload  = () => { if (_flagPending === img) { flagImg = img; needsDraw = true; } };
     img.onerror = () => { if (_flagPending === img) { flagImg = null; needsDraw = true; } };
     if (activeEdition.flagsSvgPath) {
-        // Ediciones con SVG del CDN (2026, extracard, etc.)
         img.crossOrigin = 'anonymous';
         const alpha2 = ALPHA3_TO_ALPHA2[code] || code.toLowerCase();
         img.src = activeEdition.flagsSvgPath + alpha2 + '.svg';
     } else {
-        // Ediciones con banderas PNG propias (Qatar 2022, Rusia 2018, etc.)
         img.src = activeEdition.flagsPath + code + '.png';
     }
 }
 
-/**
- * Dibuja la bandera centrada dentro del marco, ajustada al alto del área
- * (top/bottom respetados, puede salirse por los costados).
- */
 function drawFlagInMarco(ctx, flagImg) {
     if (!flagImg) return;
     const { x, y, w, h } = MARCO_FLAG;
     const scale = h / (flagImg.naturalHeight || flagImg.height || h);
     const dw = (flagImg.naturalWidth || flagImg.width) * scale;
     const dh = h;
-    const dx = x + (w - dw) / 2; // centra horizontalmente
+    const dx = x + (w - dw) / 2;
     const dy = y;
 
-    // El marcobandera tiene 3 esquinas redondeadas y 1 recta (bottom-right).
-    // Radio calculado del SVG transformado al canvas 2895x3840: ~197px.
     const r = 197;
     const x2 = x + w, y2 = y + h;
 
     ctx.save();
     ctx.beginPath();
-    ctx.moveTo(x + r, y);          // top-left redondeada
+    ctx.moveTo(x + r, y);         
     ctx.lineTo(x2 - r, y);
-    ctx.arcTo(x2, y,  x2, y + r, r);  // top-right redondeada
-    ctx.lineTo(x2, y2);            // bottom-right RECTA
+    ctx.arcTo(x2, y,  x2, y + r, r); 
+    ctx.lineTo(x2, y2);           
     ctx.lineTo(x + r, y2);
-    ctx.arcTo(x,  y2, x, y2 - r,  r); // bottom-left redondeada
+    ctx.arcTo(x,  y2, x, y2 - r,  r);
     ctx.lineTo(x,  y + r);
-    ctx.arcTo(x,  y,  x + r, y,   r); // top-left redondeada (cierre)
+    ctx.arcTo(x,  y,  x + r, y,   r);
     ctx.closePath();
     ctx.clip();
 
@@ -180,10 +171,8 @@ function loadShirt(code) {
             imgs['shirt'] = img;
             if (state.showShirt && typeof ShirtAlign !== 'undefined') {
                 if (photo && state._photoBounds) {
-                    // Re-alinear la FOTO para que encaje en el cuello de la nueva remera
                     ShirtAlign.align(photo, img, state, onUpdate);
                 } else {
-                    // Sin foto: posicionar la remera por defecto
                     ShirtAlign.alignShirt(img, state, onUpdate);
                 }
             } else {

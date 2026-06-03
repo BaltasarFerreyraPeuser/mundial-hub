@@ -108,39 +108,62 @@ const Edition2026 = {
             { code: 'POL', name: 'Polonia' },
             { code: 'CHI', name: 'Chile' },
             { code: 'BOL', name: 'Bolivia' },
+            { code: 'RUS', name: 'Rusia' },
+            { code: 'CRC', name: 'Costa Rica'},
         ],
     },
 
     countryColors: {
-        'MEX': { c2: '#006847', c6: '#ce1126', cCosito: '#ffffff' },
-        'RSA': { c2: '#e1392d', c6: '#000c8a', cCosito: '#007847'},
-        'KOR': { c2: '#ffffff', c6: '#0047a0', cCosito: '#cd2e3a'},
-        'CZE': { c2: '#11457e', c6: '#ffffff', cCosito: '#d7141a'},
-        'CAN': { c2: '#d52b1e', c6: '#ffffff', cCosito: '#d45c54'},
-        'BIH': { c2: '#000099', c6: '#ffcc00', cCosito: '#5b7fd2'},
-        'QAT': { c2: '#ffffff', c6: '#8d1b3d', cCosito: '#b05e77'},
-        'SUI': { c2: '#ff0000', c6: '#ff0000', cCosito: '#ffffff'},
-        'BRA': { c2: '#229e45', c6: '#229e45', cCosito: '#f8e509'},
-        'MAR': { c2: '#c1272d', c6: '#c1272d', cCosito: '#0c5d32'},
-        'HAI': { c2: '#00209f', c6: '#d21034', cCosito: '#db768a'},
-        'SCO': { c2: '#0065bd', c6: '#0065bd', cCosito: '#ffffff'},
-        'USA': { c2: '#0065bd', c6: '#192f5d', cCosito: '#e4102b'},
-        'PAR': { c2: '#d52b1e', c6: '#0038a8', cCosito: '#ffffff'},
-        'AUS': { c2: '#00008b', c6: '#ffffff', cCosito: '#ff0000' },
-        'TUR': { c2: '#e30a17', c6: '#e30a17', cCosito: '#ffffff'},
-        'GER': { c2: '#000001', c6: '#ffcc00', cCosito: '#ff0000'},
-        'CUW': { c2: '#002b7f', c6: '#f9e814', cCosito: '#5f7fbf'},
-        'CIV': { c2: '#ff9a00', c6: '#00cd00', cCosito: '#ffffff'},
-        'ECU': { c2: '#ffe800', c6: '#da0010', cCosito: '#00148e'},
-        'NED': { c2: '#ae1c28', c6: '#21468b', cCosito: '#ffffff'},
-        'JPN': { c2: '#ffffff', c6: '#ffffff', cCosito: '#bc002d'},
-        'SWE': { c2: '#005293', c6: '#005293', cCosito: '#fecb00'},
-        'TUN': { c2: '#e70013', c6: '#e70013', cCosito: '#ffffff'},
-        'BEL': { c2: '#000001', c6: '#f31830', cCosito: '#ffd90c'},
-        'EGY': { c2: '#ce1126', c6: '#000001', cCosito: '#ffffff'},
-        'IRI': { c2: '#239f40', c6: '#da0000', cCosito: '#ffffff'},
-        'NZL': { c2: '#00247d', c6: '#c8102e', cCosito: '#385aa8'},
-        'ARG': { c2: '#74a9db', c6: '#ffffff', cCosito: '#9ab7dd' },
+        MEX: { c2: '#006847', c6: '#ce1126', cCosito: '#ffffff' },
+        RSA: { c2: '#e1392d', c6: '#000c8a', cCosito: '#007847' },
+        KOR: { c2: '#ffffff', c6: '#0047a0', cCosito: '#cd2e3a' },
+        CZE: { c2: '#11457e', c6: '#ffffff', cCosito: '#d7141a' },
+        CAN: { c2: '#d52b1e', c6: '#ffffff', cCosito: '#d45c54' },
+        BIH: { c2: '#000099', c6: '#ffcc00', cCosito: '#5b7fd2' },
+        QAT: { c2: '#ffffff', c6: '#8d1b3d', cCosito: '#b05e77' },
+        SUI: { c2: '#ff0000', c6: '#ff0000', cCosito: '#ffffff' },
+        BRA: { c2: '#229e45', c6: '#229e45', cCosito: '#f8e509' },
+        MAR: { c2: '#c1272d', c6: '#c1272d', cCosito: '#0c5d32' },
+        HAI: { c2: '#00209f', c6: '#d21034', cCosito: '#db768a' },
+        SCO: { c2: '#0065bd', c6: '#0065bd', cCosito: '#ffffff' },
+        USA: { c2: '#0065bd', c6: '#192f5d', cCosito: '#e4102b' },
+        PAR: { c2: '#d52b1e', c6: '#0038a8', cCosito: '#ffffff' },
+        AUS: { c2: '#00008b', c6: '#ffffff', cCosito: '#ff0000' },
+        TUR: { c2: '#e30a17', c6: '#e30a17', cCosito: '#ffffff' },
+        GER: { c2: '#000001', c6: '#ffcc00', cCosito: '#ff0000' },
+        CUW: { c2: '#002b7f', c6: '#f9e814', cCosito: '#5f7fbf' },
+        CIV: { c2: '#ff9a00', c6: '#00cd00', cCosito: '#ffffff' },
+        ECU: { c2: '#ffe800', c6: '#da0010', cCosito: '#00148e' },
+        NED: { c2: '#ae1c28', c6: '#21468b', cCosito: '#ffffff' },
+        JPN: { c2: '#ffffff', c6: '#ffffff', cCosito: '#bc002d' },
+        SWE: { c2: '#005293', c6: '#005293', cCosito: '#fecb00' },
+        TUN: { c2: '#e70013', c6: '#e70013', cCosito: '#ffffff' },
+        BEL: { c2: '#000001', c6: '#f31830', cCosito: '#ffd90c' },
+        EGY: { c2: '#ce1126', c6: '#000001', cCosito: '#ffffff' },
+        IRI: { c2: '#239f40', c6: '#da0000', cCosito: '#ffffff' },
+        NZL: { c2: '#00247d', c6: '#c8102e', cCosito: '#385aa8' },
+        ESP: { c2: '#aa151b', c6: '#f1bf00', cCosito: '#c64e50' },
+        CPV: { c2: '#081873', c6: '#081873', cCosito: '#de3929' },
+        KSA: { c2: '#165d31', c6: '#165d31', cCosito: '#ffffff' },
+        URU: { c2: '#ffffff', c6: '#0038a8', cCosito: '#5777b7' },
+        FRA: { c2: '#000091', c6: '#e1000f', cCosito: '#ffffff' },
+        SEN: { c2: '#0b7226', c6: '#bc0000', cCosito: '#ffff00' },
+        IRQ: { c2: '#ce1126', c6: '#000001', cCosito: '#ffffff' },
+        NOR: { c2: '#ed2939', c6: '#002664', cCosito: '#ffffff' },
+        ARG: { c2: '#74a9db', c6: '#ffffff', cCosito: '#9ab7dd' },
+        ALG: { c2: '#006233', c6: '#ffffff', cCosito: '#d21034' },
+        AUT: { c2: '#c8102e', c6: '#ffffff', cCosito: '#e86969' },
+        JOR: { c2: '#000001', c6: '#009900', cCosito: '#ffffff' },
+        POR: { c2: '#006600', c6: '#ff0000', cCosito: '#367335' },
+        COD: { c2: '#007fff', c6: '#ce1021', cCosito: '#f7d618' },
+        UZB: { c2: '#0099b5', c6: '#1eb53a', cCosito: '#ffffff' },
+        COL: { c2: '#ffe800', c6: '#da0010', cCosito: '#00148e' },
+        ENG: { c2: '#ffffff', c6: '#ffffff', cCosito: '#ce1124' },
+        CRO: { c2: '#ff0000', c6: '#171796', cCosito: '#ffffff' },
+        GHA: { c2: '#ce1126', c6: '#006b3f', cCosito: '#fcd116' },
+        PAN: { c2: '#ffffff', c6: '#0000ab', cCosito: '#db0000' },
+        IRL: { c2: '#009a49', c6: '#ff7900', cCosito: '#ffffff' },
+        CRC: { c2: '#0000b4', c6: '#d90000', cCosito: '#ffffff'},
     },
 
     positions: {
@@ -257,39 +280,39 @@ const Edition2026 = {
         if (typeof drawFlagInMarco === 'function') {
             drawFlagInMarco(ctx, flagImg);
         } else if (flagImg) {
-            ctx.drawImage(flagImg, -32, -78, W, H);
+            ctx.drawImage(flagImg, 45, 78, W, H);
         }
         if (tints.marcobandera) ctx.drawImage(tints.marcobandera, 0, 0, W, H);
         ctx.save();
         state.code.toUpperCase().slice(0, 3).split('').forEach((l, i) => {
-            ctx.font         = `680px ${FONT_PAIS}`;
+            ctx.font         = `690px ${FONT_PAIS}`;
             ctx.textAlign    = 'center';
             ctx.textBaseline = 'alphabetic';
             ctx.fillStyle    = 'transparent';
             ctx.strokeStyle  = 'rgba(255,255,255,1)';
-            ctx.lineWidth    = 15.00;
-            ctx.strokeText(l, W - 435, 2810 + i * 305);
-            ctx.fillText(l, W - 435, 2810 + i * 305);
+            ctx.lineWidth    = 17.00;
+            ctx.strokeText(l, W - 380, 2870 + i * 305);
+            ctx.fillText(l, W - 380, 2870 + i * 305);
         });
         ctx.restore();
 
-        if (tints.rectA) ctx.drawImage(tints.rectA, 12, 472, W, H);
+        if (tints.rectA) ctx.drawImage(tints.rectA, 0, 0, W, H);
 
-        if (tints.rectB) ctx.drawImage(tints.rectB, -17, 267, W, H);
+        if (tints.rectB) ctx.drawImage(tints.rectB, 0, 0, W, H);
 
-        if (imgs.fifa)   ctx.drawImage(imgs.fifa,   2135,  130,  585, 827);
-        if (imgs.panini) ctx.drawImage(imgs.panini, 1950, 3467,  706,  167);
+        if (imgs.fifa)   ctx.drawImage(imgs.fifa,   2220,  235,  585, 827);
+        if (imgs.panini) ctx.drawImage(imgs.panini, 1985, 3523,  706,  167);
 
         const cleanDate = `${state.day}-${state.month}-${state.year}`;
         const cleanHeight = formatHeight(state.height);
         const cleanWeight = formatWeight(state.weight);
 
         ctx.save();
-        const cx = 160 + 2052 / 2;
+        const cx = 211 + 2022 / 2;
         const MAX_NAME_W = 1850;
 
         ctx.font = `180px ${FONT_NOMBRE}`;
-        const nameWidth = ctx.measureText(state.name.toUpperCase() + ' ').width * 0.70;
+        const nameWidth = ctx.measureText(state.name.toUpperCase() + ' ').width * 0.80;
         ctx.font = `180px ${FONT_APELLIDO}`;
         const apellidoWidth = ctx.measureText(state.apellido.toUpperCase()).width * 1.15;
         const totalWidth = nameWidth + apellidoWidth;
@@ -301,8 +324,8 @@ const Edition2026 = {
 
         // Nombre
         ctx.save();
-        ctx.translate(startX, H - 585);
-        ctx.scale(0.70 * compress, 1);
+        ctx.translate(startX, H - 545);
+        ctx.scale(0.80 * compress, 1);
         ctx.textAlign = 'left';
         ctx.font = `180px ${FONT_NOMBRE}`;
         ctx.fillStyle = '#fff';
@@ -311,7 +334,7 @@ const Edition2026 = {
 
         // Apellido
         ctx.save();
-        ctx.translate(startX + nameW_final, H - 585);
+        ctx.translate(startX + nameW_final, H - 545);
         ctx.scale(1.15 * compress, 1);
         ctx.textAlign = 'left';
         ctx.font = `180px ${FONT_APELLIDO}`;
@@ -323,10 +346,10 @@ const Edition2026 = {
         //Naci
         ctx.save();
         ctx.textAlign = 'center';
-        const cx2 = 160 + 2052 / 2
+        const cx2 = 211 + 2022 / 2
         ctx.font = `88px ${FONT_NACI}`;
         ctx.fillStyle = '#fff';
-        ctx.translate(cx2, H - 440);
+        ctx.translate(cx2, H - 400);
         ctx.scale(1, 1.35);
         ctx.fillText(`${cleanDate}  |  ${cleanHeight} m  |  ${cleanWeight} kg`, 0, 0, 2040);
         ctx.restore();
@@ -335,7 +358,7 @@ const Edition2026 = {
         ctx.textAlign = 'center';
         ctx.font = `115px ${FONT_NOMBRE}`;
         ctx.fillStyle = '#fff';
-        ctx.translate(145 + 1777 / 2, H - 245);
+        ctx.translate(211 + 1734 / 2, H - 190);
         ctx.scale(1, 1.15);
         ctx.fillText(state.club.toUpperCase(), 0, 0, 1760);
         ctx.restore();

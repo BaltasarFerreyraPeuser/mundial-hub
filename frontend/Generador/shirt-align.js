@@ -73,7 +73,7 @@ const ShirtAlign = {
         }
         if (!found) return;
 
-        const TARGET_Y_TOP = 147;
+        const TARGET_Y_TOP = 207;
         const TARGET_X_CENTER = (189 + 2186) / 2;
         let scale;
         let faceDetected = false;
@@ -108,14 +108,14 @@ const ShirtAlign = {
             }
 
         } else {
-            const TARGET_Y_BOTTOM = 3037;
+            const TARGET_Y_BOTTOM = 3103;
             const TARGET_AVAILABLE_HEIGHT = TARGET_Y_BOTTOM - TARGET_Y_TOP;
             const CONTENT_HEIGHT = maxY - minY;
             scale = TARGET_AVAILABLE_HEIGHT / CONTENT_HEIGHT;
         }
         state.photoScale = scale * 40;
         state.photoY = TARGET_Y_TOP - (minY * scale);
-        state.photoX = TARGET_X_CENTER - (faceCenterX * scale);
+        state.photoX = (1221) - (faceCenterX * scale);
 
         state._photoBounds = { minY, maxY, minX, maxX, scale };
 

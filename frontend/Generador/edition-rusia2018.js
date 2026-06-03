@@ -88,8 +88,10 @@ const EditionRusia2018 = {
         cBg:        '#1a1a2e',
         marco1:     '#c8102e',
         position:   'mid',
-        name:       'YOUR NAME',
-        date:       '1-1-2000',
+        name: 'YOUR NAME',
+        day: '1',
+        month: '1',
+        year: '2000',
         height:     'm 1.75',
         weight:     'kg 70',
         club:       'MY CLUB',
@@ -159,30 +161,22 @@ const EditionRusia2018 = {
         if (tints.posicion) ctx.drawImage(tints.posicion, 0, 0, W, H);
         if (imgs['logo']) ctx.drawImage(imgs['logo'], 0, 0, W, H);
         if (imgs['textos']) ctx.drawImage(imgs['textos'], 0, 0, W, H);
-        // ── BANDERA con máscara ───────────────────────────────────────────────
-        // La máscara (rusia2018.png) es una imagen con la forma blanca sobre fondo negro.
-        // Se dibuja la bandera en un canvas offscreen, luego se aplica la máscara
-        // con destination-in para recortarla a la forma exacta.
         if (flagImg && imgs['flagmask']) {
             const fOff = document.createElement('canvas');
             fOff.width  = W;
             fOff.height = H;
             const fCtx = fOff.getContext('2d');
 
-            // Área de la máscara en canvas 2994×3960 (medida de rusia2018.png)
             const MX = 2331, MY = 159, MW = 343, MH = 359;
 
-            // Escalar bandera para cubrir el alto del área, centrada en X
             const fScale = MH / (flagImg.naturalHeight || flagImg.height || MH);
             const fW     = (flagImg.naturalWidth  || flagImg.width)  * fScale;
             const fX     = MX + (MW - fW) / 2;
             fCtx.drawImage(flagImg, fX, MY, fW, MH);
 
-            // Recortar con la máscara: los píxeles blancos de flagmask definen la forma
             fCtx.globalCompositeOperation = 'destination-in';
             fCtx.drawImage(imgs['flagmask'], 0, 0, W, H);
 
-            // Componer sobre el canvas principal
             ctx.drawImage(fOff, 0, 0);
         }
         if (imgs['bandera']) ctx.drawImage(imgs['bandera'], 0, 0, W, H);
@@ -229,11 +223,12 @@ const EditionRusia2018 = {
 
         // ── FECHA ──
         ctx.save();
+        const cleanDate = `${state.day}-${state.month}-${state.year}`;
         ctx.font = `110px ${FONT_normal}`;
         ctx.textAlign = 'center';
         ctx.textBaseline = 'alphabetic';
         ctx.fillStyle = '#706d6d';
-        ctx.fillText(state.date || '', 1199, 3425);
+        ctx.fillText(cleanDate || '', 1199, 3425);
         ctx.restore();
 
         // ── NOMBRE ──
