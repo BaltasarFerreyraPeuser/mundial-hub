@@ -205,27 +205,19 @@ const EditionQatar2022 = {
         if (imgs['q-capa3']) ctx.drawImage(imgs['q-capa3'], 0, 0, W, H);
         if (imgs['q-capa4']) ctx.drawImage(imgs['q-capa4'], 0, 0, W, H);
 
-        // ── Marco de bandera: cuadrado con bandera CDN + texto país ──────────
-        // Coordenadas medidas en el canvas 2994×3960:
-        //   Marco externo (beige): x=2301 y=167 w=541 h=654
-        //   Cuadrado interior (bandera): x=2318 y=299 w=507 h=504
-        //   Strip de texto (arriba del cuadrado): y=167 h=132
         const MF = { ox: 2301, oy: 167, ow: 541, oh: 654,
                      fx: 2318, fy: 299, fw: 507, fh: 504 };
         const FONT_Q = '"FuentePersonalizadaQatar", "Barlow Condensed", sans-serif';
 
-        // 1. Fondo beige del marco completo
         ctx.save();
         ctx.fillStyle = '#ece9e0';
         ctx.fillRect(MF.ox, MF.oy, MF.ow, MF.oh);
 
-        // 2. Bandera dentro del cuadrado interior (con clip)
         if (flagImg) {
             ctx.save();
             ctx.beginPath();
             ctx.rect(MF.fx, MF.fy, MF.fw, MF.fh);
             ctx.clip();
-            // Escalar la bandera (4:3) para cubrir el cuadrado
             const scale = Math.max(MF.fw / (flagImg.naturalWidth || flagImg.width || MF.fw),
                                    MF.fh / (flagImg.naturalHeight || flagImg.height || MF.fh));
             const dw = (flagImg.naturalWidth  || flagImg.width)  * scale;
@@ -236,25 +228,22 @@ const EditionQatar2022 = {
             ctx.restore();
         }
 
-        // 3. Marco encima: imagen MarcoQatarSolo (solo el borde, sin texto)
         if (imgs['q-marcobandera']) {
             ctx.drawImage(imgs['q-marcobandera'], 0, 0, W, H);
         } else {
-            // Fallback: dibujar el borde a mano si no cargó la imagen
             ctx.strokeStyle = '#ece9e0';
             ctx.lineWidth = 8;
             ctx.strokeRect(MF.fx, MF.fy, MF.fw, MF.fh);
         }
 
-        // 4. Texto alpha3 del país encima del marco (en el strip beige)
         const labelText = state.code.toUpperCase().slice(0, 3);
-        const textCX = MF.ox + MF.ow / 2;     // centro horizontal del marco
-        const textCY = MF.oy + (MF.fy - MF.oy) / 2 + 55; // centro vertical del strip
-        ctx.font = `900 115px ${FONT_Q}`;
+        const textCX = MF.ox + MF.ow / 2; 
+        const textCY = MF.oy + (MF.fy - MF.oy) / 2 + 55;
+        ctx.font = `900 150px ${FONT_Q}`;
         ctx.textAlign = 'center';
         ctx.textBaseline = 'alphabetic';
         ctx.fillStyle = '#843340';
-        ctx.fillText(labelText, textCX, textCY, MF.ow - 20);
+        ctx.fillText(labelText, textCX, textCY, MF.ow);
         ctx.restore();
 
         const cleanDate = `${state.day}-${state.month}-${state.year}`;
