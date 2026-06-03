@@ -113,7 +113,7 @@ const ALPHA3_TO_ALPHA2 = {
     // Grupo L
     ENG: 'gb-eng', CRO: 'hr', GHA: 'gh', PAN: 'pa',
     // Extra
-    VEN: 've', IRL: 'ie', ITA: 'it', POL: 'pl', CHI: 'cl', BOL: 'bo', RUS: 'ru', DEN: 'dk', PER: 'pe', ISL: 'is', NGA: 'ng', CRC: 'cr', SRB: 'rs', 
+    VEN: 've', IRL: 'ie', ITA: 'it', POL: 'pl', CHI: 'cl', BOL: 'bo', RUS: 'ru', DEN: 'dk', PER: 'pe', ISL: 'is', NGA: 'ng', CRC: 'cr', SRB: 'rs', HON: 'hn', 
 };
 
 let _flagPending = null;

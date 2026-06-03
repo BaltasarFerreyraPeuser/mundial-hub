@@ -109,7 +109,8 @@ const Edition2026 = {
             { code: 'CHI', name: 'Chile' },
             { code: 'BOL', name: 'Bolivia' },
             { code: 'RUS', name: 'Rusia' },
-            { code: 'CRC', name: 'Costa Rica'},
+            { code: 'CRC', name: 'Costa Rica' },
+            { code: 'HON', name: 'Honduras'},
         ],
     },
 
@@ -163,7 +164,8 @@ const Edition2026 = {
         GHA: { c2: '#ce1126', c6: '#006b3f', cCosito: '#fcd116' },
         PAN: { c2: '#ffffff', c6: '#0000ab', cCosito: '#db0000' },
         IRL: { c2: '#009a49', c6: '#ff7900', cCosito: '#ffffff' },
-        CRC: { c2: '#0000b4', c6: '#d90000', cCosito: '#ffffff'},
+        CRC: { c2: '#0000b4', c6: '#d90000', cCosito: '#ffffff' },
+        HON: { c2: '#18c3df', c6: '#ffffff', cCosito: '#6dcedf' },
     },
 
     positions: {
