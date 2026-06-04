@@ -218,12 +218,23 @@ const EditionQatar2022 = {
             ctx.beginPath();
             ctx.rect(MF.fx, MF.fy, MF.fw, MF.fh);
             ctx.clip();
-            const scale = Math.max(MF.fw / (flagImg.naturalWidth || flagImg.width || MF.fw),
-                                   MF.fh / (flagImg.naturalHeight || flagImg.height || MF.fh));
-            const dw = (flagImg.naturalWidth  || flagImg.width)  * scale;
-            const dh = (flagImg.naturalHeight || flagImg.height) * scale;
-            const dx = MF.fx + (MF.fw - dw) / 2;
-            const dy = MF.fy + (MF.fh - dh) / 2;
+
+            const fw = flagImg.naturalWidth  || flagImg.width  || MF.fw;
+            const fh = flagImg.naturalHeight || flagImg.height || MF.fh;
+            let dw, dh, dx, dy;
+            if (state.code === 'BRA') {
+                // contain + fondo verde para que el rombo entre completo
+                const scale = Math.min(MF.fw / fw, MF.fh / fh);
+                dw = fw * scale; dh = fh * scale;
+                dx = MF.fx + (MF.fw - dw) / 2; dy = MF.fy + (MF.fh - dh) / 2;
+                ctx.fillStyle = '#009C3B';
+                ctx.fillRect(MF.fx, MF.fy, MF.fw, MF.fh);
+            } else {
+                // comportamiento original: cover (Math.max)
+                const scale = Math.max(MF.fw / fw, MF.fh / fh);
+                dw = fw * scale; dh = fh * scale;
+                dx = MF.fx + (MF.fw - dw) / 2; dy = MF.fy + (MF.fh - dh) / 2;
+            }
             ctx.drawImage(flagImg, dx, dy, dw, dh);
             ctx.restore();
         }

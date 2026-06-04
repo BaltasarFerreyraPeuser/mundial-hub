@@ -164,12 +164,10 @@ const EditionExtraCard = {
         if (flagImg && this.marcoBanderaSlots) {
             this.marcoBanderaSlots.forEach(slot => {
                 const { x, y, w, h, r } = slot;
-                const scale = h / (flagImg.naturalHeight || flagImg.height || h);
-                const dw = (flagImg.naturalWidth || flagImg.width) * scale;
-                const dh = h;
-                const dx = x + (w - dw) / 2;
-                const dy = y;
+                const fw = flagImg.naturalWidth  || flagImg.width  || w;
+                const fh = flagImg.naturalHeight || flagImg.height || h;
                 const x2 = x + w, y2 = y + h;
+                let dw, dh, dx, dy;
 
                 ctx.save();
                 ctx.beginPath();
@@ -183,6 +181,20 @@ const EditionExtraCard = {
                 ctx.arcTo(x, y, x + r, y, r);
                 ctx.closePath();
                 ctx.clip();
+
+                if (state.code === 'BRA') {
+                    // contain + fondo verde para que el rombo entre completo
+                    const scale = Math.min(w / fw, h / fh);
+                    dw = fw * scale; dh = fh * scale;
+                    dx = x + (w - dw) / 2; dy = y + (h - dh) / 2;
+                    ctx.fillStyle = '#009C3B';
+                    ctx.fillRect(x, y, w, h);
+                } else {
+                    // comportamiento original: escala por altura
+                    const scale = h / fh;
+                    dw = fw * scale; dh = h;
+                    dx = x + (w - dw) / 2; dy = y;
+                }
                 ctx.drawImage(flagImg, dx, dy, dw, dh);
                 ctx.restore();
             });

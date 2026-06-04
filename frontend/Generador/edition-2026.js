@@ -329,7 +329,7 @@ const Edition2026 = {
             ctx.restore();
         } else {
             if (typeof drawFlagInMarco === 'function') {
-                drawFlagInMarco(ctx, flagImg);
+                drawFlagInMarco(ctx, flagImg, state.code);
             } else if (flagImg) {
                 ctx.drawImage(flagImg, 45, 78, W, H);
             }

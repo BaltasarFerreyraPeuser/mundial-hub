@@ -17,8 +17,9 @@ const TRANSLATIONS = {
         'label-vertical':     'Vertical',
         'label-horizontal':   'Horizontal',
         'card-datos-h3':      'Datos del jugador',
-        'label-name': 'Nombre',
-        'label-apellido': 'Apellido',
+        'label-name':         'Nombre',
+        'label-apellido':     'Apellido',
+        'label-nacimiento':   'Nacimiento',
         'label-date':         'Fecha',
         'label-height':       'Altura',
         'label-weight':       'Peso',
@@ -28,39 +29,40 @@ const TRANSLATIONS = {
         'dl-btn':             'Descargar PNG',
         'hint':               'Vista previa en tiempo real',
         'dl-btn-mobile':      'Descargar PNG',
-        // FAQ
+        'mpb-label':          'Vista previa<br>en tiempo real',
+        'mpb-dl':             '⬇ Descargar',
         'faq-h2':             'Preguntas frecuentes',
         'faq-1-q':            '¿Es gratis el generador de figuritas del Mundial 2026?',
         'faq-1-a':            'Sí, el generador es completamente gratuito. Podés crear y descargar tu figurita sin pagar nada.',
-        'faq-2-q':            '¿Cómo funciona la IA para quitar el fondo?',
-        'faq-2-a':            'Usamos <strong>rembg</strong>, una tecnología de Inteligencia Artificial que detecta automáticamente la figura humana en tu foto y elimina el fondo en segundos, sin necesidad de editar manualmente.',
-        'faq-3-q':            '¿Qué países puedo elegir para mi figurita?',
-        'faq-3-a':            'Están disponibles todos los seleccionados clasificados al Mundial 2026, incluyendo Argentina, Brasil, México, España, Francia, Alemania y muchos más.',
-        'faq-4-q':            '¿En qué resolución se descarga la figurita?',
-        'faq-4-a':            'La figurita se descarga en alta resolución (1650×2310 px), perfecta para imprimir o compartir en redes sociales.',
-        // Footer
+        'faq-2-q':            '¿Qué ediciones del Mundial están disponibles?',
+        'faq-2-a':            'Podés crear figuritas del <strong>Mundial 2026</strong>, <strong>Qatar 2022</strong>, <strong>Rusia 2018</strong> y una versión <strong>Extra Card</strong> especial con diseño único.',
+        'faq-3-q':            '¿Cómo funciona la IA para quitar el fondo?',
+        'faq-3-a':            'Usamos <strong>rembg</strong>, una tecnología de Inteligencia Artificial que detecta automáticamente la figura humana en tu foto y elimina el fondo en segundos, sin necesidad de editar manualmente.',
+        'faq-4-q':            '¿Qué países puedo elegir para mi figurita?',
+        'faq-4-a':            'Están disponibles todos los seleccionados clasificados al Mundial 2026, incluyendo Argentina, Brasil, México, España, Francia, Alemania, Portugal, Uruguay y muchos más.',
+        'faq-5-q':            '¿En qué resolución se descarga la figurita?',
+        'faq-5-a':            'La figurita se descarga en alta resolución (hasta <strong>2895×3840 px</strong>), perfecta para imprimir o compartir en redes sociales.',
+        'faq-6-q':            '¿Puedo crear la figurita desde el celular?',
+        'faq-6-a':            'Sí, el generador funciona perfectamente en dispositivos móviles. Podés subir tu foto, personalizarla y descargarla directo desde el teléfono.',
         'footer-support-p1':  '¿Te gustó tu figurita?',
         'footer-support-p2':  'Podés ayudarme con unos pesitos',
         'footer-privacy':     'Privacidad',
         'footer-terms':       'Términos',
         'footer-contact':     'Contacto',
         'footer-credits':     'Desarrollado con amor por <strong>Baltasar</strong>',
-        // Modal compartir
         'modal-title':        '¡Tu figurita está lista!',
         'modal-sub':          'Compartila en tus redes o volvé a descargarla',
         'modal-ig-tip':       '📲 La imagen se descargó. Abrí Instagram, creá una historia o post y subila desde tu galería.',
         'modal-download':     '⬇ Descargar de nuevo',
-        // JS dinámico (editor.js)
         'loading-edition':    'Cargando edición...',
         'group-label':        'Grupo',
         'no-results':         'Sin resultados',
-        'group-code':         'Grupo',   // "ARG · Grupo K"
+        'group-code':         'Grupo',
         'error-image':        'Error al generar la imagen. Intentá de nuevo.',
         'share-twitter':      '¡Mirá mi figurita del {edition}! 🌍⚽ Creá la tuya gratis en mundialhub.vercel.app #Mundial2026 #Figurita',
         'share-whatsapp':     '¡Mirá mi figurita del {edition}! 🌍⚽ https://mundialhub.vercel.app',
         'tab-coming-soon':    'Próximamente',
         'tab-locked':         'BLOQUEADO',
-        // Edición Qatar 2022
         'q-bg-orange':        'Naranja',
         'q-bg-blue':          'Azul',
         'q-pos-gk':           'Arquero',
@@ -71,7 +73,6 @@ const TRANSLATIONS = {
         'q-card-pos-h3':      'Posición',
         'q-card-debut-h3':    'Debut',
         'q-label-debut':      'Año debut',
-        // Edición 2026
         'e26-card-colors-h3': 'Colores',
         'e26-label-bg':       'Fondo',
         'e26-span-bg':        'Color de fondo',
@@ -86,18 +87,23 @@ const TRANSLATIONS = {
         'e26-pos-def':        'Defensa',
         'e26-pos-mid':        'Mediocampo',
         'e26-pos-fwd':        'Delantero',
-        // Edición Extra Card
         'ec-card-rarity-h3':  'Rareza',
         'ec-rar-com':         'Común',
         'ec-rar-bro':         'Bronce',
         'ec-rar-pla':         'Plata',
         'ec-rar-oro':         'Oro',
-        // Placeholders / aria-labels
-        'ph-name': 'Nombre',
-        'ph-apellido': 'Apellido',
+        'r18-card-colors-h3': 'Colores',
+        'r18-label-marco':    'Marco',
+        'r18-span-marco':     'Color del marco',
+        'r18-card-pos-h3':    'Posición',
+        'r18-card-debut-h3':  'Debut',
+        'r18-label-debut':    'Año debut',
+        'ph-name':            'Nombre',
+        'ph-apellido':        'Apellido',
         'ph-date':            'dd-mm-aaaa',
         'ph-height':          '1,75m',
         'ph-club':            'NOMBRE DEL CLUB',
+        'lang-toggle-label':  'Switch to English',
     },
 
     en: {
@@ -106,7 +112,7 @@ const TRANSLATIONS = {
         'header-sub':         'AI-Powered Sticker/Card Generator · Free · High Resolution',
         'howto-h2':           'How to create your World Cup card?',
         'howto-1':            '<strong>Choose the World Cup</strong> - Several designs to pick from',
-        'howto-2':            '<strong>Upload your photo</strong> — Use <a href="https://www.iloveimg.com/remove-background" target="_blank" rel="noopener noreferrer">IloveBGRemovw</a> for free to remove the background and then upload it here',
+        'howto-2':            '<strong>Upload your photo</strong> — Use <a href="https://www.iloveimg.com/remove-background" target="_blank" rel="noopener noreferrer">IloveBGRemove</a> for free to remove the background and then upload it here',
         'howto-3':            '<strong>Customize your sticker</strong> — Choose your country, colors and write your name and stats',
         'howto-4':            '<strong>Download for free</strong> — High-resolution PNG ready to print or share on social media',
         'card-photo-h3':      'Player photo',
@@ -116,8 +122,9 @@ const TRANSLATIONS = {
         'label-vertical':     'Vertical',
         'label-horizontal':   'Horizontal',
         'card-datos-h3':      'Player stats',
-        'label-name': 'Name',
-        'label-apellido': 'Lastname',
+        'label-name':         'Name',
+        'label-apellido':     'Lastname',
+        'label-nacimiento':   'Birth date',
         'label-date':         'Date',
         'label-height':       'Height',
         'label-weight':       'Weight',
@@ -127,15 +134,21 @@ const TRANSLATIONS = {
         'dl-btn':             'Download PNG',
         'hint':               'Live preview',
         'dl-btn-mobile':      'Download PNG',
+        'mpb-label':          'Live<br>preview',
+        'mpb-dl':             '⬇ Download',
         'faq-h2':             'Frequently asked questions',
         'faq-1-q':            'Is the World Cup 2026 sticker generator free?',
         'faq-1-a':            'Yes, the generator is completely free. You can create and download your sticker without paying anything.',
-        'faq-2-q':            'How does the AI background remover work?',
-        'faq-2-a':            'We use <strong>rembg</strong>, an AI technology that automatically detects the person in your photo and removes the background in seconds, with no manual editing needed.',
-        'faq-3-q':            'Which countries can I choose for my sticker?',
-        'faq-3-a':            'All teams qualified for the 2026 World Cup are available, including Argentina, Brazil, Mexico, Spain, France, Germany and many more.',
-        'faq-4-q':            'What resolution does the sticker download in?',
-        'faq-4-a':            'The sticker downloads in high resolution (1650×2310 px), perfect for printing or sharing on social media.',
+        'faq-2-q':            'Which World Cup editions are available?',
+        'faq-2-a':            'You can create stickers for <strong>World Cup 2026</strong>, <strong>Qatar 2022</strong>, <strong>Russia 2018</strong> and a special <strong>Extra Card</strong> version with a unique design.',
+        'faq-3-q':            'How does the AI background remover work?',
+        'faq-3-a':            'We use <strong>rembg</strong>, an AI technology that automatically detects the person in your photo and removes the background in seconds, with no manual editing needed.',
+        'faq-4-q':            'Which countries can I choose for my sticker?',
+        'faq-4-a':            'All teams qualified for the 2026 World Cup are available, including Argentina, Brazil, Mexico, Spain, France, Germany, Portugal, Uruguay and many more.',
+        'faq-5-q':            'What resolution does the sticker download in?',
+        'faq-5-a':            'The sticker downloads in high resolution (up to <strong>2895×3840 px</strong>), perfect for printing or sharing on social media.',
+        'faq-6-q':            'Can I create the sticker from my phone?',
+        'faq-6-a':            'Yes, the generator works perfectly on mobile devices. You can upload your photo, customize it and download it directly from your phone.',
         'footer-support-p1':  'Did you like your sticker?',
         'footer-support-p2':  'You can support me with a small donation',
         'footer-privacy':     'Privacy',
@@ -184,34 +197,43 @@ const TRANSLATIONS = {
         'ec-rar-bro':         'Bronze',
         'ec-rar-pla':         'Silver',
         'ec-rar-oro':         'Gold',
-        'ph-name': 'Name',
-        'ph-apellido': 'Apellido',
+        'r18-card-colors-h3': 'Colors',
+        'r18-label-marco':    'Frame',
+        'r18-span-marco':     'Frame color',
+        'r18-card-pos-h3':    'Position',
+        'r18-card-debut-h3':  'Debut',
+        'r18-label-debut':    'Debut year',
+        'ph-name':            'Name',
+        'ph-apellido':        'Lastname',
         'ph-date':            'dd-mm-yyyy',
         'ph-height':          '1.75m',
         'ph-club':            'CLUB NAME',
+        'lang-toggle-label':  'Cambiar a Español',
     },
 };
 
-let currentLang = localStorage.getItem('lang') || 'es';
+const _storedLang = localStorage.getItem('lang');
+let currentLang;
+if (_storedLang) {
+    currentLang = _storedLang;
+} else {
+    const _browserLang = (navigator.language || navigator.userLanguage || 'es').toLowerCase().slice(0, 2);
+    currentLang = _browserLang === 'en' ? 'en' : 'es';
+}
 
 function t(key) {
     return TRANSLATIONS[currentLang][key] ?? TRANSLATIONS['es'][key] ?? key;
 }
 
 function applyStaticTranslations() {
-    const lang = currentLang;
-
-    // skip-link
     const skip = document.querySelector('.skip-link');
     if (skip) skip.textContent = t('skip-link');
 
-    // Header
     const h1 = document.querySelector('header h1');
     if (h1) h1.textContent = t('header-h1');
     const headerSub = document.querySelector('.header-sub');
     if (headerSub) headerSub.textContent = t('header-sub');
 
-    // How-to
     const howtoH2 = document.querySelector('.how-to h2');
     if (howtoH2) howtoH2.textContent = t('howto-h2');
     const howtoItems = document.querySelectorAll('.how-to ol li');
@@ -219,7 +241,6 @@ function applyStaticTranslations() {
         if (howtoItems[i]) howtoItems[i].innerHTML = t(key);
     });
 
-    // Card foto
     const cardPhotoH3 = document.querySelector('.card--purple h3');
     if (cardPhotoH3) cardPhotoH3.textContent = t('card-photo-h3');
     const removebgTip = document.querySelector('.removebg-tip');
@@ -227,7 +248,6 @@ function applyStaticTranslations() {
     const uploadSpan = document.querySelector('.upload-btn span');
     if (uploadSpan) uploadSpan.textContent = t('upload-btn-span');
 
-    // Sliders labels
     const sScaleLabel = document.querySelector('label[for="sScale"]');
     if (sScaleLabel) sScaleLabel.textContent = t('label-scale');
     const sYLabel = document.querySelector('label[for="sY"]');
@@ -235,11 +255,14 @@ function applyStaticTranslations() {
     const sXLabel = document.querySelector('label[for="sX"]');
     if (sXLabel) sXLabel.textContent = t('label-horizontal');
 
-    // Card datos
     const cardDatosH3 = document.querySelector('#cardDatos h3');
     if (cardDatosH3) cardDatosH3.textContent = t('card-datos-h3');
     const nameLabel = document.querySelector('label[for="tName"]');
     if (nameLabel) nameLabel.textContent = t('label-name');
+    const apellidoLabel = document.querySelector('label[for="tApellido"]');
+    if (apellidoLabel) apellidoLabel.textContent = t('label-apellido');
+    const nacimientoLabel = document.querySelector('label[for="inDay"]');
+    if (nacimientoLabel) nacimientoLabel.textContent = t('label-nacimiento');
     const dateLabel = document.querySelector('label[for="tDate"]');
     if (dateLabel) dateLabel.textContent = t('label-date');
     const heightLabel = document.querySelector('label[for="tHeight"]');
@@ -249,9 +272,10 @@ function applyStaticTranslations() {
     const clubLabel = document.querySelector('label[for="tClub"]');
     if (clubLabel) clubLabel.textContent = t('label-club');
 
-    // Placeholders inputs
     const tName = document.getElementById('tName');
     if (tName) tName.placeholder = t('ph-name');
+    const tApellido = document.getElementById('tApellido');
+    if (tApellido) tApellido.placeholder = t('ph-apellido');
     const tDate = document.getElementById('tDate');
     if (tDate) tDate.placeholder = t('ph-date');
     const tHeight = document.getElementById('tHeight');
@@ -259,23 +283,24 @@ function applyStaticTranslations() {
     const tClub = document.getElementById('tClub');
     if (tClub) tClub.placeholder = t('ph-club');
 
-    // Card país
     const cardCountryH3 = document.querySelector('.card--green h3');
     if (cardCountryH3) cardCountryH3.textContent = t('card-country-h3');
     const countrySearch = document.getElementById('countrySearch');
     if (countrySearch) countrySearch.placeholder = t('country-search-ph');
 
-    // Botones descarga
     const dlBtn = document.getElementById('dlBtn');
     if (dlBtn) dlBtn.textContent = t('dl-btn');
     const dlBtnMobile = document.getElementById('dlBtnMobile');
     if (dlBtnMobile) dlBtnMobile.textContent = t('dl-btn-mobile');
 
-    // Hint
     const hint = document.querySelector('.hint');
     if (hint) hint.textContent = t('hint');
 
-    // FAQ
+    const mpbLabel = document.querySelector('.mpb-label');
+    if (mpbLabel) mpbLabel.innerHTML = t('mpb-label');
+    const mpbDl = document.getElementById('mpbDlBtn');
+    if (mpbDl) mpbDl.textContent = t('mpb-dl');
+
     const faqH2 = document.querySelector('.faq-section h2');
     if (faqH2) faqH2.textContent = t('faq-h2');
     const faqDetails = document.querySelectorAll('.faq-section details');
@@ -284,6 +309,8 @@ function applyStaticTranslations() {
         ['faq-2-q','faq-2-a'],
         ['faq-3-q','faq-3-a'],
         ['faq-4-q','faq-4-a'],
+        ['faq-5-q','faq-5-a'],
+        ['faq-6-q','faq-6-a'],
     ].forEach(([qKey, aKey], i) => {
         if (!faqDetails[i]) return;
         const summary = faqDetails[i].querySelector('summary');
@@ -292,7 +319,6 @@ function applyStaticTranslations() {
         if (p) p.innerHTML = t(aKey);
     });
 
-    // Footer
     const footerPs = document.querySelectorAll('.footer-section.support p');
     if (footerPs[0]) footerPs[0].textContent = t('footer-support-p1');
     if (footerPs[1]) footerPs[1].textContent = t('footer-support-p2');
@@ -304,7 +330,6 @@ function applyStaticTranslations() {
     const creditsP = document.querySelector('.footer-section.credits p');
     if (creditsP) creditsP.innerHTML = t('footer-credits');
 
-    // Modal compartir
     const modalTitle = document.querySelector('.share-modal__title');
     if (modalTitle) modalTitle.textContent = t('modal-title');
     const modalSub = document.querySelector('.share-modal__sub');
@@ -314,12 +339,16 @@ function applyStaticTranslations() {
     const modalDownload = document.getElementById('modalDownload');
     if (modalDownload) modalDownload.textContent = t('modal-download');
 
-    // lang attribute en <html>
-    document.documentElement.lang = lang;
+    document.documentElement.lang = currentLang;
+
+    const toggle = document.getElementById('langToggle');
+    if (toggle) {
+        toggle.innerHTML = currentLang === 'es' ? '🇬🇧 EN' : '🇦🇷 ES';
+        toggle.setAttribute('aria-label', t('lang-toggle-label'));
+    }
 }
 
 function applyEditionTranslations() {
-    // --- Qatar 2022 ---
     document.querySelectorAll('.q-bg-btn').forEach(btn => {
         const key = 'q-bg-' + btn.dataset.bg;
         if (TRANSLATIONS[currentLang][key]) btn.textContent = t(key);
@@ -334,14 +363,17 @@ function applyEditionTranslations() {
     if (qPosH3) qPosH3.textContent = t('q-card-pos-h3');
     const debutLabel = document.querySelector('label[for="tDebut"]');
     if (debutLabel) debutLabel.textContent = t('q-label-debut');
-    // heading "Debut" card
     document.querySelectorAll('.edition-controls h3').forEach(h3 => {
-        if (h3.textContent.trim() === 'Debut') h3.textContent = t('q-card-debut-h3');
+        const txt = h3.textContent.trim();
+        if (txt === 'Debut' || txt === 'Debut') h3.textContent = t('q-card-debut-h3');
     });
 
-    // --- Edición 2026 ---
     const colorsH3 = document.querySelector('.card--blue.edition-controls h3');
-    if (colorsH3) colorsH3.textContent = t('e26-card-colors-h3');
+    if (colorsH3) {
+        const txt = colorsH3.textContent.trim();
+        if (txt === 'Colors' || txt === 'Colores') colorsH3.textContent = t('e26-card-colors-h3');
+        if (txt === 'Rarity' || txt === 'Rareza') colorsH3.textContent = t('ec-card-rarity-h3');
+    }
     const posH3 = document.querySelector('.card--red.edition-controls h3');
     if (posH3) posH3.textContent = t('e26-card-pos-h3');
 
@@ -366,15 +398,27 @@ function applyEditionTranslations() {
         if (TRANSLATIONS[currentLang][key]) btn.textContent = t(key);
     });
 
-    // --- Extra Card ---
-    const rarityH3 = document.querySelector('.card--blue.edition-controls h3');
-    if (rarityH3 && rarityH3.textContent.match(/Rareza|Rarity/)) {
-        rarityH3.textContent = t('ec-card-rarity-h3');
-    }
     document.querySelectorAll('.q-ext-btn').forEach(btn => {
         const key = 'ec-rar-' + btn.dataset.rareza;
         if (TRANSLATIONS[currentLang][key]) btn.textContent = t(key);
     });
+
+    document.querySelectorAll('.card--rusia-color h3').forEach(h3 => {
+        h3.textContent = t('r18-card-colors-h3');
+    });
+    document.querySelectorAll('.card--rusia-pos h3').forEach(h3 => {
+        h3.textContent = t('r18-card-pos-h3');
+    });
+    document.querySelectorAll('.card--rusia-debut h3').forEach(h3 => {
+        h3.textContent = t('r18-card-debut-h3');
+    });
+    const r18Marco = document.querySelector('label[for="marco1"]');
+    if (r18Marco) r18Marco.textContent = t('r18-label-marco');
+    const r18MarcoSpan = document.getElementById('marco1');
+    if (r18MarcoSpan) {
+        const span = r18MarcoSpan.nextElementSibling;
+        if (span && span.tagName === 'SPAN') span.textContent = t('r18-span-marco');
+    }
 }
 
 function patchEditorI18n() {
@@ -401,6 +445,7 @@ function patchEditorI18n() {
             _ddBusy = false;
         }).observe(dropdown, { childList: true, subtree: false });
     }
+
     function patchSelectCountry() {
         const _origSelectCountry = window.selectCountry;
         if (typeof _origSelectCountry === 'function') {
@@ -416,15 +461,11 @@ function patchEditorI18n() {
                 }
             };
         } else {
-            // editor.js todavía no terminó de cargar, reintentar en el próximo tick
             setTimeout(patchSelectCountry, 50);
         }
     }
     patchSelectCountry();
 
-    // 4. Parche: tabs — "LOCKED" y "Coming soon"
-    //    subtree:true + modificar texto/atributos dentro = loop infinito.
-    //    Usamos subtree:false (renderTabs reemplaza todo el innerHTML) + guard.
     const tabsContainer = document.getElementById('wcTabsContainer');
     if (tabsContainer) {
         let _tabsBusy = false;
@@ -441,8 +482,6 @@ function patchEditorI18n() {
         }).observe(tabsContainer, { childList: true, subtree: false });
     }
 
-    // 5. Parche: editionControlsSlot — re-traducir cuando se inyectan controles nuevos.
-    //    Guard para no re-entrar si applyEditionTranslations modifica el DOM observado.
     const controlsSlot = document.getElementById('editionControlsSlot');
     if (controlsSlot) {
         let _slotBusy = false;
@@ -454,14 +493,6 @@ function patchEditorI18n() {
         }).observe(controlsSlot, { childList: true, subtree: false });
     }
 
-    // 6. Parche: dlBtn alert
-    const dlBtn = document.getElementById('dlBtn');
-    if (dlBtn) {
-        dlBtn.addEventListener('click', function handler(e) {
-            // Interceptamos solo si window.alert se llama — lo hacemos con proxy
-        }, { capture: true });
-    }
-    // Sobrescribir window.alert para traducirlo
     const origAlert = window.alert.bind(window);
     window.alert = function(msg) {
         const esErr = 'Error al generar la imagen. Intentá de nuevo.';
@@ -469,12 +500,10 @@ function patchEditorI18n() {
         return origAlert(msg);
     };
 
-    // 7. Parche: textos de Twitter y WhatsApp share
     const shareTwitter = document.getElementById('shareTwitter');
     const shareWhatsapp = document.getElementById('shareWhatsapp');
 
     if (shareTwitter) {
-        // Clonar para quitar el listener original y poner uno nuevo
         const clone = shareTwitter.cloneNode(true);
         shareTwitter.parentNode.replaceChild(clone, shareTwitter);
         clone.addEventListener('click', () => {
@@ -495,35 +524,35 @@ function patchEditorI18n() {
     }
 }
 
-/* ─── Toggle de idioma ──────────────────────────────────────── */
 function createLangToggle() {
     const btn = document.createElement('button');
     btn.id        = 'langToggle';
     btn.className = 'lang-toggle';
-    btn.setAttribute('aria-label', 'Switch language');
+    btn.setAttribute('aria-label', t('lang-toggle-label'));
     btn.innerHTML = currentLang === 'es' ? '🇬🇧 EN' : '🇦🇷 ES';
 
     btn.addEventListener('click', () => {
         currentLang = currentLang === 'es' ? 'en' : 'es';
         localStorage.setItem('lang', currentLang);
-        btn.innerHTML = currentLang === 'es' ? '🇬🇧 EN' : '🇦🇷 ES';
         applyStaticTranslations();
         applyEditionTranslations();
     });
 
-    // Insertar en el header
-    const header = document.querySelector('header');
-    if (header) header.appendChild(btn);
+    const headerBar = document.querySelector('.lang-toggle-bar');
+    if (headerBar) {
+        headerBar.appendChild(btn);
+    } else {
+        const header = document.querySelector('header');
+        if (header) header.insertAdjacentElement('beforebegin', btn);
+    }
 }
 
-/* ─── CSS del botón ─────────────────────────────────────────── */
 function injectLangToggleCSS() {
     const style = document.createElement('style');
     style.textContent = `
-        .lang-toggle {
-            position: absolute;
-            top: 0;
-            right: 0;
+        #langToggle {
+            display: block;
+            margin: 0 0 10px auto;
             background: #000;
             color: #fff;
             border: 2px solid #000;
@@ -537,26 +566,19 @@ function injectLangToggleCSS() {
             transition: background .15s, color .15s;
             z-index: 10;
         }
-        .lang-toggle:hover {
+        #langToggle:hover {
             background: var(--theme-primary, #17277f);
             border-color: var(--theme-primary, #17277f);
             color: #fff;
         }
-        header { position: relative; }
     `;
     document.head.appendChild(style);
 }
 
-/* ─── Init ──────────────────────────────────────────────────── */
-// Esperar a que el DOM y editor.js estén listos
 document.addEventListener('DOMContentLoaded', () => {
     injectLangToggleCSS();
     createLangToggle();
     applyStaticTranslations();
-
-    // Parchear editor.js una vez que haya cargado (está al final del body, así que ya está)
     patchEditorI18n();
-
-    // Aplicar idioma inicial a controles de edición si ya se renderizaron
     applyEditionTranslations();
 });

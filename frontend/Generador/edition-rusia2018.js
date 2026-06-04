@@ -169,10 +169,23 @@ const EditionRusia2018 = {
 
             const MX = 2331, MY = 159, MW = 343, MH = 359;
 
-            const fScale = MH / (flagImg.naturalHeight || flagImg.height || MH);
-            const fW     = (flagImg.naturalWidth  || flagImg.width)  * fScale;
-            const fX     = MX + (MW - fW) / 2;
-            fCtx.drawImage(flagImg, fX, MY, fW, MH);
+            const fw = flagImg.naturalWidth  || flagImg.width  || MW;
+            const fh = flagImg.naturalHeight || flagImg.height || MH;
+            let fScale, fW, fH, fX, fY;
+            if (state.code === 'BRA') {
+                // contain + fondo verde para que el rombo entre completo
+                fCtx.fillStyle = '#009C3B';
+                fCtx.fillRect(MX, MY, MW, MH);
+                fScale = Math.min(MW / fw, MH / fh);
+                fW = fw * fScale; fH = fh * fScale;
+                fX = MX + (MW - fW) / 2; fY = MY + (MH - fH) / 2;
+            } else {
+                // comportamiento original: escala por altura
+                fScale = MH / fh;
+                fW = fw * fScale; fH = MH;
+                fX = MX + (MW - fW) / 2; fY = MY;
+            }
+            fCtx.drawImage(flagImg, fX, fY, fW, fH);
 
             fCtx.globalCompositeOperation = 'destination-in';
             fCtx.drawImage(imgs['flagmask'], 0, 0, W, H);

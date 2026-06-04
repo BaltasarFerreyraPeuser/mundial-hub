@@ -134,30 +134,54 @@ function loadFlag(code) {
     }
 }
 
-function drawFlagInMarco(ctx, flagImg) {
+// Paises cuya bandera necesita 'contain' + fondo de color
+// porque tienen elementos centrados (rombo, escudo) que se recortan con scale-by-height
+const FLAG_CONTAIN = {
+    BRA: '#009C3B',
+};
+
+function drawFlagInMarco(ctx, flagImg, countryCode) {
     if (!flagImg) return;
     const { x, y, w, h } = MARCO_FLAG;
-    const scale = h / (flagImg.naturalHeight || flagImg.height || h);
-    const dw = (flagImg.naturalWidth || flagImg.width) * scale;
-    const dh = h;
-    const dx = x + (w - dw) / 2;
-    const dy = y;
+
+    const fw = flagImg.naturalWidth  || flagImg.width  || w;
+    const fh = flagImg.naturalHeight || flagImg.height || h;
+
+    const bgColor = countryCode && FLAG_CONTAIN[countryCode];
+
+    let dw, dh, dx, dy;
+    if (bgColor) {
+        // contain: entra completa sin recortarse
+        const scale = Math.min(w / fw, h / fh);
+        dw = fw * scale; dh = fh * scale;
+        dx = x + (w - dw) / 2; dy = y + (h - dh) / 2;
+    } else {
+        // comportamiento original: escala por altura
+        const scale = h / fh;
+        dw = fw * scale; dh = h;
+        dx = x + (w - dw) / 2; dy = y;
+    }
 
     const r = 197;
     const x2 = x + w, y2 = y + h;
 
     ctx.save();
     ctx.beginPath();
-    ctx.moveTo(x + r, y);         
+    ctx.moveTo(x + r, y);
     ctx.lineTo(x2 - r, y);
-    ctx.arcTo(x2, y,  x2, y + r, r); 
-    ctx.lineTo(x2, y2);           
+    ctx.arcTo(x2, y,  x2, y + r, r);
+    ctx.lineTo(x2, y2);
     ctx.lineTo(x + r, y2);
-    ctx.arcTo(x,  y2, x, y2 - r,  r);
+    ctx.arcTo(x,  y2, x, y2 - r, r);
     ctx.lineTo(x,  y + r);
-    ctx.arcTo(x,  y,  x + r, y,   r);
+    ctx.arcTo(x,  y,  x + r, y,  r);
     ctx.closePath();
     ctx.clip();
+
+    if (bgColor) {
+        ctx.fillStyle = bgColor;
+        ctx.fillRect(x, y, w, h);
+    }
 
     ctx.drawImage(flagImg, dx, dy, dw, dh);
     ctx.restore();
