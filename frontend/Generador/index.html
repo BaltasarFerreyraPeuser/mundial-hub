@@ -34,8 +34,9 @@
     <meta name="twitter:image:alt" content="Figurita del Mundial 2026 generada con IA en MundialHub">
 
     <!-- Structured Data: WebApplication -->
-    <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Generador de Figuritas del Mundial 2026 — Panini con IA","url":"https://mundialhub.vercel.app/","description":"Generador gratuito de figuritas del Mundial 2026 estilo Panini con Inteligencia Artificial. También disponible para Qatar 2022 y Rusia 2018.","applicationCategory":"UtilitiesApplication","browserRequirements":"Requires JavaScript","operatingSystem":"All","offers":{"@type":"Offer","price":"0","priceCurrency":"ARS"},"inLanguage":"es-AR","image":"https://mundialhub.vercel.app/frontend/assets/og-preview.webp
-    ","author":{"@type":"Person","name":"Baltasar Ferreyra Peuser","url":"https://www.linkedin.com/in/baltasar-ferreyra-peuser-8840a41b4/"},"creator":{"@type":"Organization","name":"MundialHUB","url":"https://mundialhub.vercel.app/","address":{"@type":"PostalAddress","addressLocality":"Córdoba","addressCountry":"AR"}},"featureList":["Eliminación de fondo con IA","Múltiples ediciones del Mundial","Descarga en alta resolución","100% gratuito"]}</script>
+    <script type="application/ld+json">
+        {"@context":"https://schema.org","@type":"WebApplication","name":"Generador de Figuritas del Mundial 2026 — Panini con IA","url":"https://mundialhub.vercel.app/","description":"Generador gratuito de figuritas del Mundial 2026 estilo Panini con Inteligencia Artificial. También disponible para Qatar 2022 y Rusia 2018.","applicationCategory":"UtilitiesApplication","browserRequirements":"Requires JavaScript","operatingSystem":"All","offers":{"@type":"Offer","price":"0","priceCurrency":"ARS"},"inLanguage":"es-AR","image":"https://mundialhub.vercel.app/frontend/assets/og-preview.webp
+            ","author":{"@type":"Person","name":"Baltasar Ferreyra Peuser","url":"https://www.linkedin.com/in/baltasar-ferreyra-peuser-8840a41b4/"},"creator":{"@type":"Organization","name":"MundialHUB","url":"https://mundialhub.vercel.app/","address":{"@type":"PostalAddress","addressLocality":"Córdoba","addressCountry":"AR"}},"featureList":["Eliminación de fondo con IA","Múltiples ediciones del Mundial","Descarga en alta resolución","100% gratuito"]}</script>
 
     <!-- Structured Data: FAQ -->
     <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"¿Cómo creo mi figurita del Mundial 2026?","acceptedAnswer":{"@type":"Answer","text":"Subís tu foto, la IA quita el fondo automáticamente, elegís tu país, personalizás los colores y tus datos, y descargás el PNG en alta resolución listo para imprimir o compartir en redes."}},{"@type":"Question","name":"¿Es gratis el generador de figuritas del Mundial?","acceptedAnswer":{"@type":"Answer","text":"Sí, el generador de figuritas del Mundial 2026 es completamente gratuito. No necesitás registrarte ni pagar nada."}},{"@type":"Question","name":"¿Qué ediciones del Mundial están disponibles?","acceptedAnswer":{"@type":"Answer","text":"Podés crear figuritas del Mundial 2026, Qatar 2022, Rusia 2018 y una versión Extra Card especial."}},{"@type":"Question","name":"¿Qué países puedo elegir para mi figurita?","acceptedAnswer":{"@type":"Answer","text":"Están disponibles todos los países clasificados al Mundial 2026, incluyendo Argentina, Brasil, México, España, Francia, Alemania, Portugal y muchos más."}},{"@type":"Question","name":"¿En qué resolución se descarga la figurita?","acceptedAnswer":{"@type":"Answer","text":"La figurita se descarga en alta resolución (hasta 2895×3840 px), perfecta para imprimir o compartir en redes sociales."}}]}</script>
@@ -47,23 +48,149 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
     <style>
-        *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-        html{overflow-x:clip}
-        body{font-family:'Barlow',sans-serif;background:#fff;color:#000;min-height:100vh;display:flex;flex-direction:column;-webkit-text-size-adjust:100%;overflow-x:clip;width:100%}
-        .skip-link{position:absolute;left:12px;top:-100px;z-index:10000;padding:10px 16px;background:#000;color:#fff;font-weight:800;font-size:13px;text-decoration:none;border:3px solid #000;border-radius:10px;transition:top .2s}
-        .skip-link:focus{top:12px;outline:none}
-        .page{flex:1 0 auto;max-width:1200px;margin:0 auto;width:100%;padding:20px 20px 0;position:relative;z-index:1}
-        .rainbow-bar{height:8px;width:100%;margin-bottom:26px;background:linear-gradient(to right,#2651ff 0% 16.6%,#ea0001 16.6% 33.2%,#e5ff00 33.2% 49.8%,#6d00fc 49.8% 66.4%,#019afa 66.4% 83%,#00c93b 83% 100%)}
-        header{border-bottom:3px solid #000;padding-bottom:24px;margin-bottom:28px;position:relative;overflow:hidden}
-        header h1{font-size:clamp(1.8rem,6vw,4.5rem);line-height:.88;letter-spacing:-.03em;text-transform:uppercase;color:#000;margin-bottom:12px;padding-left:16px}
-        .layout{display:flex;gap:32px;align-items:stretch;min-width:0}
-        .controls{flex:0 0 320px;width:320px;min-width:0;display:flex;flex-direction:column;gap:16px}
-        .preview{flex:1;min-width:0}
-        .preview-sticky{position:sticky;top:16px;display:flex;flex-direction:column;align-items:center;overflow:visible;z-index:4;width:100%}
-        .canvas-wrap{border-radius:28px;border:4px solid #000;overflow:hidden;box-shadow:10px 10px 0 #17277f;width:100%;max-width:420px}
-        #cv-2026{display:block;width:100%;height:auto;aspect-ratio:2895/3840;background:#43c4c9}
-        #cv-qatar{display:block;width:100%;height:auto;aspect-ratio:2994/3960;background:#5a0a28}
-        #cv-extra{display:block;width:100%;height:auto;aspect-ratio:2994/3960;background:#7c4177}
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0
+        }
+
+        html {
+            overflow-x: clip
+        }
+
+        body {
+            font-family: 'Barlow',sans-serif;
+            background: #fff;
+            color: #000;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            -webkit-text-size-adjust: 100%;
+            overflow-x: clip;
+            width: 100%
+        }
+
+        .skip-link {
+            position: absolute;
+            left: 12px;
+            top: -100px;
+            z-index: 10000;
+            padding: 10px 16px;
+            background: #000;
+            color: #fff;
+            font-weight: 800;
+            font-size: 13px;
+            text-decoration: none;
+            border: 3px solid #000;
+            border-radius: 10px;
+            transition: top .2s
+        }
+
+            .skip-link:focus {
+                top: 12px;
+                outline: none
+            }
+
+        .page {
+            flex: 1 0 auto;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+            padding: 20px 20px 0;
+            position: relative;
+            z-index: 1
+        }
+
+        .rainbow-bar {
+            height: 8px;
+            width: 100%;
+            margin-bottom: 26px;
+            background: linear-gradient(to right,#2651ff 0% 16.6%,#ea0001 16.6% 33.2%,#e5ff00 33.2% 49.8%,#6d00fc 49.8% 66.4%,#019afa 66.4% 83%,#00c93b 83% 100%)
+        }
+
+        header {
+            border-bottom: 3px solid #000;
+            padding-bottom: 24px;
+            margin-bottom: 28px;
+            position: relative;
+            overflow: hidden
+        }
+
+            header h1 {
+                font-size: clamp(1.8rem,6vw,4.5rem);
+                line-height: .88;
+                letter-spacing: -.03em;
+                text-transform: uppercase;
+                color: #000;
+                margin-bottom: 12px;
+                padding-left: 16px
+            }
+
+        .layout {
+            display: flex;
+            gap: 32px;
+            align-items: stretch;
+            min-width: 0
+        }
+
+        .controls {
+            flex: 0 0 320px;
+            width: 320px;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 16px
+        }
+
+        .preview {
+            flex: 1;
+            min-width: 0
+        }
+
+        .preview-sticky {
+            position: sticky;
+            top: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow: visible;
+            z-index: 4;
+            width: 100%
+        }
+
+        .canvas-wrap {
+            border-radius: 28px;
+            border: 4px solid #000;
+            overflow: hidden;
+            box-shadow: 10px 10px 0 #17277f;
+            width: 100%;
+            max-width: 420px
+        }
+
+        #cv-2026 {
+            display: block;
+            width: 100%;
+            height: auto;
+            aspect-ratio: 2895/3840;
+            background: #43c4c9
+        }
+
+        #cv-qatar {
+            display: block;
+            width: 100%;
+            height: auto;
+            aspect-ratio: 2994/3960;
+            background: #5a0a28
+        }
+
+        #cv-extra {
+            display: block;
+            width: 100%;
+            height: auto;
+            aspect-ratio: 2994/3960;
+            background: #7c4177
+        }
+
         #cv-rusia {
             display: block;
             width: 100%;
@@ -71,10 +198,35 @@
             aspect-ratio: 2994/3960;
             background: #7c4177
         }
-        @media(max-width:680px){.layout{flex-direction:column;gap:18px}.controls{flex:none;width:100%;max-width:100%}.preview{display:none}}
+
+        #cv-germany {
+            display: block;
+            width: 100%;
+            height: auto;
+            aspect-ratio: 2994/3960;
+            background: #7c4177
+        }
+
+        @media(max-width:680px) {
+            .layout {
+                flex-direction: column;
+                gap: 18px
+            }
+
+            .controls {
+                flex: none;
+                width: 100%;
+                max-width: 100%
+            }
+
+            .preview {
+                display: none
+            }
+        }
     </style>
 
-
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdbassit/coloris@latest/dist/coloris.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/@mdbassit/coloris@latest/dist/coloris.min.js"></script>
     <link rel="stylesheet" href="style.css" media="print" onload="this.media='all'">
     <noscript><link rel="stylesheet" href="style.css"></noscript>
 
@@ -210,6 +362,9 @@
                         <canvas id="cv-rusia" width="2994" height="3960"
                                 role="img" aria-label="Vista previa figurita Rusia 2018"
                                 class="edition-canvas" style="display:none"></canvas>
+                        <canvas id="cv-germany" width="2994" height="3960"
+                                role="img" aria-label="Vista previa figurita Alemania 2006"
+                                class="edition-canvas" style="display:none"></canvas>
                     </div>
                     <p class="hint">Vista previa en tiempo real</p>
                     <button class="dl-btn dl-btn-preview" id="dlBtnMobile" aria-label="Descargar figurita en PNG">Descargar PNG</button>
@@ -297,7 +452,6 @@
         </div>
     </div>
 
-    <!-- Panel fixed mobile: siempre visible sin importar el scroll -->
     <div class="mobile-preview-bar" id="mobilePreviewBar" aria-hidden="true">
         <div class="mpb-canvas-wrap">
             <canvas id="cv-mirror" width="2895" height="3840"></canvas>
@@ -313,37 +467,30 @@
     <script src="edition-qatar2022.js"></script>
     <script src="edition-extracard.js"></script>
     <script src="edition-rusia2018.js"></script>
+    <script src="edition-2006.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@vladmandic/face-api/dist/face-api.js"></script>
     <script src="shirt-align.js"></script>
     <script src="editor.js"></script>
     <script>
-        // ── Botón descarga mobile ─────────────────────────────────
         document.getElementById('dlBtnMobile').addEventListener('click', function () {
             document.getElementById('dlBtn').click();
         });
         document.getElementById('mpbDlBtn').addEventListener('click', function () {
             document.getElementById('dlBtn').click();
         });
-
-        // ── Canvas espejo para el panel fixed mobile ──────────────
-        // Solo activo en mobile (≤680px). Copia el canvas activo al mirror
-        // usando requestAnimationFrame para no añadir carga en desktop.
         (function () {
-            const mirror  = document.getElementById('cv-mirror');
-            const mctx    = mirror.getContext('2d');
-            let   running = false;
+            const mirror = document.getElementById('cv-mirror');
+            const mctx = mirror.getContext('2d');
+            let running = false;
 
             function isMobile() {
                 return window.matchMedia('(max-width: 680px)').matches;
             }
-
-            // Encuentra el canvas visible: el que tiene display != 'none' y no es el mirror
             function getActiveCanvas() {
                 const canvases = document.querySelectorAll('.edition-canvas');
                 for (const c of canvases) {
                     if (c !== mirror && c.style.display !== 'none') return c;
                 }
-                // fallback: primer canvas que no sea el mirror
                 return document.querySelector('.edition-canvas:not(#cv-mirror)');
             }
 
@@ -352,9 +499,8 @@
 
                 const active = getActiveCanvas();
                 if (active) {
-                    // Sincronizar dimensiones si la edición cambió (distintos aspect ratios)
                     if (mirror.width !== active.width || mirror.height !== active.height) {
-                        mirror.width  = active.width;
+                        mirror.width = active.width;
                         mirror.height = active.height;
                     }
                     mctx.clearRect(0, 0, mirror.width, mirror.height);
@@ -375,5 +521,8 @@
         })();
     </script>
     <script>requestAnimationFrame(function () { document.body.classList.remove("preload"); });</script>
+    <script src="https://cdn.jsdelivr.net/npm/@mdbassit/coloris@latest/dist/coloris.min.js"
+            onload="Coloris({ el: 'input[type=color]', alpha: false })">
+    </script>
 </body>
 </html>

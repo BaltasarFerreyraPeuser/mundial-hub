@@ -250,7 +250,7 @@ const EditionRusia2018 = {
         ctx.textAlign = 'left';
         ctx.textBaseline = 'alphabetic';
         ctx.fillStyle = '#000000';
-        ctx.fillText(state.name.toUpperCase(), 551, 3659, 1400);
+        ctx.fillText(state.name.toUpperCase(), 551, 3659, 1550);
         ctx.restore();
 
         // ── CLUB ──

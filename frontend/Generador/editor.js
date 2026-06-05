@@ -7,7 +7,8 @@ const canvasMap = {
     'edition-2026':      document.getElementById('cv-2026'),
     'edition-qatar2022': document.getElementById('cv-qatar'),
     'edition-extracard': document.getElementById('cv-extra'),
-    'edition-2018':      document.getElementById('cv-rusia'),
+    'edition-2018': document.getElementById('cv-rusia'),
+    'edition-2006': document.getElementById('cv-germany'),
 };
 
 let canvas = canvasMap['edition-2026'];
@@ -30,6 +31,8 @@ const fontDefs = [
     ['FuenteRusia', '/frontend/assets/fonts/rusiafont.ttf'],
     ['FuenteTahoma', '/frontend/assets/fonts/tahoma.ttf'],
     ['FuenteTahomaBold', '/frontend/assets/fonts/tahomabd.ttf'],
+    ['FuentePais2006', '/frontend/assets/fonts/pais2006.ttf'],
+    ['FuenteNombre2006', '/frontend/assets/fonts/nombre2006.ttf'],
 ];
 Promise.allSettled(
     fontDefs.map(([name, url]) => new FontFace(name, `url(${url})`).load())
@@ -46,7 +49,7 @@ Promise.allSettled(
 
 if (typeof ShirtAlign !== 'undefined') ShirtAlign.loadModels();
 
-const EDITIONS = [Edition2026, EditionQatar2022, EditionExtraCard, EditionRusia2018];
+const EDITIONS = [Edition2026, EditionQatar2022, EditionExtraCard, EditionRusia2018, Edition2006];
 
 let activeEdition = EDITIONS[0];
 let state         = { ...activeEdition.defaultState, _touched: {} };
@@ -112,9 +115,7 @@ const ALPHA3_TO_ALPHA2 = {
     POR: 'pt', COD: 'cd', UZB: 'uz', COL: 'co',
     // Grupo L
     ENG: 'gb-eng', CRO: 'hr', GHA: 'gh', PAN: 'pa',
-    // Extra
     VEN: 've', IRL: 'ie', ITA: 'it', POL: 'pl', CHI: 'cl', BOL: 'bo', RUS: 'ru', DEN: 'dk', PER: 'pe', ISL: 'is', NGA: 'ng', CRC: 'cr', SRB: 'rs', HON: 'hn',
-    // Qatar 2022 exclusivos
     WAL: 'gb-wls', CMR: 'cm',
 };
 
@@ -134,8 +135,6 @@ function loadFlag(code) {
     }
 }
 
-// Paises cuya bandera necesita 'contain' + fondo de color
-// porque tienen elementos centrados (rombo, escudo) que se recortan con scale-by-height
 const FLAG_CONTAIN = {
     BRA: '#009C3B',
 };
@@ -151,12 +150,10 @@ function drawFlagInMarco(ctx, flagImg, countryCode) {
 
     let dw, dh, dx, dy;
     if (bgColor) {
-        // contain: entra completa sin recortarse
         const scale = Math.min(w / fw, h / fh);
         dw = fw * scale; dh = fh * scale;
         dx = x + (w - dw) / 2; dy = y + (h - dh) / 2;
     } else {
-        // comportamiento original: escala por altura
         const scale = h / fh;
         dw = fw * scale; dh = h;
         dx = x + (w - dw) / 2; dy = y;
@@ -234,13 +231,12 @@ function renderEditionControls(edition) {
 let _tintDebounce = null;
 function onUpdate(type) {
     if (type === 'tints') {
-        // Rebuild tints with caching — debounce rapid color picker drags
         clearTimeout(_tintDebounce);
         _tintDebounce = setTimeout(() => {
             tints = activeEdition.buildTints(imgs, state, tints);
             needsDraw = true;
         }, 30);
-        return; // render loop will pick up needsDraw after timeout
+        return;
     }
 
     if (type === 'draw') {
@@ -299,9 +295,9 @@ function switchEdition(edition) {
         });
 
         const fieldsToToggle = {
-            'tHeight':   edition.id !== 'edition-extracard',
-            'tWeight':   edition.id !== 'edition-extracard',
-            'tClub':     edition.id !== 'edition-extracard' && edition.id !== 'edition-qatar2022',
+            'tHeight':   edition.id !== 'edition-extracard' && edition.id !== 'edition-2006',
+            'tWeight':   edition.id !== 'edition-extracard' && edition.id !== 'edition-2006',
+            'tClub':     edition.id !== 'edition-extracard' && edition.id !== 'edition-qatar2022' && edition.id !== 'edition-2006',
             'tApellido': edition.id === 'edition-2026',
         };
         Object.entries(fieldsToToggle).forEach(([id, show]) => {
@@ -311,7 +307,6 @@ function switchEdition(edition) {
                 if (row) row.style.display = show ? 'flex' : 'none';
             }
         });
-        // Fila de nacimiento: oculta en ExtraCard
         const rowNaci = document.getElementById('rowNacimiento');
         if (rowNaci) rowNaci.style.display = edition.id === 'edition-extracard' ? 'none' : 'flex';
 
@@ -344,7 +339,6 @@ document.getElementById('photoInputDirect').addEventListener('change', e => {
             activeEdition.id === 'edition-2026'
         ) {
             await ShirtAlign.align(photo, imgs['shirt'], state, onUpdate);
-            // Si la remera ya estaba activa, alinearla también con la foto nueva
             if (state.showShirt && imgs['shirt'] && state._photoBounds) {
                 ShirtAlign.alignShirt(imgs['shirt'], state, onUpdate);
             }
@@ -564,8 +558,9 @@ document.getElementById('dlBtn').addEventListener('click', () => {
 const TABS = [
     { label: '2026',              edition: Edition2026,      disabled: false, icon: '/frontend/assets/svg/logofifa3.svg' },
     { label: '2022', edition: EditionQatar2022, disabled: false, icon: '/frontend/assets/svg/logoqatar.svg' },
-    { label: 'EXTRA STICKER 2026', edition: EditionExtraCard, disabled: false, icon: '/frontend/assets/extra.png' },
     { label: '2018', edition: EditionRusia2018, disabled: false, icon: '/frontend/assets/svg/logorusia.svg' },
+    { label: '2006', sub: 'COMING SOON', edition: Edition2006, disabled: false, icon: '/frontend/assets/svg/logo2006.svg' },
+    { label: 'EXTRA STICKER 2026', edition: EditionExtraCard, disabled: false, icon: '/frontend/assets/extra.png' },
     { label: 'EXTRA STICKER 2022', sub: 'COMING SOON', edition: null, disabled: true, icon: '/frontend/assets/extra22.png' },
     { label: '2014', sub: 'COMING SOON', edition: null, disabled: true, icon: '/frontend/assets/svg/logobrasil.svg' },
 ];

@@ -193,8 +193,11 @@ const Edition2026 = {
         club:       'MY CLUB',
         code:       'ARG',
         bgVariant:  null,
-        showShirt:  true,
-        shirtY:     0,
+        showShirt:       true,
+        shirtY:          0,
+        shirtX:          0,
+        shirtScale:      100,
+        customShirtImg:  null,
         // Personalización de bandera
         customFlag:         false,
         customFlagImg:      null,
@@ -282,8 +285,32 @@ const Edition2026 = {
             ctx.restore();
         }
 
-        if (state.showShirt && imgs['shirt']) {
-            ctx.drawImage(imgs['shirt'], 0, state.shirtY || 0, W, H);
+        if (state.showShirt) {
+            const shirtSrc = state.customShirtImg || imgs['shirt'];
+            if (shirtSrc) {
+                if (state.customShirtImg) {
+                    // Camiseta custom: contain sin deformar, con sliders de posición y escala
+                    const sw = shirtSrc.naturalWidth  || shirtSrc.width;
+                    const sh = shirtSrc.naturalHeight || shirtSrc.height;
+                    // Escala base: contain dentro del canvas
+                    const baseScale = Math.min(W / sw, H / sh);
+                    const sc = baseScale * (state.shirtScale || 100) / 100;
+                    const dw = sw * sc;
+                    const dh = sh * sc;
+                    // Centrado + offset de sliders
+                    const dx = (W - dw) / 2 + (state.shirtX || 0);
+                    const dy = (H - dh) / 2 + (state.shirtY || 0);
+                    ctx.save();
+                    ctx.beginPath();
+                    ctx.roundRect(0, 0, W, H, 14);
+                    ctx.clip();
+                    ctx.drawImage(shirtSrc, dx, dy, dw, dh);
+                    ctx.restore();
+                } else {
+                    // Camiseta original del país: comportamiento original (fill canvas)
+                    ctx.drawImage(shirtSrc, 0, state.shirtY || 0, W, H);
+                }
+            }
         }
 
         if (tints.marco) ctx.drawImage(tints.marco, 0, 0, W, H);
@@ -481,6 +508,34 @@ const Edition2026 = {
                 <input type="range" id="sShirtY" min="-500" max="500" step="1" value="${state.shirtY || 0}">
                 <span id="vShirtY">${state.shirtY || 0}</span>
             </div>
+            <div id="customShirtUploadRow" style="${state.showShirt ? '' : 'display:none'}">
+                <div class="crow" style="align-items:flex-start;flex-direction:column;gap:6px;margin-top:4px;">
+                    <label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;">Camiseta personalizada</label>
+                    <label class="upload-btn upload-direct" for="customShirtImgInput" style="margin-bottom:0;font-size:12px;padding:8px 12px;">
+                        <span>👕 Subir camiseta</span>
+                    </label>
+                    <input type="file" id="customShirtImgInput" accept="image/*" style="display:none!important;">
+                    <span id="customShirtImgName" style="font-size:10px;color:#555;">${state.customShirtImg ? '✅ Camiseta cargada' : 'Sin imagen'}</span>
+                    <button id="customShirtImgClear" style="display:${state.customShirtImg ? '' : 'none'};font-size:10px;padding:3px 8px;border:1px solid #aaa;border-radius:6px;background:#fff;cursor:pointer;">✕ Quitar</button>
+                </div>
+                <div id="customShirtSliders" style="${state.customShirtImg ? '' : 'display:none'}">
+                    <div class="srow" style="margin-top:8px;">
+                        <label for="sShirtScale">Tamaño</label>
+                        <input type="range" id="sShirtScale" min="10" max="300" value="${state.shirtScale || 100}">
+                        <input type="number" class="srow-num" id="vShirtScale" min="10" max="300" value="${state.shirtScale || 100}">
+                    </div>
+                    <div class="srow">
+                        <label for="sShirtX">Horizontal</label>
+                        <input type="range" id="sShirtX" min="-5000" max="5000" value="${state.shirtX || 0}">
+                        <input type="number" class="srow-num" id="vShirtX" min="-5000" max="5000" value="${state.shirtX || 0}">
+                    </div>
+                    <div class="srow">
+                        <label for="sShirtYCustom">Vertical</label>
+                        <input type="range" id="sShirtYCustom" min="-5000" max="5000" value="${state.shirtY || 0}">
+                        <input type="number" class="srow-num" id="vShirtYCustom" min="-5000" max="5000" value="${state.shirtY || 0}">
+                    </div>
+                </div>
+            </div>
         </div>
 
         <div class="card card--orange edition-controls" data-card-num="05" id="cardCustomFlag">
@@ -592,6 +647,8 @@ const Edition2026 = {
                 state.showShirt = e.target.checked;
                 const row = document.getElementById('shirtYRow');
                 if (row) row.style.display = e.target.checked ? '' : 'none';
+                const uploadRow = document.getElementById('customShirtUploadRow');
+                if (uploadRow) uploadRow.style.display = e.target.checked ? '' : 'none';
                 if (e.target.checked && imgs && imgs['shirt'] && typeof ShirtAlign !== 'undefined') {
                     const photoEl = typeof photo !== 'undefined' ? photo : null;
                     if (photoEl && state._photoBounds) {
@@ -615,6 +672,64 @@ const Edition2026 = {
             });
         }
 
+        // ── Camiseta personalizada ────────────────────────────────────────────
+        const customShirtInput = document.getElementById('customShirtImgInput');
+        if (customShirtInput) {
+            customShirtInput.addEventListener('change', e => {
+                const file = e.target.files[0];
+                if (!file) return;
+                const url = URL.createObjectURL(file);
+                const img = new Image();
+                img.onload = () => {
+                    URL.revokeObjectURL(url);
+                    state.customShirtImg = img;
+                    // Reset sliders
+                    state.shirtScale = 100;
+                    state.shirtX = 0;
+                    state.shirtY = 0;
+                    ['sShirtScale','vShirtScale'].forEach(id => { const el = document.getElementById(id); if (el) el.value = 100; });
+                    ['sShirtX','vShirtX','sShirtYCustom','vShirtYCustom'].forEach(id => { const el = document.getElementById(id); if (el) el.value = 0; });
+                    const nameSpan = document.getElementById('customShirtImgName');
+                    if (nameSpan) nameSpan.textContent = '✅ ' + file.name.slice(0, 22);
+                    const clearBtn = document.getElementById('customShirtImgClear');
+                    if (clearBtn) clearBtn.style.display = '';
+                    const sliders = document.getElementById('customShirtSliders');
+                    if (sliders) sliders.style.display = '';
+                    onUpdate('draw');
+                };
+                img.src = url;
+            });
+        }
+
+        const customShirtClear = document.getElementById('customShirtImgClear');
+        if (customShirtClear) {
+            customShirtClear.addEventListener('click', () => {
+                state.customShirtImg = null;
+                state.shirtX = 0; state.shirtY = 0; state.shirtScale = 100;
+                const nameSpan = document.getElementById('customShirtImgName');
+                if (nameSpan) nameSpan.textContent = 'Sin imagen';
+                customShirtClear.style.display = 'none';
+                const sliders = document.getElementById('customShirtSliders');
+                if (sliders) sliders.style.display = 'none';
+                const fileInput = document.getElementById('customShirtImgInput');
+                if (fileInput) fileInput.value = '';
+                onUpdate('draw');
+            });
+        }
+
+        [
+            { sl: 'sShirtScale', num: 'vShirtScale', key: 'shirtScale' },
+            { sl: 'sShirtX',     num: 'vShirtX',     key: 'shirtX'     },
+            { sl: 'sShirtYCustom', num: 'vShirtYCustom', key: 'shirtY' },
+        ].forEach(({ sl, num, key }) => {
+            const slEl  = document.getElementById(sl);
+            const numEl = document.getElementById(num);
+            if (!slEl || !numEl) return;
+            const sync = val => { state[key] = parseFloat(val); slEl.value = val; numEl.value = val; onUpdate('draw'); };
+            slEl.addEventListener('input',  e => sync(e.target.value));
+            numEl.addEventListener('input', e => sync(e.target.value));
+        });
+
         document.querySelectorAll('.q-pos-btn').forEach(btn => {
             btn.addEventListener('click', () => {
                 state.position = btn.dataset.pos;
@@ -624,9 +739,6 @@ const Edition2026 = {
             });
         });
 
-        // ── Personalización de bandera ────────────────────────────────────────
-
-        // Toggle principal: activa/desactiva el modo personalizado
         const customFlagToggle = document.getElementById('customFlag');
         if (customFlagToggle) {
             customFlagToggle.addEventListener('change', e => {
@@ -639,7 +751,6 @@ const Edition2026 = {
                 if (controls)    controls.style.display    = e.target.checked ? '' : 'none';
                 if (ddWrap)      ddWrap.style.display      = e.target.checked ? '' : 'none';
 
-                // Deshabilitar visualmente la card de país cuando está activo
                 if (countryCard) {
                     countryCard.style.opacity      = e.target.checked ? '0.4' : '';
                     countryCard.style.pointerEvents = e.target.checked ? 'none' : '';
@@ -648,7 +759,6 @@ const Edition2026 = {
                 onUpdate('draw');
             });
 
-            // Aplicar estado inicial al DOM (por si se re-renderiza con customFlag=true)
             if (state.customFlag) {
                 const countryCard = document.querySelector('.card--green');
                 if (countryCard) {
@@ -725,9 +835,6 @@ const Edition2026 = {
                 img.src = url;
             });
         }
-
-        // Sliders de ajuste de la imagen del escudo (tamaño, X, Y)
-        // Cada slider tiene su input[type=number] hermano para sincronización
         const flagSliders = [
             { sl: 'sFlagScale', num: 'vFlagScale', key: 'customFlagImgScale', parse: parseFloat },
             { sl: 'sFlagX',     num: 'vFlagX',     key: 'customFlagImgX',     parse: parseFloat },
