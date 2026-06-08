@@ -24,7 +24,12 @@
 
 @font-face {
     font-family: 'PaniniSecondary';
-    src: url('../assets/fonts/fuente2.ttf') format('truetype');
+    src: url('/frontend/assets/fonts/Apellido2.ttf') format('truetype');
+    font-display: swap;
+}
+@font-face {
+    font-family: 'PaniniSecondary2';
+    src: url('/frontend/assets/fonts/Nombre2.ttf') format('truetype');
     font-display: swap;
 }
 
@@ -65,7 +70,7 @@ html {
 }
 
 body {
-    font-family: 'Barlow', sans-serif;
+    font-family: 'PaniniSecondary2', sans-serif;
     background: var(--white);
     color: var(--black);
     min-height: 100vh;
@@ -153,7 +158,7 @@ header {
     }
 
     .how-to h2 {
-        font-family: sans-serif;
+        font-family: 'PaniniSecondary';
         font-size: clamp(1rem, 3.5vw, 1.3rem);
         text-transform: uppercase;
         margin-bottom: 10px;
@@ -330,7 +335,7 @@ header {
     }
 
     .card h3 {
-        font-family: sans-serif;
+        font-family: 'PaniniSecondary2';
         font-size: 12px;
         text-transform: uppercase;
         letter-spacing: 1px;
@@ -561,7 +566,7 @@ header {
         border-radius: 10px;
         background: var(--gray);
         color: var(--black);
-        font-family: 'Barlow', sans-serif;
+        font-family: 'PaniniSecondary2', sans-serif;
         outline: none;
         transition: border-color 0.15s, background 0.15s, box-shadow 0.15s;
     }
@@ -583,7 +588,7 @@ header {
     padding: 11px 14px;
     border: var(--border);
     border-radius: 14px;
-    font-family: 'Barlow', sans-serif;
+    font-family: 'PaniniSecondary2', sans-serif;
     font-size: 13px;
     font-weight: 700;
     text-transform: uppercase;
@@ -2300,3 +2305,65 @@ body, header, .how-to, .card, .rainbow-bar, .dl-btn, .canvas-wrap {
         -webkit-appearance: none;
         margin: 0;
     }
+
+/* ─── FONDOS POR EDITION ───────────────────────────────────────────────────── */
+
+/*
+ * Cómo agregar un fondo a una nueva edition:
+ * 1. Agregá una regla body[data-edition="edition-XXXX"] con background-image
+ * 2. Ajustá la opacidad del overlay en body[data-edition="edition-XXXX"]::before
+ */
+
+/* Capa de overlay blanco semitransparente sobre CUALQUIER fondo de edition.
+   Hace los textos legibles sin tocar nada más.
+   Aumentá el valor de opacity (0–1) para más blanco, bajalo para más imagen. */
+body[data-edition]::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: rgba(255, 255, 255, 0.55);
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* Todo el contenido queda encima del overlay */
+body[data-edition] > * {
+    position: relative;
+    z-index: 1;
+}
+
+/* ── Edition 2026 ── */
+body[data-edition="edition-2026"] {
+    background-image: url('/frontend/assets/fondo-tile.png');
+    background-repeat: repeat-x;
+    background-size: auto 100vh;
+    background-attachment: fixed;
+}
+
+/* ── Extra Card 2026 — mismo fondo que edition-2026 ── */
+body[data-edition="edition-extracard"] {
+    background-image: url('/frontend/assets/fondo-tile.png');
+    background-repeat: repeat-x;
+    background-size: auto 100vh;
+    background-attachment: fixed;
+}
+
+/* ── Qatar 2022 ── */
+body[data-edition="edition-qatar2022"] {
+    background-image: url('/frontend/assets/fondo-qatar.webp');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+/* overlay más sutil para qatar — el fondo ya es oscuro, no necesita tanto blanco */
+body[data-edition="edition-qatar2022"]::before {
+    background: rgba(255, 255, 255, 0.18);
+}
+
+/* ── Rusia 2018 — sin fondo imagen, usa --theme-bg-body ── */
+/* body[data-edition="edition-2018"] { background-image: url('...'); } */
+
+/* ── Alemania 2006 — sin fondo imagen, usa --theme-bg-body ── */
+/* body[data-edition="edition-2006"] { background-image: url('...'); } */

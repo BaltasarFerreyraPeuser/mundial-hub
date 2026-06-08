@@ -34,6 +34,18 @@ const fontDefs = [
     ['FuentePais2006', '/frontend/assets/fonts/pais2006.ttf'],
     ['FuenteNombre2006', '/frontend/assets/fonts/nombre2006.ttf'],
 ];
+if (typeof ShirtAlign !== 'undefined') ShirtAlign.loadModels();
+
+const EDITIONS = [Edition2026, EditionQatar2022, EditionExtraCard, EditionRusia2018, Edition2006];
+
+let activeEdition = EDITIONS[0];
+let state         = { ...activeEdition.defaultState, _touched: {} };
+let imgs          = {};
+let tints         = {};
+let photo         = null;
+let flagImg       = null;
+let needsDraw     = true;
+
 Promise.allSettled(
     fontDefs.map(([name, url]) => new FontFace(name, `url(${url})`).load())
 ).then(results => {
@@ -46,18 +58,6 @@ Promise.allSettled(
     });
     needsDraw = true;
 });
-
-if (typeof ShirtAlign !== 'undefined') ShirtAlign.loadModels();
-
-const EDITIONS = [Edition2026, EditionQatar2022, EditionExtraCard, EditionRusia2018, Edition2006];
-
-let activeEdition = EDITIONS[0];
-let state         = { ...activeEdition.defaultState, _touched: {} };
-let imgs          = {};
-let tints         = {};
-let photo         = null;
-let flagImg       = null;
-let needsDraw     = true;
 
 const _countryCache = new Map();
 function getAllCountries(edition) {
@@ -559,7 +559,7 @@ const TABS = [
     { label: '2026',              edition: Edition2026,      disabled: false, icon: '/frontend/assets/svg/logofifa3.svg' },
     { label: '2022', edition: EditionQatar2022, disabled: false, icon: '/frontend/assets/svg/logoqatar.svg' },
     { label: '2018', edition: EditionRusia2018, disabled: false, icon: '/frontend/assets/svg/logorusia.svg' },
-    { label: '2006', sub: 'COMING SOON', edition: Edition2006, disabled: false, icon: '/frontend/assets/svg/logo2006.svg' },
+    { label: '2006', edition: Edition2006, disabled: false, icon: '/frontend/assets/svg/logo2006.svg' },
     { label: 'EXTRA STICKER 2026', edition: EditionExtraCard, disabled: false, icon: '/frontend/assets/extra.png' },
     { label: 'EXTRA STICKER 2022', sub: 'COMING SOON', edition: null, disabled: true, icon: '/frontend/assets/extra22.png' },
     { label: '2014', sub: 'COMING SOON', edition: null, disabled: true, icon: '/frontend/assets/svg/logobrasil.svg' },
