@@ -117,52 +117,53 @@ const Edition2006 = {
             const ox = oc.getContext('2d');
 
             if (!strokeMode) {
-                // Fill: colorea toda la forma
+                // Fill: colorea toda la forma con el color
                 ox.fillStyle = hex;
                 ox.fillRect(0, 0, W, H);
                 ox.globalCompositeOperation = 'destination-in';
                 ox.drawImage(src, 0, 0, W, H);
             } else {
-                // Stroke interior: fondo blanco recortado + borde del color
-                // 1) Dibuja la forma en blanco (relleno completo)
-                ox.globalCompositeOperation = 'source-over';
-                ox.fillStyle = '#ffffff';
-                ox.fillRect(0, 0, W, H);
-                ox.globalCompositeOperation = 'destination-in';
-                ox.drawImage(src, 0, 0, W, H);
+                // Borde interior: color en el borde + blanco en el interior
+                const borderPx = 28;
 
-                // 2) Encima dibuja el borde: la forma del color escalada al tamaño original
-                //    menos una versión más pequeña (erosionada) = borde interior
-                const borderW = 18; // grosor del borde en px (escala canvas)
-                const inner = document.createElement('canvas');
-                inner.width = W; inner.height = H;
-                const ix = inner.getContext('2d');
-                // Dibuja la forma encogida en el centro
-                ix.drawImage(src,
-                    borderW, borderW,
-                    W - borderW * 2, H - borderW * 2
-                );
+                // 1) Canvas blanco recortado a la forma
+                const whiteC = document.createElement('canvas');
+                whiteC.width = W; whiteC.height = H;
+                const wx = whiteC.getContext('2d');
+                wx.fillStyle = '#ffffff';
+                wx.fillRect(0, 0, W, H);
+                wx.globalCompositeOperation = 'destination-in';
+                wx.drawImage(src, 0, 0, W, H);
 
-                // Canvas del borde = forma original - forma interior
-                const border = document.createElement('canvas');
-                border.width = W; border.height = H;
-                const bx = border.getContext('2d');
-                bx.drawImage(src, 0, 0, W, H);
-                bx.globalCompositeOperation = 'destination-out';
-                bx.drawImage(inner, 0, 0, W, H);
+                // 2) Canvas del color recortado a la forma
+                const colorC = document.createElement('canvas');
+                colorC.width = W; colorC.height = H;
+                const cx2 = colorC.getContext('2d');
+                cx2.fillStyle = hex;
+                cx2.fillRect(0, 0, W, H);
+                cx2.globalCompositeOperation = 'destination-in';
+                cx2.drawImage(src, 0, 0, W, H);
 
-                // Colorea el borde
-                const colored = document.createElement('canvas');
-                colored.width = W; colored.height = H;
-                const cx = colored.getContext('2d');
-                cx.fillStyle = hex;
-                cx.fillRect(0, 0, W, H);
-                cx.globalCompositeOperation = 'destination-in';
-                cx.drawImage(border, 0, 0, W, H);
+                // 3) Interior erosionado: forma blanca "expandida" con shadowBlur
+                //    para cubrir todo el interior dejando solo el borde visible
+                const erosC = document.createElement('canvas');
+                erosC.width = W; erosC.height = H;
+                const ex = erosC.getContext('2d');
+                ex.shadowColor = '#ffffff';
+                ex.shadowBlur  = borderPx * 2;
+                // Dibujar en 8 direcciones + centro para rellenar hacia adentro
+                const d = borderPx;
+                [[0,0],[-d,0],[d,0],[0,-d],[0,d],[-d,-d],[d,-d],[-d,d],[d,d]].forEach(([ox2,oy2]) => {
+                    ex.drawImage(whiteC, ox2, oy2);
+                });
+                ex.shadowBlur = 0;
+                // Recortar al shape original
+                ex.globalCompositeOperation = 'destination-in';
+                ex.drawImage(src, 0, 0, W, H);
 
-                // Composita el borde coloreado encima del blanco
-                ox.globalCompositeOperation = 'source-over';
-                ox.drawImage(colored, 0, 0, W, H);
+                // 4) Componer: primero color, luego blanco erosionado encima
+                ox.drawImage(colorC, 0, 0);
+                ox.drawImage(erosC, 0, 0);
             }
             return oc;
         };
@@ -292,22 +293,20 @@ const Edition2006 = {
 
     renderControls(state) {
         const cositos = [
-            { id: 'cCosito',  sId: 'sCosito',  label: 'Cosito abajo',  color: state.cCosito  || '#c8a800', stroke: state.sCosito  },
-            { id: 'cCosito1', sId: 'sCosito1', label: 'Cosito arriba', color: state.cCosito1 || '#c8a800', stroke: state.sCosito1 },
-            { id: 'cCosito2', sId: 'sCosito2', label: 'Cosito medio',  color: state.cCosito2 || '#c8a800', stroke: state.sCosito2 },
-            { id: 'cCosito3', sId: 'sCosito3', label: 'Cosito abajo 2',color: state.cCosito3 || '#c8a800', stroke: state.sCosito3 },
+            { id: 'cCosito',  sId: 'sCosito',  label: 'Cosito abajo',   color: state.cCosito  || '#c8a800', stroke: !!state.sCosito  },
+            { id: 'cCosito1', sId: 'sCosito1', label: 'Cosito arriba',  color: state.cCosito1 || '#c8a800', stroke: !!state.sCosito1 },
+            { id: 'cCosito2', sId: 'sCosito2', label: 'Cosito medio',   color: state.cCosito2 || '#c8a800', stroke: !!state.sCosito2 },
+            { id: 'cCosito3', sId: 'sCosito3', label: 'Cosito abajo 2', color: state.cCosito3 || '#c8a800', stroke: !!state.sCosito3 },
         ];
-
         const rows = cositos.map(c => `
             <div class="crow" style="gap:10px;align-items:center;">
-                <label for="${c.id}" style="min-width:110px;">${c.label}</label>
+                <label for="${c.id}" style="min-width:110px;font-size:12px;">${c.label}</label>
                 <input type="color" id="${c.id}" value="${c.color}">
-                <label class="switch-label" title="Borde interior" style="display:flex;align-items:center;gap:5px;font-size:11px;cursor:pointer;">
-                    <input type="checkbox" id="${c.sId}" class="cosito-stroke-toggle" data-cosito="${c.id}" ${c.stroke ? 'checked' : ''} style="accent-color:var(--theme-primary);">
+                <label style="display:flex;align-items:center;gap:4px;font-size:11px;cursor:pointer;white-space:nowrap;">
+                    <input type="checkbox" id="${c.sId}" ${c.stroke ? 'checked' : ''}>
                     Borde
                 </label>
             </div>`).join('');
-
         return `
         <div class="card edition-controls" data-card-num="02">
             <h3>Color cositos</h3>
@@ -316,28 +315,16 @@ const Edition2006 = {
     },
 
     bindControls(state, onUpdate) {
-        const cositos = [
+        [
             { colorId: 'cCosito',  strokeId: 'sCosito',  colorKey: 'cCosito',  strokeKey: 'sCosito'  },
             { colorId: 'cCosito1', strokeId: 'sCosito1', colorKey: 'cCosito1', strokeKey: 'sCosito1' },
             { colorId: 'cCosito2', strokeId: 'sCosito2', colorKey: 'cCosito2', strokeKey: 'sCosito2' },
             { colorId: 'cCosito3', strokeId: 'sCosito3', colorKey: 'cCosito3', strokeKey: 'sCosito3' },
-        ];
-
-        cositos.forEach(({ colorId, strokeId, colorKey, strokeKey }) => {
+        ].forEach(({ colorId, strokeId, colorKey, strokeKey }) => {
             const colorEl = document.getElementById(colorId);
-            if (colorEl) {
-                colorEl.addEventListener('input', e => {
-                    state[colorKey] = e.target.value;
-                    onUpdate('tints');
-                });
-            }
+            if (colorEl) colorEl.addEventListener('input', e => { state[colorKey] = e.target.value; onUpdate('tints'); });
             const strokeEl = document.getElementById(strokeId);
-            if (strokeEl) {
-                strokeEl.addEventListener('change', e => {
-                    state[strokeKey] = e.target.checked;
-                    onUpdate('tints');
-                });
-            }
+            if (strokeEl) strokeEl.addEventListener('change', e => { state[strokeKey] = e.target.checked; onUpdate('tints'); });
         });
 
         ['inDay', 'inMonth', 'inYear'].forEach(id => {
