@@ -124,7 +124,7 @@ const Edition2006 = {
                 ox.drawImage(src, 0, 0, W, H);
             } else {
                 // Borde interior: color en el borde + blanco en el interior
-                const borderPx = 28;
+                const borderPx = 100;
 
                 // 1) Canvas blanco recortado a la forma
                 const whiteC = document.createElement('canvas');

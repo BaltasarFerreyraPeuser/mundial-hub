@@ -1330,6 +1330,7 @@ header {
     justify-content: center;
     padding: 16px;
     backdrop-filter: blur(4px);
+    isolation: isolate;
 }
 
 .share-modal.active {
@@ -2327,7 +2328,8 @@ body[data-edition]::before {
 }
 
 /* Todo el contenido queda encima del overlay */
-body[data-edition] > * {
+/* Excluimos los elementos fixed para no romper su posicionamiento */
+body[data-edition] > *:not(.share-modal):not(.mobile-preview-bar) {
     position: relative;
     z-index: 1;
 }
