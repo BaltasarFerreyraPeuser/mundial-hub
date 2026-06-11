@@ -208,9 +208,15 @@ const EditionExtraCard = {
         }
 
         if (state.customFlag && this.marcoBanderaSlots) {
+            // El slot de referencia es el grande (índice 0) para los sliders
+            const refSlot = this.marcoBanderaSlots[0];
+
             this.marcoBanderaSlots.forEach(slot => {
                 const { x, y, w, h, r } = slot;
                 const x2 = x + w, y2 = y + h;
+
+                // Factor de escala de este slot relativo al slot grande
+                const slotRatio = Math.min(w / refSlot.w, h / refSlot.h);
 
                 ctx.save();
                 ctx.beginPath();
@@ -229,13 +235,13 @@ const EditionExtraCard = {
                 ctx.fillStyle = state.customFlagColor || '#1a3fa3';
                 ctx.fillRect(x, y, w, h);
 
-                // Imagen del usuario centrada dentro del slot, con sliders de ajuste
+                // Imagen escalada proporcionalmente al tamaño de este slot
                 if (state.customFlagImg) {
-                    const sc = (state.customFlagImgScale || 100) / 100;
+                    const sc = (state.customFlagImgScale || 100) / 100 * slotRatio;
                     const iw = state.customFlagImg.width  * sc;
                     const ih = state.customFlagImg.height * sc;
-                    const ix = x + (w - iw) / 2 + (state.customFlagImgX || 0);
-                    const iy = y + (h - ih) / 2 + (state.customFlagImgY || 0);
+                    const ix = x + (w - iw) / 2 + (state.customFlagImgX || 0) * slotRatio;
+                    const iy = y + (h - ih) / 2 + (state.customFlagImgY || 0) * slotRatio;
                     ctx.drawImage(state.customFlagImg, ix, iy, iw, ih);
                 }
                 ctx.restore();
