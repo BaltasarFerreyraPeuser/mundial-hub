@@ -120,6 +120,13 @@ const EditionExtraCard = {
         rareza: 'com',
         name: 'YOUR NAME',
         code: 'ARG',
+        // Personalización de bandera
+        customFlag:         false,
+        customFlagImg:      null,
+        customFlagColor:    '#1a3fa3',
+        customFlagImgScale: 100,
+        customFlagImgX:     0,
+        customFlagImgY:     0,
     },
 
     rareza: {
@@ -161,7 +168,7 @@ const EditionExtraCard = {
             ctx.fillRect(0, 0, W, H);
         }
 
-        if (flagImg && this.marcoBanderaSlots) {
+        if (flagImg && this.marcoBanderaSlots && !state.customFlag) {
             this.marcoBanderaSlots.forEach(slot => {
                 const { x, y, w, h, r } = slot;
                 const fw = flagImg.naturalWidth  || flagImg.width  || w;
@@ -196,6 +203,41 @@ const EditionExtraCard = {
                     dx = x + (w - dw) / 2; dy = y;
                 }
                 ctx.drawImage(flagImg, dx, dy, dw, dh);
+                ctx.restore();
+            });
+        }
+
+        if (state.customFlag && this.marcoBanderaSlots) {
+            this.marcoBanderaSlots.forEach(slot => {
+                const { x, y, w, h, r } = slot;
+                const x2 = x + w, y2 = y + h;
+
+                ctx.save();
+                ctx.beginPath();
+                ctx.moveTo(x + r, y);
+                ctx.lineTo(x2, y);
+                ctx.lineTo(x2, y2 - r);
+                ctx.arcTo(x2, y2, x2 - r, y2, r);
+                ctx.lineTo(x + r, y2);
+                ctx.arcTo(x, y2, x, y2 - r, r);
+                ctx.lineTo(x, y + r);
+                ctx.arcTo(x, y, x + r, y, r);
+                ctx.closePath();
+                ctx.clip();
+
+                // Fondo de color sólido
+                ctx.fillStyle = state.customFlagColor || '#1a3fa3';
+                ctx.fillRect(x, y, w, h);
+
+                // Imagen del usuario centrada dentro del slot, con sliders de ajuste
+                if (state.customFlagImg) {
+                    const sc = (state.customFlagImgScale || 100) / 100;
+                    const iw = state.customFlagImg.width  * sc;
+                    const ih = state.customFlagImg.height * sc;
+                    const ix = x + (w - iw) / 2 + (state.customFlagImgX || 0);
+                    const iy = y + (h - ih) / 2 + (state.customFlagImgY || 0);
+                    ctx.drawImage(state.customFlagImg, ix, iy, iw, ih);
+                }
                 ctx.restore();
             });
         }
@@ -264,10 +306,67 @@ const EditionExtraCard = {
             </button>`;
         }).join('');
 
+        const cfShow = state.customFlag ? '' : 'display:none';
+        const cfHide = state.customFlag ? 'display:none' : '';
+
         return `
         <div class="card card--blue edition-controls" data-card-num="02">
             <h3>Rarity</h3>
             <div class="q-btn-row q-pos-row">${bgOpts}</div>
+        </div>
+
+        <div class="card card--orange edition-controls" data-card-num="03" id="cardCustomFlag">
+            <h3>País personalizado</h3>
+
+            <div class="crow">
+                <label for="customFlag">Personalizar</label>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="customFlag" ${state.customFlag ? 'checked' : ''}>
+                    <span class="toggle-slider"></span>
+                </label>
+                <span>Activar personalización</span>
+            </div>
+
+            <div id="customFlagDropdownWrap" style="${cfHide}">
+                <p class="custom-flag-hint">Selector de país desactivado</p>
+            </div>
+
+            <div id="customFlagControls" style="${cfShow}">
+                <div class="crow">
+                    <label for="customFlagColor">Fondo del escudo</label>
+                    <input type="color" id="customFlagColor" value="${state.customFlagColor || '#1a3fa3'}">
+                    <span>Color de fondo</span>
+                </div>
+
+                <div class="crow" style="align-items:flex-start;flex-direction:column;gap:6px;">
+                    <label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;">
+                        Imagen del escudo
+                    </label>
+                    <label class="upload-btn upload-direct" for="customFlagImgInput" style="margin-bottom:0;font-size:12px;padding:8px 12px;">
+                        <span>🖼 Subir imagen</span>
+                    </label>
+                    <input type="file" id="customFlagImgInput" accept="image/*" style="display:none!important;">
+                    <span id="customFlagImgName" style="font-size:10px;color:#555;">${state.customFlagImg ? '✅ Imagen cargada' : 'Sin imagen'}</span>
+                </div>
+
+                <div id="customFlagImgSliders" style="${state.customFlagImg ? '' : 'display:none'}">
+                    <div class="srow" style="margin-top:8px;">
+                        <label for="sFlagScale">Tamaño</label>
+                        <input type="range" id="sFlagScale" min="5" max="200" value="${state.customFlagImgScale || 100}">
+                        <input type="number" class="srow-num" id="vFlagScale" min="5" max="200" value="${state.customFlagImgScale || 100}">
+                    </div>
+                    <div class="srow">
+                        <label for="sFlagX">Horizontal</label>
+                        <input type="range" id="sFlagX" min="-500" max="500" value="${state.customFlagImgX || 0}">
+                        <input type="number" class="srow-num" id="vFlagX" min="-500" max="500" value="${state.customFlagImgX || 0}">
+                    </div>
+                    <div class="srow">
+                        <label for="sFlagY">Vertical</label>
+                        <input type="range" id="sFlagY" min="-500" max="500" value="${state.customFlagImgY || 0}">
+                        <input type="number" class="srow-num" id="vFlagY" min="-500" max="500" value="${state.customFlagImgY || 0}">
+                    </div>
+                </div>
+            </div>
         </div>`;
     },
 
@@ -279,6 +378,102 @@ const EditionExtraCard = {
                 btn.classList.add('active');
                 onUpdate('draw');
             });
+        });
+
+        // ── Bandera personalizada ─────────────────────────────────────────────
+        const customFlagToggle = document.getElementById('customFlag');
+        if (customFlagToggle) {
+            customFlagToggle.addEventListener('change', e => {
+                state.customFlag = e.target.checked;
+
+                const controls    = document.getElementById('customFlagControls');
+                const ddWrap      = document.getElementById('customFlagDropdownWrap');
+                const countryCard = document.querySelector('.card--green');
+
+                if (controls) controls.style.display = e.target.checked ? '' : 'none';
+                if (ddWrap)   ddWrap.style.display   = e.target.checked ? '' : 'none';
+
+                if (countryCard) {
+                    countryCard.style.opacity      = e.target.checked ? '0.4' : '';
+                    countryCard.style.pointerEvents = e.target.checked ? 'none' : '';
+                }
+
+                onUpdate('draw');
+            });
+
+            if (state.customFlag) {
+                const countryCard = document.querySelector('.card--green');
+                if (countryCard) {
+                    countryCard.style.opacity      = '0.4';
+                    countryCard.style.pointerEvents = 'none';
+                }
+            }
+        }
+
+        const flagColorEl = document.getElementById('customFlagColor');
+        if (flagColorEl) {
+            flagColorEl.addEventListener('input', e => {
+                state.customFlagColor = e.target.value;
+                onUpdate('draw');
+            });
+        }
+
+        const flagImgInput = document.getElementById('customFlagImgInput');
+        if (flagImgInput) {
+            flagImgInput.addEventListener('change', e => {
+                const file = e.target.files[0];
+                if (!file) return;
+                const url = URL.createObjectURL(file);
+                const img = new Image();
+                img.onload = () => {
+                    URL.revokeObjectURL(url);
+                    state.customFlagImg = img;
+
+                    // Escala automática para que entre bien en el slot grande
+                    const MF_SIZE = 2246;
+                    const maxDim  = Math.max(img.width, img.height);
+                    const autoScale = Math.round((MF_SIZE * 0.80) / maxDim * 100);
+                    state.customFlagImgScale = Math.min(Math.max(autoScale, 5), 200);
+                    state.customFlagImgX     = 0;
+                    state.customFlagImgY     = 0;
+
+                    const sFlagScale = document.getElementById('sFlagScale');
+                    const vFlagScale = document.getElementById('vFlagScale');
+                    if (sFlagScale) sFlagScale.value = state.customFlagImgScale;
+                    if (vFlagScale) vFlagScale.value = state.customFlagImgScale;
+                    ['sFlagX','vFlagX','sFlagY','vFlagY'].forEach(id => {
+                        const el = document.getElementById(id);
+                        if (el) el.value = 0;
+                    });
+
+                    const slidersWrap = document.getElementById('customFlagImgSliders');
+                    if (slidersWrap) slidersWrap.style.display = '';
+                    const nameSpan = document.getElementById('customFlagImgName');
+                    if (nameSpan) nameSpan.textContent = '✅ ' + file.name.slice(0, 22);
+
+                    onUpdate('draw');
+                };
+                img.src = url;
+            });
+        }
+
+        const flagSliders = [
+            { sl: 'sFlagScale', num: 'vFlagScale', key: 'customFlagImgScale' },
+            { sl: 'sFlagX',     num: 'vFlagX',     key: 'customFlagImgX'     },
+            { sl: 'sFlagY',     num: 'vFlagY',     key: 'customFlagImgY'     },
+        ];
+        flagSliders.forEach(({ sl, num, key }) => {
+            const slEl  = document.getElementById(sl);
+            const numEl = document.getElementById(num);
+            if (!slEl || !numEl) return;
+            const sync = val => {
+                state[key] = parseFloat(val);
+                slEl.value  = val;
+                numEl.value = val;
+                onUpdate('draw');
+            };
+            slEl.addEventListener('input',  e => sync(e.target.value));
+            numEl.addEventListener('input', e => sync(e.target.value));
         });
     },
 };
