@@ -447,7 +447,7 @@ const Edition2026 = {
         ctx.fillStyle = '#fff';
         ctx.translate(211 + 1734 / 2, H - 190);
         ctx.scale(1, 1.15);
-        ctx.fillText(state.club.toUpperCase(), 0, 0, 1760);
+        ctx.fillText(state.club.toUpperCase(), 0, 0, 1680);
         ctx.restore();
 
         ctx.restore();
