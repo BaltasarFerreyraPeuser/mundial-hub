@@ -1030,10 +1030,16 @@ header {
 }
 
 @media (max-width: 680px) {
+    /* Espacio al fondo para que el panel fixed (mobile-preview-bar) no tape
+       el final de la página (footer con legales, redes y donaciones).
+       Se aplica al body —no a .page— porque el footer es hermano de .page
+       y queda fuera de su padding. */
+    body {
+        padding-bottom: 310px;
+    }
+
     .page {
         padding: 14px 14px 0;
-        /* Espacio al fondo para que el panel fixed no tape el último control */
-        padding-bottom: 310px;
     }
 
     .amplify-center-26 {
@@ -1345,6 +1351,9 @@ header {
     padding: 28px 24px 24px;
     max-width: 400px;
     width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
     position: relative;
     display: flex;
     flex-direction: column;
@@ -1475,20 +1484,139 @@ header {
     width: 100%;
 }
 
+.share-modal__support {
+    width: 100%;
+    margin-top: 4px;
+    padding-top: 16px;
+    border-top: 2px dashed rgba(0,0,0,0.15);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+
+.share-modal__support-msg {
+    font-size: 15px;
+    font-weight: 800;
+    text-align: center;
+    line-height: 1.4;
+    color: var(--black);
+    max-width: 320px;
+}
+
+.share-modal__support-buttons {
+    display: flex;
+    gap: 8px;
+    width: 100%;
+    flex-wrap: wrap;
+}
+
+.support-modal-btn {
+    flex: 1 1 0;
+    min-width: 0;
+    padding: 11px 8px;
+    border-radius: 14px;
+    font-size: 12px;
+    font-weight: 800;
+    text-transform: uppercase;
+    text-decoration: none;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.12s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    letter-spacing: 0.02em;
+    box-shadow: 3px 3px 0 var(--black);
+    border: var(--border);
+    white-space: nowrap;
+}
+
+.support-modal-btn:active {
+    transform: translate(2px, 2px);
+    box-shadow: 1px 1px 0 var(--black);
+}
+
+.support-modal-btn__icon {
+    font-size: 15px;
+}
+
+.support-modal-btn--cafecito {
+    background: var(--greenA, #6ee7b7);
+    color: var(--black);
+}
+
+.support-modal-btn--paypal {
+    background: var(--blueB, #2651ff);
+    color: #fff;
+}
+
+.support-modal-btn--kofi {
+    background: #ff5e5b;
+    color: #fff;
+}
+
 @media (max-width: 480px) {
+    .share-modal {
+        padding: 10px;
+        align-items: stretch;
+    }
+
     .share-modal__box {
-        padding: 22px 16px 18px;
-        gap: 12px;
+        padding: 18px 14px 16px;
+        gap: 10px;
+        max-height: 94vh;
+        border-radius: var(--radius);
+    }
+
+    .share-modal__title {
+        font-size: 1.15rem;
+    }
+
+    .share-modal__img-wrap {
+        width: 90px;
+    }
+
+    .share-modal__sub {
+        font-size: 11px;
     }
 
     .share-modal__buttons {
         flex-direction: column;
+        gap: 6px;
     }
 
     .share-btn {
         flex-direction: row;
         justify-content: center;
-        padding: 12px;
+        padding: 10px;
+        gap: 6px;
+    }
+
+    .share-btn--dl {
+        padding: 10px;
+        font-size: 12px;
+    }
+
+    .share-modal__support {
+        padding-top: 12px;
+        gap: 8px;
+    }
+
+    .share-modal__support-msg {
+        font-size: 13px;
+        max-width: 100%;
+    }
+
+    .share-modal__support-buttons {
+        flex-direction: column;
+        gap: 6px;
+    }
+
+    .support-modal-btn {
+        padding: 10px;
+        font-size: 11px;
     }
 }
 

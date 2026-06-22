@@ -54,6 +54,10 @@ const TRANSLATIONS = {
         'modal-sub':          'Compartila en tus redes o volvé a descargarla',
         'modal-ig-tip':       '📲 La imagen se descargó. Abrí Instagram, creá una historia o post y subila desde tu galería.',
         'modal-download':     '⬇ Descargar de nuevo',
+        'modal-support-msg':  '¡Si te gustó, podés ayudarme a mantener los servidores y actualizar la página &lt;3!',
+        'modal-support-cafecito': 'Cafecito',
+        'modal-support-paypal':   'PayPal',
+        'modal-support-kofi':     'Ko-fi',
         'loading-edition':    'Cargando edición...',
         'group-label':        'Grupo',
         'no-results':         'Sin resultados',
@@ -159,6 +163,10 @@ const TRANSLATIONS = {
         'modal-sub':          'Share it on social media or download it again',
         'modal-ig-tip':       '📲 The image has been downloaded. Open Instagram, create a story or post and upload it from your gallery.',
         'modal-download':     '⬇ Download again',
+        'modal-support-msg':  'If you liked it, you can help me keep the servers running and the page updated &lt;3!',
+        'modal-support-cafecito': 'Cafecito',
+        'modal-support-paypal':   'PayPal',
+        'modal-support-kofi':     'Ko-fi',
         'loading-edition':    'Loading edition...',
         'group-label':        'Group',
         'no-results':         'No results',
@@ -338,6 +346,30 @@ function applyStaticTranslations() {
     if (igTip) igTip.textContent = t('modal-ig-tip');
     const modalDownload = document.getElementById('modalDownload');
     if (modalDownload) modalDownload.textContent = t('modal-download');
+
+    const modalSupportMsg = document.getElementById('modalSupportMsg');
+    if (modalSupportMsg) modalSupportMsg.innerHTML = t('modal-support-msg');
+    const supportCafecito = document.querySelector('.support-modal-btn--cafecito');
+    if (supportCafecito) {
+        const icon = supportCafecito.querySelector('.support-modal-btn__icon');
+        supportCafecito.textContent = '';
+        if (icon) supportCafecito.appendChild(icon);
+        supportCafecito.append(' ' + t('modal-support-cafecito'));
+    }
+    const supportPaypal = document.querySelector('.support-modal-btn--paypal');
+    if (supportPaypal) {
+        const icon = supportPaypal.querySelector('.support-modal-btn__icon');
+        supportPaypal.textContent = '';
+        if (icon) supportPaypal.appendChild(icon);
+        supportPaypal.append(' ' + t('modal-support-paypal'));
+    }
+    const supportKofi = document.querySelector('.support-modal-btn--kofi');
+    if (supportKofi) {
+        const icon = supportKofi.querySelector('.support-modal-btn__icon');
+        supportKofi.textContent = '';
+        if (icon) supportKofi.appendChild(icon);
+        supportKofi.append(' ' + t('modal-support-kofi'));
+    }
 
     document.documentElement.lang = currentLang;
 

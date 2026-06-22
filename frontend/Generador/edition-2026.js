@@ -216,6 +216,8 @@ const Edition2026 = {
         { id: 'marco', src: '/frontend/assets/svg/marco.svg' },
         { id: 'marcobandera', src: '/frontend/assets/svg/marcobandera.svg' },
         { id: 'marco6',    src: '/frontend/assets/svg/marco6.svg'   },
+        { id: 'marcoMEX',    src: '/frontend/assets/svg/marcoMEX.png'   },
+        { id: 'banderaMEX',  src: '/frontend/assets/svg/banderaMEX.png' },
         { id: 'cosito',    src: '/frontend/assets/svg/medio.svg'    },
         { id: 'rectA',     src: '/frontend/assets/svg/rectAR.svg'   },
         { id: 'rectB',     src: '/frontend/assets/svg/rectAB.svg'   },
@@ -245,12 +247,13 @@ const Edition2026 = {
         const cosito      = (state.cCosito  === ps.cCosito  && prev.cosito)      ? prev.cosito      : tint(imgs.cosito,      state.cCosito);
         const marco       = (state.cBg      === ps.cBg      && prev.marco)       ? prev.marco       : tint(imgs.marco,       state.cBg);
         const marco6      = (state.c6       === ps.c6       && prev.marco6)      ? prev.marco6      : tint(imgs.marco6,      state.c6);
+        const marcoMEX    = (state.c6       === ps.c6       && prev.marcoMEX)    ? prev.marcoMEX    : tint(imgs.marcoMEX,    state.c6);
         const marcobandera = prev.marcobandera || tint(imgs.marcobandera, '#ffffff');
         const rectA       = (posColor === ps._posColor && prev.rectA)  ? prev.rectA  : tint(imgs.rectA, posColor);
         const rectB       = (posColor === ps._posColor && prev.rectB)  ? prev.rectB  : tint(imgs.rectB, posColor);
 
         this._prevState = { c2: state.c2, c6: state.c6, cCosito: state.cCosito, cBg: state.cBg, _posColor: posColor };
-        return { num2, num6, cosito, marco, marco6, marcobandera, rectA, rectB };
+        return { num2, num6, cosito, marco, marco6, marcoMEX, marcobandera, rectA, rectB };
     },
     draw(ctx, state, imgs, tints, photo, flagImg) {
         const W = 2895, H = 3840;
@@ -318,7 +321,13 @@ const Edition2026 = {
         if (state.useGoldBg && imgs['marcogold']) {
             ctx.drawImage(imgs['marcogold'], 0, 0, W, H);
         }
-        if (tints.marco6) ctx.drawImage(tints.marco6, 0, 0, W, H);
+        const isMexFlag = state.code === 'MEX' && !state.customFlag;
+
+        if (isMexFlag) {
+            if (tints.marcoMEX) ctx.drawImage(tints.marcoMEX, 0, 0, W, H);
+        } else {
+            if (tints.marco6) ctx.drawImage(tints.marco6, 0, 0, W, H);
+        }
 
         // ── Bandera: normal vs personalizada ──────────────────────────────────
         if (state.customFlag) {
@@ -355,14 +364,16 @@ const Edition2026 = {
             }
             ctx.restore();
         } else {
-            if (typeof drawFlagInMarco === 'function') {
+            if (isMexFlag && imgs.banderaMEX) {
+                ctx.drawImage(imgs.banderaMEX, 0, 0, W, H);
+            } else if (typeof drawFlagInMarco === 'function') {
                 drawFlagInMarco(ctx, flagImg, state.code);
             } else if (flagImg) {
                 ctx.drawImage(flagImg, 45, 78, W, H);
             }
         }
 
-        if (tints.marcobandera) ctx.drawImage(tints.marcobandera, 0, 0, W, H);
+        if (!isMexFlag && tints.marcobandera) ctx.drawImage(tints.marcobandera, 0, 0, W, H);
         ctx.save();
 
         // ── Letras del país: normal vs personalizada ──────────────────────────
@@ -401,7 +412,7 @@ const Edition2026 = {
         ctx.font = `180px ${FONT_NOMBRE}`;
         const nameWidth = ctx.measureText(state.name.toUpperCase() + ' ').width * 0.80;
         ctx.font = `180px ${FONT_APELLIDO}`;
-        const apellidoWidth = ctx.measureText(state.apellido.toUpperCase()).width * 1.15;
+        const apellidoWidth = ctx.measureText(state.apellido.toUpperCase()).width * 0.65;
         const totalWidth = nameWidth + apellidoWidth;
 
         const compress = totalWidth > MAX_NAME_W ? MAX_NAME_W / totalWidth : 1;
@@ -411,7 +422,7 @@ const Edition2026 = {
 
         // Nombre
         ctx.save();
-        ctx.translate(startX, H - 545);
+        ctx.translate(startX, H - 540);
         ctx.scale(0.80 * compress, 1);
         ctx.textAlign = 'left';
         ctx.font = `180px ${FONT_NOMBRE}`;
@@ -421,8 +432,8 @@ const Edition2026 = {
 
         // Apellido
         ctx.save();
-        ctx.translate(startX + nameW_final, H - 545);
-        ctx.scale(1.15 * compress, 1);
+        ctx.translate(startX + nameW_final, H - 540);
+        ctx.scale(0.65 * compress, 1);
         ctx.textAlign = 'left';
         ctx.font = `180px ${FONT_APELLIDO}`;
         ctx.fillStyle = '#fff';
