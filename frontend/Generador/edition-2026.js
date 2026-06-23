@@ -217,7 +217,7 @@ const Edition2026 = {
         { id: 'marcobandera', src: '/frontend/assets/svg/marcobandera.svg' },
         { id: 'marco6',    src: '/frontend/assets/svg/marco6.svg'   },
         { id: 'marcoMEX',    src: '/frontend/assets/svg/marcoMEX.png'   },
-        { id: 'banderaMEX',  src: '/frontend/assets/svg/banderaMEX.png' },
+        { id: 'banderaMEX',  src: '/frontend/assets/svg/BanderaMEX.png' },
         { id: 'cosito',    src: '/frontend/assets/svg/medio.svg'    },
         { id: 'rectA',     src: '/frontend/assets/svg/rectAR.svg'   },
         { id: 'rectB',     src: '/frontend/assets/svg/rectAB.svg'   },
