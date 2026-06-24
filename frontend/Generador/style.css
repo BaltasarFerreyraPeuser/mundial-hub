@@ -1042,6 +1042,14 @@ header {
         padding: 14px 14px 0;
     }
 
+    /* El primer banner (justo después del editor) necesita más aire en mobile:
+       la mobile-preview-bar es fixed y flota sobre el contenido mientras
+       se hace scroll, así que separamos bien el banner de esa zona para
+       que el dedo nunca pise los dos botones (descargar + anuncio) juntos. */
+    #adsterra-mid {
+        margin-top: 64px;
+    }
+
     .amplify-center-26 {
         font-size: clamp(6rem, 44vw, 12rem);
     }
@@ -1127,6 +1135,21 @@ header {
         background: var(--theme-bg-body, #ffffff);
         border-top: 3px solid var(--black);
         box-shadow: 0 -4px 20px rgba(0,0,0,0.13);
+    }
+
+    /* Zona de exclusión invisible justo debajo de la barra fija: evita que
+       cualquier anuncio quede "asomado" en el borde donde el dedo toca
+       el botón de descarga al hacer scroll. */
+    .mobile-preview-bar::after {
+        content: '';
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 14px;
+        background: transparent;
+        z-index: 201;
+        pointer-events: none;
     }
 
     .mobile-preview-bar .mpb-canvas-wrap {
@@ -2149,15 +2172,16 @@ body, header, .how-to, .card, .rainbow-bar, .dl-btn, .canvas-wrap {
 
 .ad-slot {
     max-width: 1200px;
-    margin: 0 auto 28px;
+    margin: 48px auto 48px;
     padding: 0 20px;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
     min-height: 90px;
 }
 
 .ad-slot--inline {
-    margin: 28px auto;
+    margin: 48px auto;
 }
 
 .ad-slot__label {
