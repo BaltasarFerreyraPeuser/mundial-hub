@@ -2194,6 +2194,37 @@ body, header, .how-to, .card, .rainbow-bar, .dl-btn, .canvas-wrap {
     margin-bottom: 4px;
 }
 
+.ad-iframe {
+    border: none;
+    overflow: hidden;
+    display: block;
+}
+
+.ad-iframe--leaderboard-desktop {
+    width: 728px;
+    height: 90px;
+}
+
+.ad-iframe--leaderboard-mobile {
+    display: none;
+    width: 320px;
+    height: 50px;
+}
+
+.ad-iframe--mrec {
+    width: 300px;
+    height: 250px;
+}
+
+@media (max-width: 760px) {
+    .ad-iframe--leaderboard-desktop {
+        display: none;
+    }
+    .ad-iframe--leaderboard-mobile {
+        display: block;
+    }
+}
+
 /* ══════════════════════════════════════════════════════════════
    OPTIMIZACIONES DE PERFORMANCE — añadidas sin modificar lógica
    ══════════════════════════════════════════════════════════════ */
