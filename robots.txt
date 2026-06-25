@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /api/
 
-Sitemap: https://mundialhub.vercel.app/sitemap.xml
+Sitemap: https://www.mundialhub.net/sitemap.xml
