@@ -1042,14 +1042,6 @@ header {
         padding: 14px 14px 0;
     }
 
-    /* El primer banner (justo después del editor) necesita más aire en mobile:
-       la mobile-preview-bar es fixed y flota sobre el contenido mientras
-       se hace scroll, así que separamos bien el banner de esa zona para
-       que el dedo nunca pise los dos botones (descargar + anuncio) juntos. */
-    #adsterra-mid {
-        margin-top: 64px;
-    }
-
     .amplify-center-26 {
         font-size: clamp(6rem, 44vw, 12rem);
     }
@@ -2198,51 +2190,6 @@ body, header, .how-to, .card, .rainbow-bar, .dl-btn, .canvas-wrap {
     border: none;
     overflow: hidden;
     display: block;
-}
-
-.ad-iframe--leaderboard-desktop {
-    width: 728px;
-    height: 90px;
-}
-
-.ad-iframe--leaderboard-mobile {
-    display: none;
-    width: 320px;
-    height: 50px;
-}
-
-.ad-iframe--mrec {
-    width: 300px;
-    height: 250px;
-}
-
-/* Reemplazo del Native Banner de Adsterra (ver motivo en el head del HTML):
-   banner estático 468x60 en desktop, y se reusa la versión mobile 320x50
-   ya existente del leaderboard para esta misma zona. */
-.ad-iframe--midbanner-desktop {
-    width: 468px;
-    height: 60px;
-}
-
-.ad-iframe--midbanner-mobile {
-    display: none;
-    width: 320px;
-    height: 50px;
-}
-
-@media (max-width: 760px) {
-    .ad-iframe--leaderboard-desktop {
-        display: none;
-    }
-    .ad-iframe--leaderboard-mobile {
-        display: block;
-    }
-    .ad-iframe--midbanner-desktop {
-        display: none;
-    }
-    .ad-iframe--midbanner-mobile {
-        display: block;
-    }
 }
 
 /* ══════════════════════════════════════════════════════════════
