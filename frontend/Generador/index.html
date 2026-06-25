@@ -16,8 +16,10 @@
             crossorigin="anonymous"></script>
     <meta name="google-adsense-account" content="ca-pub-5510863073717644">
 
-    <script async="async" data-cfasync="false" src="https://pl29855400.effectivecpmnetwork.com/e679eac5a319cf9f9dee6f1cb1e8549f/invoke.js"></script>
-
+    <!-- Native Banner de Adsterra DESACTIVADO temporalmente (25/06/2026):
+         estaba sirviendo un redirect a scareware tipo "tu iPhone fue
+         hackeado" en dispositivos iOS reales. Reportado a soporte de
+         Adsterra. No reactivar hasta confirmar que está resuelto. -->
 
     <!-- Open Graph -->
     <meta property="og:type" content="website">
@@ -387,10 +389,21 @@
 
         </div>
 
-        <!-- Anuncio Adsterra: reubicado aquí, después de que el usuario ya generó/vio su figurita -->
+        <!-- Anuncio Adsterra: banner estático 468x60 (desktop) / 320x50 (mobile)
+             reemplaza al Native Banner desactivado el 25/06/2026 (ver motivo
+             en el head). El 320x50 mobile reusa el mismo Zone Key que el
+             leaderboard mobile (Adsterra permite repetir un key en varios
+             slots de la misma página). -->
         <div class="ad-slot" id="adsterra-mid">
             <span class="ad-slot__label">Publicidad</span>
-            <div id="container-e679eac5a319cf9f9dee6f1cb1e8549f"></div>
+            <iframe class="ad-iframe ad-iframe--midbanner-desktop"
+                    title="Publicidad"
+                    scrolling="no"
+                    srcdoc="&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;body style='margin:0;padding:0;'&gt;&lt;script&gt;atOptions={'key':'84cb8ea314321fcb249e428add850b50','format':'iframe','height':60,'width':468,'params':{}};&lt;/script&gt;&lt;script src='https://www.highperformanceformat.com/84cb8ea314321fcb249e428add850b50/invoke.js'&gt;&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;"></iframe>
+            <iframe class="ad-iframe ad-iframe--midbanner-mobile"
+                    title="Publicidad"
+                    scrolling="no"
+                    srcdoc="&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;body style='margin:0;padding:0;'&gt;&lt;script&gt;atOptions={'key':'874fc3393f0479458c919786d5d368fb','format':'iframe','height':50,'width':320,'params':{}};&lt;/script&gt;&lt;script src='https://www.highperformanceformat.com/874fc3393f0479458c919786d5d368fb/invoke.js'&gt;&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;"></iframe>
         </div>
 
         <!-- Bloque AdSense nativo: se activa solo cuando la cuenta esté aprobada -->

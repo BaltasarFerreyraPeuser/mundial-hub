@@ -2216,11 +2216,31 @@ body, header, .how-to, .card, .rainbow-bar, .dl-btn, .canvas-wrap {
     height: 250px;
 }
 
+/* Reemplazo del Native Banner de Adsterra (ver motivo en el head del HTML):
+   banner estático 468x60 en desktop, y se reusa la versión mobile 320x50
+   ya existente del leaderboard para esta misma zona. */
+.ad-iframe--midbanner-desktop {
+    width: 468px;
+    height: 60px;
+}
+
+.ad-iframe--midbanner-mobile {
+    display: none;
+    width: 320px;
+    height: 50px;
+}
+
 @media (max-width: 760px) {
     .ad-iframe--leaderboard-desktop {
         display: none;
     }
     .ad-iframe--leaderboard-mobile {
+        display: block;
+    }
+    .ad-iframe--midbanner-desktop {
+        display: none;
+    }
+    .ad-iframe--midbanner-mobile {
         display: block;
     }
 }
