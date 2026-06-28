@@ -7,8 +7,9 @@ const canvasMap = {
     'edition-2026':      document.getElementById('cv-2026'),
     'edition-qatar2022': document.getElementById('cv-qatar'),
     'edition-extracard': document.getElementById('cv-extra'),
-    'edition-2018': document.getElementById('cv-rusia'),
-    'edition-2006': document.getElementById('cv-germany'),
+    'edition-2018':      document.getElementById('cv-rusia'),
+    'edition-2010':      document.getElementById('cv-2010'),
+    'edition-2006':      document.getElementById('cv-germany'),
 };
 
 let canvas = canvasMap['edition-2026'];
@@ -26,6 +27,7 @@ const fontDefs = [
     ['FuentePersonalizada',      '/frontend/assets/fonts/truly-26.otf'],
     ['FuentePersonalizadaA',     '/frontend/assets/fonts/Nombre2.ttf'],
     ['FuentePersonalizadaAA', '/frontend/assets/fonts/Apellido2.ttf'],
+    ['FuentePersonalizadaAAA', '/frontend/assets/fonts/Apellido22.ttf'],
     ['FuenteNacimiento', '/frontend/assets/fonts/nacimiento.ttf'],
     ['FuentePersonalizadaQatar', '/frontend/assets/fonts/qatarfuente.ttf'],
     ['FuenteRusia', '/frontend/assets/fonts/rusiafont.ttf'],
@@ -33,12 +35,13 @@ const fontDefs = [
     ['FuenteTahomaBold', '/frontend/assets/fonts/tahomabd.ttf'],
     ['FuentePais2006', '/frontend/assets/fonts/pais2006.ttf'],
     ['FuenteNombre2006', '/frontend/assets/fonts/nombre2006.ttf'],
+    ['Fuente2010',       '/frontend/assets/fonts/2010Font.ttf'],
 ];
 if (typeof ShirtAlign !== 'undefined') ShirtAlign.loadModels();
 
-const EDITIONS = [Edition2026, EditionQatar2022, EditionExtraCard, EditionRusia2018, Edition2006];
+const EDITIONS = [Edition2026, EditionQatar2022, EditionExtraCard, EditionRusia2018, Edition2010, Edition2006];
 
-let activeEdition = EDITIONS[0];
+let activeEdition = Edition2026;
 let state         = { ...activeEdition.defaultState, _touched: {} };
 let imgs          = {};
 let tints         = {};
@@ -116,7 +119,9 @@ const ALPHA3_TO_ALPHA2 = {
     // Grupo L
     ENG: 'gb-eng', CRO: 'hr', GHA: 'gh', PAN: 'pa',
     VEN: 've', IRL: 'ie', ITA: 'it', POL: 'pl', CHI: 'cl', BOL: 'bo', RUS: 'ru', DEN: 'dk', PER: 'pe', ISL: 'is', NGA: 'ng', CRC: 'cr', SRB: 'rs', HON: 'hn',
-    WAL: 'gb-wls', CMR: 'cm',
+    WAL: 'gb-wls',
+
+    GRE: 'gr', SVN: 'si', SVK: 'sk', PRK: 'kp', CMR: 'cm',
 };
 
 let _flagPending = null;
@@ -124,8 +129,39 @@ function loadFlag(code) {
     if (_flagPending) { _flagPending.onload = _flagPending.onerror = null; }
     const img = new Image();
     _flagPending = img;
-    img.onload  = () => { if (_flagPending === img) { flagImg = img; needsDraw = true; } };
-    img.onerror = () => { if (_flagPending === img) { flagImg = null; needsDraw = true; } };
+    img.decoding = 'async';
+    img.referrerPolicy = 'no-referrer';
+
+    const applyFlag = () => {
+        if (_flagPending === img) {
+            flagImg = img;
+            needsDraw = true;
+        }
+    };
+
+    img.onload = () => {
+        if (typeof img.decode === 'function') {
+            img.decode().then(applyFlag).catch(applyFlag);
+        } else {
+            applyFlag();
+        }
+    };
+
+    img.onerror = () => {
+        if (_flagPending !== img) return;
+        if (activeEdition.flagsSvgPath && activeEdition.flagsPath) {
+            const fallback = new Image();
+            _flagPending = fallback;
+            fallback.decoding = 'async';
+            fallback.onload = () => { if (_flagPending === fallback) { flagImg = fallback; needsDraw = true; } };
+            fallback.onerror = () => { if (_flagPending === fallback) { flagImg = null; needsDraw = true; } };
+            fallback.src = activeEdition.flagsPath + code + '.png';
+            return;
+        }
+        flagImg = null;
+        needsDraw = true;
+    };
+
     if (activeEdition.flagsSvgPath) {
         img.crossOrigin = 'anonymous';
         const alpha2 = ALPHA3_TO_ALPHA2[code] || code.toLowerCase();
@@ -280,6 +316,26 @@ function hideEditionLoader() {
     if (_loaderEl) _loaderEl.classList.remove('active');
 }
 
+function applyFieldVisibility(edition) {
+    const fieldsToToggle = {
+        'tHeight':   edition.id !== 'edition-extracard' && edition.id !== 'edition-2006' && edition.id !== 'edition-2010',
+        'tWeight':   edition.id !== 'edition-extracard' && edition.id !== 'edition-2006' && edition.id !== 'edition-2010',
+        'tClub':     edition.id !== 'edition-extracard' && edition.id !== 'edition-qatar2022' && edition.id !== 'edition-2006' && edition.id !== 'edition-2010',
+        'tApellido': edition.id === 'edition-2026',
+    };
+    Object.entries(fieldsToToggle).forEach(([id, show]) => {
+        const el = document.getElementById(id);
+        if (el) {
+            const row = el.closest('.frow');
+            if (row) row.style.display = show ? 'flex' : 'none';
+        }
+    });
+    const rowNaci = document.getElementById('rowNacimiento');
+    if (rowNaci) {
+        rowNaci.style.display = (edition.id === 'edition-extracard' || edition.id === 'edition-2010') ? 'none' : 'flex';
+    }
+}
+
 function switchEdition(edition) {
     if (edition === activeEdition) return;
     showEditionLoader();
@@ -294,21 +350,7 @@ function switchEdition(edition) {
             if (prevTouched[k]) { newState[k] = prevTouched[k]; newState._touched[k] = prevTouched[k]; }
         });
 
-        const fieldsToToggle = {
-            'tHeight':   edition.id !== 'edition-extracard' && edition.id !== 'edition-2006',
-            'tWeight':   edition.id !== 'edition-extracard' && edition.id !== 'edition-2006',
-            'tClub':     edition.id !== 'edition-extracard' && edition.id !== 'edition-qatar2022' && edition.id !== 'edition-2006',
-            'tApellido': edition.id === 'edition-2026',
-        };
-        Object.entries(fieldsToToggle).forEach(([id, show]) => {
-            const el = document.getElementById(id);
-            if (el) {
-                const row = el.closest('.frow');
-                if (row) row.style.display = show ? 'flex' : 'none';
-            }
-        });
-        const rowNaci = document.getElementById('rowNacimiento');
-        if (rowNaci) rowNaci.style.display = edition.id === 'edition-extracard' ? 'none' : 'flex';
+        applyFieldVisibility(edition);
 
         state = newState;
         switchCanvas(edition);
@@ -401,10 +443,18 @@ function selectCountry(country) {
     state.code = country.code;
     loadFlag(country.code);
     loadShirt(country.code);
-    const mfp = activeEdition.miniflagsPath || (activeEdition.flagsPath + 'miniflags/');
+    let flagSrc;
+    if (activeEdition.flagsSvgPath) {
+        const alpha2 = ALPHA3_TO_ALPHA2[country.code] || country.code.toLowerCase();
+        flagSrc = activeEdition.flagsSvgPath + alpha2 + '.svg';
+    } else {
+        const mfp = activeEdition.miniflagsPath || (activeEdition.flagsPath + 'miniflags/');
+        flagSrc = mfp + country.code + '.png';
+    }
     selectedDiv.innerHTML =
-        '<img src="' + mfp + country.code + '.png"' +
-        ' alt="' + country.name + '" class="sc-flag-img" width="36" height="36" onerror="this.style.display=\'none\'">' +
+        '<img src="' + flagSrc + '"' +
+        ' alt="' + country.name + '" class="sc-flag-img" width="36" height="36" crossorigin="anonymous"' +
+        ' onerror="this.onerror=null;this.src=\'' + (activeEdition.miniflagsPath || '/frontend/assets/flags/miniflags/') + country.code + '.png\'">' +
         '<div class="sc-info">' +
         '<span class="sc-name">' + country.name + '</span>' +
         '<span class="sc-code">' + country.code + ' · Group ' + country.group + '</span>' +
@@ -559,13 +609,14 @@ const TABS = [
     { label: '2026',              edition: Edition2026,      disabled: false, icon: '/frontend/assets/svg/logofifa3.svg' },
     { label: '2022', edition: EditionQatar2022, disabled: false, icon: '/frontend/assets/svg/logoqatar.svg' },
     { label: '2018', edition: EditionRusia2018, disabled: false, icon: '/frontend/assets/svg/logorusia.svg' },
+    { label: '2010', edition: Edition2010, disabled: false, icon: '/frontend/assets/svg/logo2010.svg' },
     { label: '2006', edition: Edition2006, disabled: false, icon: '/frontend/assets/svg/logo2006.svg' },
     { label: 'EXTRA STICKER 2026', edition: EditionExtraCard, disabled: false, icon: '/frontend/assets/extra.png' },
     { label: 'EXTRA STICKER 2022', sub: 'COMING SOON', edition: null, disabled: true, icon: '/frontend/assets/extra22.png' },
     { label: '2014', sub: 'COMING SOON', edition: null, disabled: true, icon: '/frontend/assets/svg/logobrasil.svg' },
 ];
 
-let currentTabIdx = 0;
+let currentTabIdx = 3;
 const VISIBLE = 2;
 
 function renderTabs() {
@@ -603,12 +654,22 @@ document.getElementById('wcNext').addEventListener('click', () => {
 
 document.body.setAttribute('data-edition', activeEdition.id);
 applyTheme(activeEdition.theme);
+applyFieldVisibility(activeEdition);
 switchCanvas(activeEdition);
 renderEditionControls(activeEdition);
 renderTabs();
 loadLayers(activeEdition);
 loadFlag(state.code);
 loadShirt(state.code);
+['photoScale', 'photoY', 'photoX'].forEach(key => {
+    const map = { photoScale: ['sScale', 'vScale'], photoY: ['sY', 'vY'], photoX: ['sX', 'vX'] };
+    const [slId, numId] = map[key];
+    const val = state[key];
+    const sl = document.getElementById(slId);
+    const num = document.getElementById(numId);
+    if (sl) sl.value = val;
+    if (num) num.value = val;
+});
 const initCountry = getAllCountries(activeEdition).find(c => c.code === 'ARG')
     || getAllCountries(activeEdition)[0];
 if (initCountry) selectCountry(initCountry);

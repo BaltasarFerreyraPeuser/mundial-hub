@@ -2642,3 +2642,215 @@ body[data-edition="edition-qatar2022"]::before {
 
 /* ── Alemania 2006 — sin fondo imagen, usa --theme-bg-body ── */
 /* body[data-edition="edition-2006"] { background-image: url('...'); } */
+
+@font-face {
+    font-family: 'Fuente2010';
+    src: url('/frontend/assets/fonts/2010Font.ttf') format('truetype');
+    font-display: swap;
+}
+
+[data-edition="edition-2010"] {
+    --border: 2px solid rgba(215,25,32,0.4);
+    --shadow: 0 8px 28px rgba(215,25,32,0.3);
+}
+
+[data-edition="edition-2010"] body {
+    background-color: #fff8f0;
+    background-image:
+        repeating-linear-gradient(
+            52deg,
+            rgba(215,25,32,0.05) 0px, rgba(215,25,32,0.05) 2px,
+            transparent 2px, transparent 18px
+        ),
+        repeating-linear-gradient(
+            -38deg,
+            rgba(243,146,0,0.04) 0px, rgba(243,146,0,0.04) 2px,
+            transparent 2px, transparent 22px
+        ),
+        linear-gradient(160deg, rgba(255,242,0,0.08) 0%, transparent 45%);
+}
+
+[data-edition="edition-2010"] header {
+    background: linear-gradient(135deg, #D71920 0%, #F39200 55%, #FFF200 100%);
+    border-radius: var(--radius-lg);
+    border: none;
+    border-bottom: 4px solid #009640;
+    padding: 24px 28px;
+    box-shadow: 0 8px 32px rgba(215,25,32,0.45);
+}
+
+[data-edition="edition-2010"] header::before {
+    background: linear-gradient(to bottom,
+        #D71920 0% 25%,
+        #F39200 25% 50%,
+        #FFF200 50% 75%,
+        #009640 75% 100%);
+    width: 6px;
+    border-radius: 3px;
+}
+
+[data-edition="edition-2010"] header h1 {
+    color: #ffffff !important;
+    font-family: 'Fuente2010', 'Barlow Condensed', sans-serif;
+    text-shadow: 0 2px 12px rgba(0,0,0,0.35);
+    letter-spacing: 0.02em;
+}
+
+[data-edition="edition-2010"] .header-sub {
+    color: rgba(255,255,255,0.85);
+}
+
+[data-edition="edition-2010"] .how-to {
+    background: linear-gradient(135deg, #D71920 0%, #0055A5 100%) !important;
+    border: 1.5px solid rgba(243,146,0,0.55) !important;
+    box-shadow: 0 6px 24px rgba(215,25,32,0.35);
+    color: #fff;
+}
+
+[data-edition="edition-2010"] .how-to h2 {
+    color: #ffffff;
+    font-family: 'Fuente2010', sans-serif;
+    letter-spacing: 1px;
+}
+
+[data-edition="edition-2010"] .how-to::after {
+    background: linear-gradient(to bottom,
+        #D71920 0% 25%,
+        #F39200 25% 50%,
+        #FFF200 50% 75%,
+        #009640 75% 100%);
+}
+
+[data-edition="edition-2010"] .how-to a {
+    color: #FFF200;
+}
+
+[data-edition="edition-2010"] .card {
+    background: linear-gradient(145deg, #fffdf8 0%, #fff0e6 100%);
+    border: 1.5px solid rgba(215,25,32,0.2);
+    border-left: 5px solid #D71920;
+    box-shadow: 0 6px 20px rgba(215,25,32,0.12);
+}
+
+[data-edition="edition-2010"] .card:hover {
+    border-left-color: #F39200;
+    box-shadow: 0 10px 28px rgba(215,25,32,0.22);
+    transform: translate(-2px, -2px);
+}
+
+[data-edition="edition-2010"] .card h3 {
+    color: #D71920;
+    border-left-color: #F39200 !important;
+    font-family: 'Fuente2010', sans-serif;
+    letter-spacing: 1.5px;
+}
+
+[data-edition="edition-2010"] .rainbow-bar {
+    background: linear-gradient(to right,
+        #D71920 0% 25%,
+        #F39200 25% 50%,
+        #FFF200 50% 75%,
+        #009640 75% 100%) !important;
+    height: 6px;
+}
+
+[data-edition="edition-2010"] .dl-btn {
+    background: linear-gradient(135deg, #F39200 0%, #D71920 100%);
+    color: #ffffff;
+    border: 2px solid #0055A5;
+    box-shadow: 0 5px 0 #0055A5;
+    font-family: 'Fuente2010', sans-serif;
+    letter-spacing: 2px;
+}
+
+[data-edition="edition-2010"] .dl-btn:hover {
+    background: linear-gradient(135deg, #FFF200 0%, #F39200 100%);
+    color: #1a1a1a;
+}
+
+[data-edition="edition-2010"] .dl-btn:active {
+    transform: translateY(4px);
+    box-shadow: 0 1px 0 #0055A5;
+}
+
+[data-edition="edition-2010"] .canvas-wrap {
+    box-shadow: 10px 10px 0 #D71920;
+    border-color: #F39200;
+}
+
+[data-edition="edition-2010"] input[type=range] {
+    accent-color: #F39200;
+}
+
+[data-edition="edition-2010"] .frow input[type=text] {
+    border-color: rgba(215,25,32,0.35);
+    background: #fffdf8;
+}
+
+[data-edition="edition-2010"] .frow input[type=text]:focus {
+    border-color: #F39200;
+    box-shadow: 0 0 0 3px rgba(243,146,0,0.25);
+}
+
+[data-edition="edition-2010"] .frow input[type=number] {
+    border-color: rgba(215,25,32,0.35);
+    background: #fffdf8;
+}
+
+[data-edition="edition-2010"] .frow input[type=number]:focus {
+    border-color: #F39200;
+    box-shadow: 0 0 0 3px rgba(243,146,0,0.25);
+}
+
+[data-edition="edition-2010"] .removebg-tip {
+    background: linear-gradient(135deg, rgba(243,146,0,0.12), rgba(0,86,165,0.08));
+    border-color: rgba(215,25,32,0.45);
+    color: #4a1010;
+}
+
+[data-edition="edition-2010"] .removebg-tip a {
+    color: #0055A5;
+}
+
+[data-edition="edition-2010"] .selected-country {
+    background: linear-gradient(135deg, #D71920, #F39200);
+    border-color: #0055A5;
+    color: #fff;
+}
+
+[data-edition="edition-2010"] .sc-name,
+[data-edition="edition-2010"] .sc-code {
+    color: #fff;
+}
+
+[data-edition="edition-2010"] .upload-direct {
+    background: #009640;
+}
+
+[data-edition="edition-2010"] .upload-direct:hover {
+    background: #007a33;
+}
+
+[data-edition="edition-2010"] .main-footer::before {
+    background: linear-gradient(to right,
+        #D71920 0% 25%,
+        #F39200 25% 50%,
+        #FFF200 50% 75%,
+        #009640 75% 100%);
+}
+
+.card--2010-color {
+    --cardAccent1: #F39200;
+    border-bottom: 4px solid #F39200 !important;
+}
+
+body[data-edition="edition-2010"] {
+    background-image: url('/frontend/assets/svg/2010/fondo.webp');
+    background-size: cover;
+    background-position: center top;
+    background-attachment: fixed;
+}
+
+body[data-edition="edition-2010"]::before {
+    background: rgba(255, 248, 240, 0.72);
+}

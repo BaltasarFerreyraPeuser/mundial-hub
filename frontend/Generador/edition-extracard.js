@@ -10,11 +10,9 @@ const EditionExtraCard = {
     flagsPath: '/frontend/assets/flags/extraflags/',
     flagsSvgPath: 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.3.2/flags/4x3/',
 
-    // Dos instancias del marcobandera rotado -90° en el canvas 2994x3960.
-    // Coordenadas tomadas de Inkscape. La esquina RECTA queda top-right (rot -90°).
     marcoBanderaSlots: [
-        { x: 349,  y: 712,  w: 2264, h: 2246, r: 1141 }, // grande
-        { x: 214,  y: 2834, w: 524,  h: 520,  r: 264  }, // chico
+        { x: 349,  y: 712,  w: 2264, h: 2246, r: 1141 },
+        { x: 214,  y: 2834, w: 524,  h: 520,  r: 264  }, 
     ],
     miniflagsPath: '/frontend/assets/flags/miniflags/',
 
@@ -292,7 +290,7 @@ const EditionExtraCard = {
         ctx.save();
         ctx.textAlign = 'center';
         const cx = W / 2;
-        const FONT = '"FuentePersonalizadaAA", "Barlow Condensed", sans-serif';
+        const FONT = '"FuentePersonalizadaAAA", "Barlow Condensed", sans-serif';
 
         ctx.font = `215px ${FONT}`;
         ctx.fillStyle = '#ffffff';

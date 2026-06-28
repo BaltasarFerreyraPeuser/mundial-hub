@@ -229,6 +229,14 @@
             background: #7c4177
         }
 
+        #cv-2010 {
+            display: block;
+            width: 100%;
+            height: auto;
+            aspect-ratio: 2985/3840;
+            background: #D71920
+        }
+
         @media(max-width:680px) {
             .layout {
                 flex-direction: column;
@@ -374,7 +382,7 @@
                     <div class="canvas-wrap">
                         <canvas id="cv-2026" width="2895" height="3840"
                                 role="img" aria-label="Vista previa figurita Mundial 2026"
-                                class="edition-canvas active-canvas"></canvas>
+                                class="edition-canvas" style="display:none"></canvas>
                         <canvas id="cv-qatar" width="2994" height="3960"
                                 role="img" aria-label="Vista previa figurita Qatar 2022"
                                 class="edition-canvas" style="display:none"></canvas>
@@ -384,6 +392,9 @@
                         <canvas id="cv-rusia" width="2994" height="3960"
                                 role="img" aria-label="Vista previa figurita Rusia 2018"
                                 class="edition-canvas" style="display:none"></canvas>
+                        <canvas id="cv-2010" width="2985" height="3840"
+                                role="img" aria-label="Vista previa figurita Sudáfrica 2010"
+                                class="edition-canvas active-canvas"></canvas>
                         <canvas id="cv-germany" width="2994" height="3960"
                                 role="img" aria-label="Vista previa figurita Alemania 2006"
                                 class="edition-canvas" style="display:none"></canvas>
@@ -534,6 +545,7 @@
     <script src="edition-qatar2022.js"></script>
     <script src="edition-extracard.js"></script>
     <script src="edition-rusia2018.js"></script>
+    <script src="edition-2010.js"></script>
     <script src="edition-2006.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@vladmandic/face-api/dist/face-api.js"></script>
     <script src="shirt-align.js"></script>
