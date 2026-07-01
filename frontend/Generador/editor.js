@@ -27,7 +27,7 @@ const fontDefs = [
     ['FuentePersonalizada',      '/frontend/assets/fonts/truly-26.otf'],
     ['FuentePersonalizadaA',     '/frontend/assets/fonts/Nombre2.ttf'],
     ['FuentePersonalizadaAA', '/frontend/assets/fonts/Apellido2.ttf'],
-    ['FuentePersonalizadaAAA', '/frontend/assets/fonts/Apellido22.ttf'],
+    ['FuentePersonalizadaAAA', '/frontend/assets/fonts/EXTRAFONT.ttf'],
     ['FuenteNacimiento', '/frontend/assets/fonts/nacimiento.ttf'],
     ['FuentePersonalizadaQatar', '/frontend/assets/fonts/qatarfuente.ttf'],
     ['FuenteRusia', '/frontend/assets/fonts/rusiafont.ttf'],
@@ -606,7 +606,7 @@ document.getElementById('dlBtn').addEventListener('click', () => {
 });
 
 const TABS = [
-    { label: '2026',              edition: Edition2026,      disabled: false, icon: '/frontend/assets/svg/logofifa3.svg' },
+    { label: '2026',              edition: Edition2026,      disabled: false, icon: '/frontend/assets/svg/logofifa.svg' },
     { label: '2022', edition: EditionQatar2022, disabled: false, icon: '/frontend/assets/svg/logoqatar.svg' },
     { label: '2018', edition: EditionRusia2018, disabled: false, icon: '/frontend/assets/svg/logorusia.svg' },
     { label: '2010', edition: Edition2010, disabled: false, icon: '/frontend/assets/svg/logo2010.svg' },
@@ -616,7 +616,7 @@ const TABS = [
     { label: '2014', sub: 'COMING SOON', edition: null, disabled: true, icon: '/frontend/assets/svg/logobrasil.svg' },
 ];
 
-let currentTabIdx = 3;
+let currentTabIdx = 0;
 const VISIBLE = 2;
 
 function renderTabs() {

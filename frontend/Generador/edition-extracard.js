@@ -292,9 +292,11 @@ const EditionExtraCard = {
         const cx = W / 2;
         const FONT = '"FuentePersonalizadaAAA", "Barlow Condensed", sans-serif';
 
-        ctx.font = `215px ${FONT}`;
+        ctx.font = `160px ${FONT}`;
         ctx.fillStyle = '#ffffff';
-        ctx.fillText(state.name.toUpperCase(), cx, 3664, 2538);
+        ctx.translate(cx, 3670);
+        ctx.scale(1, 1.40);
+        ctx.fillText(state.name.toUpperCase(), 0, 0, 2538);
         ctx.restore();
 
         ctx.restore();

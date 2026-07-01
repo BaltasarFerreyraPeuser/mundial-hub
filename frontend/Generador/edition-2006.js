@@ -102,6 +102,10 @@ const Edition2006 = {
         { id: 'cosito1', src: '/frontend/assets/2006/cosito_arriba.webp' },
         { id: 'cosito2', src: '/frontend/assets/2006/cositomedio.webp' },
         { id: 'cosito3', src: '/frontend/assets/2006/cositoabajo2.webp' },
+        { id: 'bcosito',  src: '/frontend/assets/2006/Bcosito_abajo.webp'  },
+        { id: 'bcosito1', src: '/frontend/assets/2006/Bcosito_arriba.webp' },
+        { id: 'bcosito2', src: '/frontend/assets/2006/Bcositomedio.webp'   },
+        { id: 'bcosito3', src: '/frontend/assets/2006/Bcositoabajo2.webp'  },
         { id: 'logo',     src: '/frontend/assets/2006/logo.svg'      },
         { id: 'marco',    src: '/frontend/assets/2006/marco.webp'    },
         { id: 'bandera',  src: '/frontend/assets/2006/bandera.png'   },
@@ -110,69 +114,40 @@ const Edition2006 = {
     buildTints(imgs, state) {
         const W = 2994, H = 3960;
 
-        const makeTint = (src, hex, strokeMode) => {
+        const tintShape = (src, hex) => {
             if (!src || !hex) return null;
             const oc = document.createElement('canvas');
             oc.width = W; oc.height = H;
             const ox = oc.getContext('2d');
-
-            if (!strokeMode) {
-                // Fill: colorea toda la forma con el color
-                ox.fillStyle = hex;
-                ox.fillRect(0, 0, W, H);
-                ox.globalCompositeOperation = 'destination-in';
-                ox.drawImage(src, 0, 0, W, H);
-            } else {
-                // Borde interior: color en el borde + blanco en el interior
-                const borderPx = 100;
-
-                // 1) Canvas blanco recortado a la forma
-                const whiteC = document.createElement('canvas');
-                whiteC.width = W; whiteC.height = H;
-                const wx = whiteC.getContext('2d');
-                wx.fillStyle = '#ffffff';
-                wx.fillRect(0, 0, W, H);
-                wx.globalCompositeOperation = 'destination-in';
-                wx.drawImage(src, 0, 0, W, H);
-
-                // 2) Canvas del color recortado a la forma
-                const colorC = document.createElement('canvas');
-                colorC.width = W; colorC.height = H;
-                const cx2 = colorC.getContext('2d');
-                cx2.fillStyle = hex;
-                cx2.fillRect(0, 0, W, H);
-                cx2.globalCompositeOperation = 'destination-in';
-                cx2.drawImage(src, 0, 0, W, H);
-
-                // 3) Interior erosionado: forma blanca "expandida" con shadowBlur
-                //    para cubrir todo el interior dejando solo el borde visible
-                const erosC = document.createElement('canvas');
-                erosC.width = W; erosC.height = H;
-                const ex = erosC.getContext('2d');
-                ex.shadowColor = '#ffffff';
-                ex.shadowBlur  = borderPx * 2;
-                // Dibujar en 8 direcciones + centro para rellenar hacia adentro
-                const d = borderPx;
-                [[0,0],[-d,0],[d,0],[0,-d],[0,d],[-d,-d],[d,-d],[-d,d],[d,d]].forEach(([ox2,oy2]) => {
-                    ex.drawImage(whiteC, ox2, oy2);
-                });
-                ex.shadowBlur = 0;
-                // Recortar al shape original
-                ex.globalCompositeOperation = 'destination-in';
-                ex.drawImage(src, 0, 0, W, H);
-
-                // 4) Componer: primero color, luego blanco erosionado encima
-                ox.drawImage(colorC, 0, 0);
-                ox.drawImage(erosC, 0, 0);
-            }
+            ox.fillStyle = hex;
+            ox.fillRect(0, 0, W, H);
+            ox.globalCompositeOperation = 'destination-in';
+            ox.drawImage(src, 0, 0, W, H);
             return oc;
+        };
+        const makeCosito = (baseSrc, borderSrc, hex, strokeMode) => {
+            if (!baseSrc || !hex) return null;
+
+            if (strokeMode && borderSrc) {
+                const whiteBase = tintShape(baseSrc, '#ffffff');
+                const coloredBorder = tintShape(borderSrc, hex);
+
+                const oc = document.createElement('canvas');
+                oc.width = W; oc.height = H;
+                const ox = oc.getContext('2d');
+                if (whiteBase)      ox.drawImage(whiteBase, 0, 0);
+                if (coloredBorder)  ox.drawImage(coloredBorder, 0, 0);
+                return oc;
+            }
+
+            return tintShape(baseSrc, hex);
         };
 
         return {
-            cosito:  makeTint(imgs['cosito'],  state.cCosito  || '#c8a800', state.sCosito),
-            cosito1: makeTint(imgs['cosito1'], state.cCosito1 || '#c8a800', state.sCosito1),
-            cosito2: makeTint(imgs['cosito2'], state.cCosito2 || '#c8a800', state.sCosito2),
-            cosito3: makeTint(imgs['cosito3'], state.cCosito3 || '#c8a800', state.sCosito3),
+            cosito:  makeCosito(imgs['cosito'],  imgs['bcosito'],  state.cCosito  || '#c8a800', state.sCosito),
+            cosito1: makeCosito(imgs['cosito1'], imgs['bcosito1'], state.cCosito1 || '#c8a800', state.sCosito1),
+            cosito2: makeCosito(imgs['cosito2'], imgs['bcosito2'], state.cCosito2 || '#c8a800', state.sCosito2),
+            cosito3: makeCosito(imgs['cosito3'], imgs['bcosito3'], state.cCosito3 || '#c8a800', state.sCosito3),
         };
     },
 
@@ -293,10 +268,10 @@ const Edition2006 = {
 
     renderControls(state) {
         const cositos = [
-            { id: 'cCosito',  sId: 'sCosito',  label: 'Cosito abajo',   color: state.cCosito  || '#c8a800', stroke: !!state.sCosito  },
-            { id: 'cCosito1', sId: 'sCosito1', label: 'Cosito arriba',  color: state.cCosito1 || '#c8a800', stroke: !!state.sCosito1 },
-            { id: 'cCosito2', sId: 'sCosito2', label: 'Cosito medio',   color: state.cCosito2 || '#c8a800', stroke: !!state.sCosito2 },
-            { id: 'cCosito3', sId: 'sCosito3', label: 'Cosito abajo 2', color: state.cCosito3 || '#c8a800', stroke: !!state.sCosito3 },
+            { id: 'cCosito',  sId: 'sCosito',  label: 'Pico 1', color: state.cCosito  || '#c8a800', stroke: !!state.sCosito  },
+            { id: 'cCosito1', sId: 'sCosito1', label: 'Pico 2', color: state.cCosito1 || '#c8a800', stroke: !!state.sCosito1 },
+            { id: 'cCosito2', sId: 'sCosito2', label: 'Pico 3', color: state.cCosito2 || '#c8a800', stroke: !!state.sCosito2 },
+            { id: 'cCosito3', sId: 'sCosito3', label: 'Pico 4', color: state.cCosito3 || '#c8a800', stroke: !!state.sCosito3 },
         ];
         const rows = cositos.map(c => `
             <div class="crow" style="gap:10px;align-items:center;">
