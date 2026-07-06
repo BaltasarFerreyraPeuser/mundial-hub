@@ -198,7 +198,6 @@ const Edition2026 = {
         shirtX:          0,
         shirtScale:      100,
         customShirtImg:  null,
-        // Personalización de bandera
         customFlag:         false,
         customFlagImg:      null,
         customFlagColor:    '#1a3fa3',
@@ -222,7 +221,8 @@ const Edition2026 = {
         { id: 'rectA',     src: '/frontend/assets/svg/rectAR.svg'   },
         { id: 'rectB',     src: '/frontend/assets/svg/rectAB.svg'   },
         { id: 'fifa',      src: '/frontend/assets/svg/logofifa.svg' },
-        { id: 'panini',    src: '/frontend/assets/svg/panini.svg'   },
+        { id: 'panini', src: '/frontend/assets/svg/panini.svg' },
+        { id: 'tapadera', src: '/frontend/assets/2026v2.webp'},
     ],
 
     buildTints(imgs, state, prevTints) {
@@ -255,7 +255,8 @@ const Edition2026 = {
         this._prevState = { c2: state.c2, c6: state.c6, cCosito: state.cCosito, cBg: state.cBg, _posColor: posColor };
         return { num2, num6, cosito, marco, marco6, marcoMEX, marcobandera, rectA, rectB };
     },
-    draw(ctx, state, imgs, tints, photo, flagImg) {
+    draw(ctx, state, imgs, tints, photo, flagImg, options = {}) {
+        const forExport = !!options.forExport;
         const W = 2895, H = 3840;
         const FONT_NOMBRE = '"FuentePersonalizadaA"';
         const FONT_NACI = "'FuenteNacimiento'";
@@ -329,9 +330,7 @@ const Edition2026 = {
             if (tints.marco6) ctx.drawImage(tints.marco6, 0, 0, W, H);
         }
 
-        // ── Bandera: normal vs personalizada ──────────────────────────────────
         if (state.customFlag) {
-            // Área del marco bandera: misma región que MARCO_FLAG en editor.js
             const MF = { x: 2298, y: 2142, w: 390, h: 390 };
             const r  = 197;
             const x2 = MF.x + MF.w, y2 = MF.y + MF.h;
@@ -376,7 +375,6 @@ const Edition2026 = {
         if (!isMexFlag && tints.marcobandera) ctx.drawImage(tints.marcobandera, 0, 0, W, H);
         ctx.save();
 
-        // ── Letras del país: normal vs personalizada ──────────────────────────
         const labelText = state.customFlag
             ? (state.customFlagLabel || '').toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 3)
             : state.code.toUpperCase().slice(0, 3);
@@ -398,8 +396,12 @@ const Edition2026 = {
 
         if (tints.rectB) ctx.drawImage(tints.rectB, 0, 0, W, H);
 
-        if (imgs.fifa)   ctx.drawImage(imgs.fifa,   2220,  235,  585, 827);
-        if (imgs.panini) ctx.drawImage(imgs.panini, 1985, 3523,  706,  167);
+        if (forExport) {
+            if (imgs.fifa)   ctx.drawImage(imgs.fifa,   2220,  235,  585, 827);
+            if (imgs.panini) ctx.drawImage(imgs.panini, 1985, 3523, 706, 167);
+        } else {
+            if (imgs.tapadera) ctx.drawImage(imgs.tapadera, 0, 0, W, H);
+        }
 
         const cleanDate = `${state.day}-${state.month}-${state.year}`;
         const cleanHeight = formatHeight(state.height);

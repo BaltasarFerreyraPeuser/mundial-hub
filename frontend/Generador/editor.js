@@ -543,7 +543,7 @@ function getActiveDataUrl() {
     const ectx = ec.getContext('2d');
     if (!ectx) return null;
     try {
-        activeEdition.draw(ectx, state, imgs, tints, photo, flagImg);
+        activeEdition.draw(ectx, state, imgs, tints, photo, flagImg, { forExport: true });
         return ec.toDataURL('image/png');
     } catch (err) {
         console.warn('toDataURL falló:', err);
