@@ -141,6 +141,7 @@ const EditionExtraCard = {
         { id: 'bg-oro', src: '/frontend/assets/extracard/fondoro.png' },
         { id: 'extra', src: '/frontend/assets/extracard/extrasticker.png' },
         { id: 'fifa', src: '/frontend/assets/svg/fifa2.svg' },
+        { id: 'tapadera', src: '/frontend/assets/tapadera2.webp' },
         { id: 'marcobandera', src: '/frontend/assets/svg/marcoextra.svg' },
         { id: 'rectangulo', src: '/frontend/assets/extracard/rectangulo.png' },
         { id: 'marco', src: '/frontend/assets/extracard/marco.png' },
@@ -150,7 +151,8 @@ const EditionExtraCard = {
         return {};
     },
 
-    draw(ctx, state, imgs, _tints, photo, flagImg) {
+    draw(ctx, state, imgs, _tints, photo, flagImg, options = {}) {
+        const forExport = !!options.forExport;
         const W = 2994, H = 3960;
 
         ctx.clearRect(0, 0, W, H);
@@ -283,7 +285,11 @@ const EditionExtraCard = {
         }
 
         if (imgs['extra']) ctx.drawImage(imgs['extra'], 0, 0, W, H);
-        if (imgs['fifa']) ctx.drawImage(imgs['fifa'], 0, 0, W, H);
+        if (forExport) {
+            if (imgs['fifa']) ctx.drawImage(imgs['fifa'], 0, 0, W, H);
+        } else {
+            if (imgs['tapadera']) ctx.drawImage(imgs['tapadera'], 0, 0, W, H);
+        }
         if (imgs['rectangulo']) ctx.drawImage(imgs['rectangulo'], 0, 0, W, H);
         if (imgs['marco']) ctx.drawImage(imgs['marco'], 0, 0, W, H);
 
